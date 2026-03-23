@@ -17,6 +17,7 @@ from team_mapping import map_team_name as _map_team_name, determine_event_type a
 from config import (
     CLUB_NAME, CLUB_ID, TEAM_ID, COMPETITION_ID,
     HASH_FILE, LOG_FILE, FIXTURES_CSV, NTFY_TOPIC, NTFY_ICON,
+    NTFY_FIXTURES_URL, team_ntfy_topic, team_fixtures_url,
 )
 
 class EnhancedFixtureMonitor:
@@ -221,27 +222,30 @@ Add-Type -AssemblyName System.Windows.Forms
         # --- ntfy.sh mobile push notification ---
         self.send_ntfy(title, message)
     
-    def send_ntfy(self, title, message, priority=None):
-        """Send push notification to phone via ntfy.sh with Ballincollig crest"""
+    def send_ntfy(self, title, message, priority=None, topic=None, team_name=None):
+        """Send push notification via ntfy.sh with Ballincollig crest and fixtures link"""
         if priority is None:
             priority = "low" if os.environ.get("NTFY_QUIET") else "high"
+        target_topic = topic or self.ntfy_topic
+        fixtures_url = team_fixtures_url(team_name) if team_name else NTFY_FIXTURES_URL
         try:
             resp = requests.post(
-                f"https://ntfy.sh/{self.ntfy_topic}",
+                f"https://ntfy.sh/{target_topic}",
                 data=message.encode('utf-8'),
                 headers={
                     "Title": title,
                     "Priority": priority,
                     "Icon": NTFY_ICON,
+                    "Actions": f"view, View Fixtures, {fixtures_url}",
                 },
                 timeout=10,
             )
             if resp.status_code == 200:
-                self.log_message("ntfy.sh mobile notification sent")
+                self.log_message(f"ntfy.sh notification sent to {target_topic}")
             else:
-                self.log_message(f"ntfy.sh returned status {resp.status_code}")
+                self.log_message(f"ntfy.sh returned status {resp.status_code} for {target_topic}")
         except Exception as e:
-            self.log_message(f"Failed to send ntfy.sh notification: {e}")
+            self.log_message(f"Failed to send ntfy.sh notification to {target_topic}: {e}")
     
     def analyze_changes(self, old_text, new_text):
         """Analyze what changed between old and new fixtures"""
@@ -296,6 +300,7 @@ Add-Type -AssemblyName System.Windows.Forms
                 
                 # Run ClubZap sync diff and build detailed notification
                 diff_summary = ""
+                team_changes = {}  # team_name -> list of description lines
                 try:
                     from clubzap_sync import read_csv_fixtures, fixture_key, FULL_CSV, BASELINE_CSV, CHANGE_COLS
                     current = read_csv_fixtures(FULL_CSV)
@@ -307,10 +312,15 @@ Add-Type -AssemblyName System.Windows.Forms
                     removed_items = []
                     
                     for key, row in current.items():
+                        team = row.get('Team', 'Unknown')
                         if row.get('Time', '') == 'Postponed':
                             postponed_items.append(row)
+                            team_changes.setdefault(team, []).append(
+                                f"POSTPONED: {row['Date']} vs {row['Opponent']}")
                         elif key not in baseline:
                             new_items.append(row)
+                            team_changes.setdefault(team, []).append(
+                                f"NEW: {row['Date']} vs {row['Opponent']}")
                         else:
                             old_row = baseline[key]
                             row_changes = []
@@ -319,10 +329,19 @@ Add-Type -AssemblyName System.Windows.Forms
                                     row_changes.append(f"  {col}: {row.get(col, '')}")
                             if row_changes:
                                 changed_items.append((row, row_changes))
+                                detail = ", ".join(
+                                    f"{col}: {row.get(col, '')}" for col in CHANGE_COLS
+                                    if old_row.get(col, '').strip() != row.get(col, '').strip()
+                                )
+                                team_changes.setdefault(team, []).append(
+                                    f"CHANGED: {row['Date']} vs {row['Opponent']} ({detail})")
                     
                     for key, row in baseline.items():
                         if key not in current:
                             removed_items.append(row)
+                            team = row.get('Team', 'Unknown')
+                            team_changes.setdefault(team, []).append(
+                                f"REMOVED: {row['Date']} vs {row['Opponent']}")
                     
                     parts = []
                     if new_items:
@@ -363,7 +382,19 @@ Add-Type -AssemblyName System.Windows.Forms
                 
                 notification_msg = f"{CLUB_NAME} GAA Fixtures Update\n\n{diff_summary}"
                 
+                # Send main notification (all fixtures topic)
                 self.send_notification(f"{CLUB_NAME} GAA - Fixture Changes", notification_msg)
+                
+                # Send per-team notifications so managers only get their team's changes
+                for team_name, lines in team_changes.items():
+                    team_topic = team_ntfy_topic(team_name)
+                    team_msg = f"{CLUB_NAME} {team_name}\n\n" + "\n".join(lines)
+                    self.send_ntfy(
+                        f"{CLUB_NAME} {team_name} - Fixture Update",
+                        team_msg,
+                        topic=team_topic,
+                        team_name=team_name,
+                    )
                 
                 self.log_message("SUCCESS: Changes processed successfully")
                 return True

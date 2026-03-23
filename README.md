@@ -49,11 +49,48 @@ gaacork.ie (Cork County Board)
      |
      v
  [ Notifications ]    Push alerts to phone via ntfy.sh with the club crest
+                      Includes "Open ClubZap" button — per-team topics available
 ```
 
 ## How It Runs
 
 The system runs for free on **GitHub Actions** (a cloud service) — no club server or computer needs to be left on. It checks once a day at 6am, and can also be triggered manually at any time. All fixture data is archived for 30 days.
+
+## Notifications
+
+Every notification includes a **"Open ClubZap"** button that links directly to the fixtures dashboard.
+
+### All-Fixtures Notifications
+
+Subscribe to **all** fixture changes across every team:
+
+- **Topic:** `ballincollig-gaa-fixtures`
+- **Subscribe:** [ntfy.sh/ballincollig-gaa-fixtures](https://ntfy.sh/ballincollig-gaa-fixtures)
+
+### Per-Team Notifications (for managers)
+
+Team managers can subscribe to notifications for **only their team**. When a fixture changes, only the teams affected receive a notification — no noise from other age grades.
+
+| Team | ntfy Topic | Subscribe Link |
+|------|-----------|----------------|
+| Senior Football | `ballincollig-gaa-fixtures-senior-football` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-senior-football) |
+| Premier Inter Hurling | `ballincollig-gaa-fixtures-premier-inter-hurling` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-premier-inter-hurling) |
+| Junior A Football | `ballincollig-gaa-fixtures-junior-a-football` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-junior-a-football) |
+| Junior A Hurling | `ballincollig-gaa-fixtures-junior-a-hurling` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-junior-a-hurling) |
+| Junior B Football | `ballincollig-gaa-fixtures-junior-b-football` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-junior-b-football) |
+| Junior B Hurling | `ballincollig-gaa-fixtures-junior-b-hurling` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-junior-b-hurling) |
+| Junior C Football | `ballincollig-gaa-fixtures-junior-c-football` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-junior-c-football) |
+| Minor Football GAA | `ballincollig-gaa-fixtures-minor-football-gaa` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-minor-football-gaa) |
+| Minor Hurling GAA | `ballincollig-gaa-fixtures-minor-hurling-gaa` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-minor-hurling-gaa) |
+| U12 GAA | `ballincollig-gaa-fixtures-u12` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-u12) |
+| U13 GAA | `ballincollig-gaa-fixtures-u13` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-u13) |
+| U14 GAA | `ballincollig-gaa-fixtures-u14` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-u14) |
+| U15 GAA | `ballincollig-gaa-fixtures-u15` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-u15) |
+| U16 GAA | `ballincollig-gaa-fixtures-u16` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-u16) |
+| GAA U21 Football | `ballincollig-gaa-fixtures-gaa-u21-a-football` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-gaa-u21-a-football) |
+| GAA U21 Hurling | `ballincollig-gaa-fixtures-gaa-u21-a-hurling` | [Subscribe](https://ntfy.sh/ballincollig-gaa-fixtures-gaa-u21-a-hurling) |
+
+**How to subscribe:** Install the free [ntfy app](https://ntfy.sh) on your phone (Android/iOS), tap **+**, and enter the topic name from the table above.
 
 ## Safety
 
@@ -86,7 +123,6 @@ Camogie fixtures are managed by a separate county board and are likely published
 
 - **Clash detection** — Flag when two club teams are scheduled at the same time, or when dual players have overlapping fixtures across codes
 - **Change audit trail** — Track every fixture change over the season for AGM reporting or raising scheduling concerns with the county board
-- **Per-team notifications** — Let team managers subscribe to alerts for only their team, rather than receiving every change across all age grades
 
 ## Technical Details
 

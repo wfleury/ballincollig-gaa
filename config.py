@@ -3,6 +3,7 @@ Configuration for GAA Club Scraper
 """
 
 import os
+import re
 
 # ---- Club identity ----
 CLUB_NAME = "Ballincollig"
@@ -30,6 +31,50 @@ REMOVED_CSV = "clubzap_removed_fixtures.csv"
 # ---- Notifications ----
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "ballincollig-gaa-fixtures")
 NTFY_ICON = "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/1986/ballincollig.gif"
+NTFY_FIXTURES_URL = "https://ballincolliggaa.ie/fixtures"
+
+# ClubZap website team IDs (for filtered fixture links in notifications)
+CLUBZAP_TEAM_IDS = {
+    "Senior Football": "20977",
+    "Premier Inter Hurling": "21090",
+    "Junior A Football": "21293",
+    "Junior A Hurling": "21292",
+    "Junior B Football": "21295",
+    "Junior B Hurling": "21294",
+    "Junior C Football": "21428",
+    "Minor Football GAA": "20310",
+    "Minor Hurling GAA": "20309",
+    "U12 GAA": "20304",
+    "U13 GAA": "20305",
+    "U14 GAA": "20306",
+    "U15 GAA": "20307",
+    "U16 GAA": "20308",
+    'GAA U21 "A" Football': "20191",
+    'GAA U21 "A" Hurling': "24007",
+    'GAA U21 "B" Football': "20192",
+    'GAA U21 "B" Hurling': "24008",
+}
+
+
+def team_fixtures_url(team_name):
+    """Return the public fixtures URL filtered to a specific team, or the
+    unfiltered URL if the team is not recognised."""
+    team_id = CLUBZAP_TEAM_IDS.get(team_name)
+    if team_id:
+        return f"{NTFY_FIXTURES_URL}?team_id={team_id}"
+    return NTFY_FIXTURES_URL
+
+
+def team_ntfy_topic(team_name):
+    """Derive a per-team ntfy topic from the base topic and team name.
+
+    e.g. "Senior Football" -> "ballincollig-gaa-fixtures-senior-football"
+         "U14 GAA"         -> "ballincollig-gaa-fixtures-u14"
+    """
+    slug = re.sub(r'[^a-z0-9]+', '-', team_name.lower()).strip('-')
+    # Drop redundant trailing "-gaa" for underage teams (U12–U16)
+    slug = re.sub(r'^(u1[2-6])-gaa$', r'\1', slug)
+    return f"{NTFY_TOPIC}-{slug}"
 
 # ---- CSV schema ----
 FIXTURE_HEADER = [
