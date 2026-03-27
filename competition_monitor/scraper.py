@@ -49,6 +49,10 @@ class CompetitionScraper:
     def scrape(self, competition_url):
         """Scrape a competition page and return structured data.
 
+        The SportLomo competition pages have tabs (Fixtures, Results,
+        Table, etc.).  Selenium's .text returns empty for hidden
+        elements, so we click each tab before extracting its data.
+
         Returns dict with keys: competition_name, competition_url,
         fixtures (list), results (list), table (list).
         """
@@ -72,10 +76,16 @@ class CompetitionScraper:
             # Extract competition name from the page heading
             data["competition_name"] = self._get_competition_name()
 
-            # Extract fixtures & results from ul[data-date] elements
-            self._extract_matches(data)
+            # Click the Fixtures tab, then extract upcoming fixtures
+            self._click_tab("Fixtures")
+            self._extract_matches(data, expect="fixtures")
 
-            # Extract league table
+            # Click the Results tab, then extract completed results
+            self._click_tab("Results")
+            self._extract_matches(data, expect="results")
+
+            # Click the Table tab, then extract league table
+            self._click_tab("Table")
             data["table"] = self._extract_table()
 
             print(f"Scraped {len(data['fixtures'])} fixtures, "
@@ -107,36 +117,93 @@ class CompetitionScraper:
                 continue
         return ""
 
-    def _extract_matches(self, data):
-        """Find all ul[data-date] elements and classify as fixture or result."""
-        # Wait for elements to appear (JS-rendered)
-        for attempt in range(3):
-            wait = 10 + (attempt * 8)
-            try:
-                elements = WebDriverWait(self.driver, wait).until(
-                    EC.presence_of_all_elements_located(
-                        (By.CSS_SELECTOR, 'ul[data-date]'))
-                )
-                break
-            except TimeoutException:
-                if attempt < 2:
-                    self.driver.execute_script(
-                        "window.scrollTo(0, document.body.scrollHeight);")
-                    time.sleep(2)
-                    self.driver.execute_script("window.scrollTo(0, 0);")
-                    time.sleep(2)
-                else:
-                    print("No ul[data-date] elements found after retries")
-                    return
+    def _click_tab(self, label):
+        """Click a tab on the competition page (Fixtures / Results / Table).
+
+        SportLomo tabs are typically <a> or <li> elements inside a tab bar.
+        """
+        try:
+            # Try several strategies to find the tab
+            for selector in [
+                f'a[href*="#{label.lower()}"]',
+                f'li[data-tab="{label.lower()}"]',
+                f'a.tab-link',
+                f'li.tab',
+                f'a',
+                f'li',
+            ]:
+                elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+                for el in elements:
+                    if el.text.strip().lower() == label.lower():
+                        el.click()
+                        time.sleep(1.5)
+                        return True
+
+            # Fallback: use JavaScript to click by link text
+            self.driver.execute_script("""
+                var tabs = document.querySelectorAll('a, li, button, span');
+                for (var i = 0; i < tabs.length; i++) {
+                    if (tabs[i].textContent.trim().toLowerCase() === arguments[0].toLowerCase()) {
+                        tabs[i].click();
+                        return true;
+                    }
+                }
+                return false;
+            """, label)
+            time.sleep(1.5)
+            return True
+        except Exception as e:
+            print(f"Could not click '{label}' tab: {e}")
+            return False
+
+    def _extract_matches(self, data, expect=None):
+        """Find visible ul[data-date] elements on the current tab.
+
+        Args:
+            expect: "fixtures" or "results" — which tab we clicked.
+                    When set, only visible elements are considered and
+                    classification is guided by the tab context.
+        """
+        try:
+            # Short wait — the tab content should already be loaded
+            elements = WebDriverWait(self.driver, 8).until(
+                EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, 'ul[data-date]'))
+            )
+        except TimeoutException:
+            if expect:
+                print(f"No ul[data-date] on '{expect}' tab")
+            return
 
         for el in elements:
+            # Only process visible elements (the active tab's content)
+            if not el.is_displayed():
+                continue
             match = self._parse_match_element(el)
             if not match:
                 continue
-            if match.get("home_score"):
-                data["results"].append(match)
+            if expect == "results":
+                # On the Results tab: everything should be a result.
+                # If scores weren't detected from .text, try JS textContent.
+                if not match.get("home_score"):
+                    text = self.driver.execute_script(
+                        "return arguments[0].textContent || '';", el)
+                    score_match = SCORE_RE.search(text)
+                    if score_match:
+                        match["home_score"] = score_match.group(1)
+                        match["away_score"] = score_match.group(2)
+                if match.get("home_score"):
+                    data["results"].append(match)
+            elif expect == "fixtures":
+                # On the Fixtures tab: these are upcoming.
+                if not match.get("home_score"):
+                    data["fixtures"].append(match)
             else:
-                data["fixtures"].append(match)
+                # Legacy path: classify by presence of score
+                if match.get("home_score"):
+                    data["results"].append(match)
+                else:
+                    data["fixtures"].append(match)
 
     def _parse_match_element(self, el):
         """Parse a single fixture/result <ul> element."""
