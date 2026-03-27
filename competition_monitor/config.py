@@ -44,6 +44,12 @@ COMPETITIONS = {
         "base_url": REBELOG_BASE_URL,
         "ntfy_topic": "ballincollig-u14-hurling-2",
     },
+    # --- 3rd team ---
+    "Fe14 Div 4D Football (3rd team)": {
+        "competition_id": 213624,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-football-3",
+    },
 }
 
 # Override via env: comma-separated list of competition names to run
@@ -52,7 +58,7 @@ COMP_NAMES_OVERRIDE = os.environ.get("COMP_NAMES")
 
 # ---- Notifications ----
 NTFY_ICON = "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/1986/ballincollig.gif"
-# Combined topic – subscribe to this one to get everything across all 4 competitions
+# Combined topic – subscribe to this one to get everything across all competitions
 NTFY_COMBINED_TOPIC = "ballincollig-u14-results"
 
 # ---- File paths ----
