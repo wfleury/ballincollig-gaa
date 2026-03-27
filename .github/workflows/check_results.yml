@@ -2,8 +2,12 @@ name: Competition Results Monitor
 
 on:
   schedule:
-    # Runs daily at 06:15 UTC (shortly after the fixture monitor)
-    - cron: '15 6 * * *'
+    # 06:00 IST / 05:00 UTC
+    - cron: '0 5 * * *'
+    # 13:00 IST / 12:00 UTC
+    - cron: '0 12 * * *'
+    # 22:00 IST / 21:00 UTC
+    - cron: '0 21 * * *'
   workflow_dispatch:  # Manual trigger
 
 jobs:
