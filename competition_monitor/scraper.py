@@ -11,9 +11,6 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 
 
 SCORE_RE = re.compile(r'(\d+-\d+)\s*v\s*(\d+-\d+)', re.IGNORECASE)
@@ -46,12 +43,19 @@ class CompetitionScraper:
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
+    @staticmethod
+    def _comp_id_from_url(url):
+        """Extract the numeric competition ID from a SportLomo URL."""
+        m = re.search(r'/league/(\d+)', url)
+        return m.group(1) if m else None
+
     def scrape(self, competition_url):
         """Scrape a competition page and return structured data.
 
-        The SportLomo competition pages have tabs (Fixtures, Results,
-        Table, etc.).  Selenium's .text returns empty for hidden
-        elements, so we click each tab before extracting its data.
+        SportLomo pages embed all fixtures, results, and the league
+        table in the DOM with distinguishing CSS classes, so we select
+        elements directly rather than relying on tab clicks and
+        ``is_displayed()``, which are unreliable in headless Chrome.
 
         Returns dict with keys: competition_name, competition_url,
         fixtures (list), results (list), table (list).
@@ -59,6 +63,8 @@ class CompetitionScraper:
         if not self.driver:
             print("No driver available")
             return None
+
+        comp_id = self._comp_id_from_url(competition_url)
 
         data = {
             "competition_name": "",
@@ -76,16 +82,25 @@ class CompetitionScraper:
             # Extract competition name from the page heading
             data["competition_name"] = self._get_competition_name()
 
-            # Click the Fixtures tab, then extract upcoming fixtures
-            self._click_tab("Fixtures")
-            self._extract_matches(data, expect="fixtures")
+            # Use CSS class selectors to pick the right elements.
+            # Fixture <ul>s carry class "fixtures-{comp_id}",
+            # result  <ul>s carry class "results" (inside the results
+            # tab container).
+            if comp_id:
+                fix_sel = f'ul.fixtures-{comp_id}[data-date]'
+            else:
+                fix_sel = 'ul.fixtures[data-date]'
 
-            # Click the Results tab, then extract completed results
-            self._click_tab("Results")
-            self._extract_matches(data, expect="results")
+            self._extract_matches_by_selector(
+                data, fix_sel, kind="fixtures")
 
-            # Click the Table tab, then extract league table
-            self._click_tab("Table")
+            # Results live inside a div whose class or id references
+            # "results".  They have class "results" but NOT "fixtures-*".
+            res_sel = 'ul.results[data-date]'
+            self._extract_matches_by_selector(
+                data, res_sel, kind="results")
+
+            # League table
             data["table"] = self._extract_table()
 
             print(f"Scraped {len(data['fixtures'])} fixtures, "
@@ -117,74 +132,32 @@ class CompetitionScraper:
                 continue
         return ""
 
-    def _click_tab(self, label):
-        """Click a tab on the competition page (Fixtures / Results / Table).
+    def _extract_matches_by_selector(self, data, selector, kind):
+        """Extract fixture or result data from elements matching *selector*.
 
-        SportLomo tabs are typically <a> or <li> elements inside a tab bar.
-        """
-        try:
-            # Try several strategies to find the tab
-            for selector in [
-                f'a[href*="#{label.lower()}"]',
-                f'li[data-tab="{label.lower()}"]',
-                f'a.tab-link',
-                f'li.tab',
-                f'a',
-                f'li',
-            ]:
-                elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
-                for el in elements:
-                    if el.text.strip().lower() == label.lower():
-                        el.click()
-                        time.sleep(1.5)
-                        return True
-
-            # Fallback: use JavaScript to click by link text
-            self.driver.execute_script("""
-                var tabs = document.querySelectorAll('a, li, button, span');
-                for (var i = 0; i < tabs.length; i++) {
-                    if (tabs[i].textContent.trim().toLowerCase() === arguments[0].toLowerCase()) {
-                        tabs[i].click();
-                        return true;
-                    }
-                }
-                return false;
-            """, label)
-            time.sleep(1.5)
-            return True
-        except Exception as e:
-            print(f"Could not click '{label}' tab: {e}")
-            return False
-
-    def _extract_matches(self, data, expect=None):
-        """Find visible ul[data-date] elements on the current tab.
+        Uses JavaScript ``getAttribute`` / ``textContent`` so that
+        elements hidden by tab CSS are still readable.
 
         Args:
-            expect: "fixtures" or "results" — which tab we clicked.
-                    When set, only visible elements are considered and
-                    classification is guided by the tab context.
+            data: dict to append to ("fixtures" or "results" key).
+            selector: CSS selector for the <ul> match elements.
+            kind: "fixtures" or "results".
         """
         try:
-            # Short wait — the tab content should already be loaded
-            elements = WebDriverWait(self.driver, 8).until(
-                EC.presence_of_all_elements_located(
-                    (By.CSS_SELECTOR, 'ul[data-date]'))
-            )
-        except TimeoutException:
-            if expect:
-                print(f"No ul[data-date] on '{expect}' tab")
+            elements = self.driver.find_elements(By.CSS_SELECTOR, selector)
+        except Exception:
+            elements = []
+
+        if not elements:
+            print(f"No elements for '{kind}' ({selector})")
             return
 
         for el in elements:
-            # Only process visible elements (the active tab's content)
-            if not el.is_displayed():
-                continue
             match = self._parse_match_element(el)
             if not match:
                 continue
-            if expect == "results":
-                # On the Results tab: everything should be a result.
-                # If scores weren't detected from .text, try JS textContent.
+            if kind == "results":
+                # Ensure we have scores — try JS textContent as fallback
                 if not match.get("home_score"):
                     text = self.driver.execute_script(
                         "return arguments[0].textContent || '';", el)
@@ -194,32 +167,33 @@ class CompetitionScraper:
                         match["away_score"] = score_match.group(2)
                 if match.get("home_score"):
                     data["results"].append(match)
-            elif expect == "fixtures":
-                # On the Fixtures tab: these are upcoming.
-                if not match.get("home_score"):
-                    data["fixtures"].append(match)
             else:
-                # Legacy path: classify by presence of score
-                if match.get("home_score"):
-                    data["results"].append(match)
-                else:
+                if not match.get("home_score"):
                     data["fixtures"].append(match)
 
     def _parse_match_element(self, el):
-        """Parse a single fixture/result <ul> element."""
-        home = el.get_attribute('data-hometeam') or ''
-        away = el.get_attribute('data-awayteam') or ''
+        """Parse a single fixture/result <ul> element.
+
+        Uses JavaScript getAttribute to reliably read data attributes
+        even when the element is hidden by tab CSS.
+        """
+        get = lambda attr: self.driver.execute_script(
+            "return arguments[0].getAttribute(arguments[1]) || '';", el, attr)
+
+        home = get('data-hometeam')
+        away = get('data-awayteam')
         if not home or not away:
             return None
 
-        date_str = el.get_attribute('data-date') or ''
-        time_str = el.get_attribute('data-time') or ''
-        venue = el.get_attribute('data-venue') or ''
-        comp = el.get_attribute('data-compname') or ''
-        referee = (el.get_attribute('data-referee') or '').strip()
+        date_str = get('data-date')
+        time_str = get('data-time')
+        venue = get('data-venue')
+        comp = get('data-compname')
+        referee = get('data-referee').strip()
 
-        # Check for score in the element text
-        text = el.text or ''
+        # Check for score in the element text (JS textContent for hidden els)
+        text = self.driver.execute_script(
+            "return arguments[0].textContent || '';", el)
         score_match = SCORE_RE.search(text)
 
         match = {
@@ -246,17 +220,18 @@ class CompetitionScraper:
         Returns a list of dicts with keys:
         position, team, played, won, drawn, lost, pf, pa, pd, pts
         """
-        table_rows = []
-
-        # The SportLomo league table is typically a <table> element.
-        # Try several selectors.
+        # The SportLomo league table is a <table class="league_table ...">
+        # element.  It may be hidden by tab CSS, so we use JS to read it.
         table_el = None
-        for sel in ['table.standings', 'table.league-table',
-                     'table.table', 'table']:
+        for sel in ['table.league_table', 'table.standings',
+                     'table.league-table', 'table.table', 'table']:
             try:
                 candidates = self.driver.find_elements(By.CSS_SELECTOR, sel)
                 for cand in candidates:
-                    header_text = cand.text.lower()
+                    # Use JS textContent to check hidden tables
+                    header_text = self.driver.execute_script(
+                        "return arguments[0].textContent || '';",
+                        cand).lower()
                     if 'pts' in header_text and ('pld' in header_text or
                                                   'team' in header_text):
                         table_el = cand
@@ -273,13 +248,19 @@ class CompetitionScraper:
         return self._parse_table_from_text()
 
     def _parse_html_table(self, table_el):
-        """Parse a standard HTML <table> for league standings."""
+        """Parse a standard HTML <table> for league standings.
+
+        Uses JavaScript to read cell text so hidden tables are handled.
+        """
         rows = []
         try:
             trs = table_el.find_elements(By.CSS_SELECTOR, 'tbody tr, tr')
             for i, tr in enumerate(trs):
                 cells = tr.find_elements(By.CSS_SELECTOR, 'td, th')
-                texts = [c.text.strip() for c in cells]
+                # Use JS textContent for each cell
+                texts = [self.driver.execute_script(
+                    "return (arguments[0].textContent || '').trim();", c)
+                    for c in cells]
                 if not texts or len(texts) < 4:
                     continue
                 # Skip header rows
