@@ -50,6 +50,7 @@ jobs:
         env:
           DISPLAY: ':99'
           COMP_NTFY_QUIET: '1'
+          COMP_AGE_GROUPS: 'u14'
 
       - name: Generate dashboard
         if: always()
