@@ -24,6 +24,17 @@ from competition_monitor.config import (
 _KNOWN_IDS = {c["competition_id"] for c in COMPETITIONS.values()}
 
 
+def _club_in_competition(driver, league_url):
+    """Load a league page and check whether CLUB_NAME appears in it."""
+    try:
+        driver.get(league_url)
+        time.sleep(2)
+        return CLUB_NAME.lower() in driver.page_source.lower()
+    except Exception as e:
+        print(f"Discovery: could not verify {league_url} – {e}")
+        return False
+
+
 def discover_new_competitions(driver):
     """Use an existing Selenium driver to scan rebelog.ie for new
     Fe14 competitions involving Ballincollig.
@@ -64,11 +75,6 @@ def discover_new_competitions(driver):
             r'data-compname="([^"]*fe14[^"]*)"',
             re.IGNORECASE,
         )
-        team_pattern = re.compile(
-            r'data-(?:home|away)team="([^"]*Ballincollig[^"]*)"',
-            re.IGNORECASE,
-        )
-
         # Collect all Fe14 competition IDs from league links
         fe14_comps = {}  # id -> name
         for m in league_pattern.finditer(page_source):
@@ -88,18 +94,20 @@ def discover_new_competitions(driver):
             if link_match:
                 fe14_comps[int(link_match.group(1))] = comp_name
 
-        # Check if Ballincollig appears on the page at all
-        has_ballincollig = bool(team_pattern.search(page_source))
-
-        # Filter to ones involving Ballincollig that we don't already know
+        # Filter to ones we don't already know, then verify Ballincollig
+        # is actually listed in the competition before reporting it.
         for comp_id, comp_name in fe14_comps.items():
             if comp_id not in _KNOWN_IDS:
-                # Verify Ballincollig is in this competition by checking the page
-                found.append({
-                    "name": comp_name,
-                    "competition_id": comp_id,
-                    "url": f"{REBELOG_BASE_URL}/league/{comp_id}/",
-                })
+                comp_url = f"{REBELOG_BASE_URL}/league/{comp_id}/"
+                if _club_in_competition(driver, comp_url):
+                    found.append({
+                        "name": comp_name,
+                        "competition_id": comp_id,
+                        "url": comp_url,
+                    })
+                else:
+                    print(f"Discovery: skipping {comp_name} ({comp_id}) – "
+                          f"{CLUB_NAME} not found on league page")
 
         # Approach 2: scan fixture elements directly
         try:
