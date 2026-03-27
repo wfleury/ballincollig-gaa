@@ -318,9 +318,12 @@ class CompetitionScraper:
     def _cells_to_row(self, texts, idx):
         """Convert a list of cell texts to a table row dict."""
         try:
-            # Determine offset: first cell might be position number or team
+            # Determine offset: first cell might be position number,
+            # an empty placeholder, or the team name directly.
             offset = 0
             if texts[0].isdigit():
+                offset = 1
+            elif texts[0].strip() == '' and len(texts) > 1:
                 offset = 1
 
             team = texts[offset] if offset < len(texts) else ''
