@@ -17,20 +17,31 @@ def _priority():
     return "low" if os.environ.get("COMP_NTFY_QUIET") else "high"
 
 
+_MAX_BODY_BYTES = 3900  # ntfy.sh converts bodies >4096 bytes to attachment.txt
+
+
 def _send(topic, title, message, priority=None, action_url=None):
     """Post a message to ntfy.sh."""
     headers = {
         "Title": title,
         "Priority": priority or _priority(),
         "Icon": NTFY_ICON,
+        "Content-Type": "text/plain; charset=utf-8",
     }
     if action_url:
         headers["Actions"] = f"view, View Competition, {action_url}"
 
+    body = message.encode("utf-8")
+    if len(body) > _MAX_BODY_BYTES:
+        truncated = body[: _MAX_BODY_BYTES - 40]
+        # avoid cutting mid-character
+        truncated = truncated.decode("utf-8", errors="ignore").encode("utf-8")
+        body = truncated + b"\n\n... (truncated)"
+
     try:
         resp = requests.post(
             f"https://ntfy.sh/{topic}",
-            data=message.encode("utf-8"),
+            data=body,
             headers=headers,
             timeout=10,
         )
@@ -123,7 +134,10 @@ def notify_other_results(comp_config, diff, comp_name):
     if not others:
         return
 
-    lines = [_format_score(r) for r in others]
+    MAX_SHOW = 15
+    lines = [_format_score(r) for r in others[:MAX_SHOW]]
+    if len(others) > MAX_SHOW:
+        lines.append(f"... and {len(others) - MAX_SHOW} more")
     body = "\n".join(lines)
     url = competition_url(comp_config)
 
@@ -157,6 +171,12 @@ def notify_fixture_changes(comp_config, diff, comp_name):
 
     if not parts:
         return
+
+    MAX_PARTS = 20
+    if len(parts) > MAX_PARTS:
+        extra = len(parts) - MAX_PARTS
+        parts = parts[:MAX_PARTS]
+        parts.append(f"... and {extra} more changes")
 
     url = competition_url(comp_config)
     _send_both(
