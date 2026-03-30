@@ -254,8 +254,10 @@ class CompetitionScraper:
         """
         rows = []
         try:
-            trs = table_el.find_elements(By.CSS_SELECTOR, 'tbody tr, tr')
-            for i, tr in enumerate(trs):
+            trs = table_el.find_elements(By.CSS_SELECTOR, 'tbody tr')
+            if not trs:
+                trs = table_el.find_elements(By.CSS_SELECTOR, 'tr')
+            for tr in trs:
                 cells = tr.find_elements(By.CSS_SELECTOR, 'td, th')
                 # Use JS textContent for each cell
                 texts = [self.driver.execute_script(
@@ -267,7 +269,7 @@ class CompetitionScraper:
                 if any(h in texts[0].lower() for h in ['pos', 'position',
                                                         'league', '#']):
                     continue
-                row = self._cells_to_row(texts, i)
+                row = self._cells_to_row(texts, len(rows) + 1)
                 if row:
                     rows.append(row)
         except Exception as e:
