@@ -12,6 +12,7 @@ Run after the competition monitor:
 
 import json
 import os
+import shutil
 from datetime import datetime
 from html import escape
 
@@ -81,7 +82,9 @@ body {
   background: var(--bg); color: var(--text); line-height: 1.5;
   max-width: 960px; margin: 0 auto; padding: 16px;
 }
-h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.6em; }
+.header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.header img { height: 56px; width: auto; }
+h1 { color: var(--primary); font-size: 1.6em; }
 .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 20px; }
 h2 { color: var(--primary); margin: 24px 0 12px; font-size: 1.25em;
      border-bottom: 2px solid var(--primary); padding-bottom: 4px; }
@@ -231,6 +234,7 @@ body {
   max-width: 600px; margin: 0 auto; padding: 32px 16px;
   text-align: center;
 }
+.crest { height: 80px; width: auto; margin-bottom: 12px; }
 h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
 .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 32px; }
 .age-grid { display: grid; gap: 12px; }
@@ -268,6 +272,7 @@ def _generate_landing_page(age_groups_with_data, now):
 <style>{_LANDING_CSS}</style>
 </head>
 <body>
+<img src="img/crest.gif" alt="{CLUB_NAME} crest" class="crest">
 <h1>{CLUB_NAME} GAA</h1>
 <p class="subtitle">Competition Dashboards &mdash; updated {now}</p>
 <div class="age-grid">
@@ -320,7 +325,10 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <style>{_CSS}</style>
 </head>
 <body>
-<h1><a href="../" style="text-decoration:none">{CLUB_NAME} GAA</a></h1>
+<div class="header">
+  <a href="../"><img src="../img/crest.gif" alt="{CLUB_NAME} crest"></a>
+  <h1><a href="../" style="text-decoration:none">{CLUB_NAME} GAA</a></h1>
+</div>
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {content_html}
 </body>
@@ -358,6 +366,18 @@ def generate():
 
     # Generate landing page
     _generate_landing_page(set(by_age.keys()), now)
+
+    # Copy static assets (crest image etc.)
+    static_dir = os.path.join(os.path.dirname(__file__), "static")
+    if os.path.isdir(static_dir):
+        for item in os.listdir(static_dir):
+            src = os.path.join(static_dir, item)
+            dst = os.path.join(DASHBOARD_DIR, item)
+            if os.path.isdir(src):
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+            else:
+                shutil.copy2(src, dst)
+        print("Static assets copied to dashboard/")
 
 
 if __name__ == "__main__":
