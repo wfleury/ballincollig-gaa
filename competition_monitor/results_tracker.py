@@ -170,4 +170,5 @@ def has_changes(diff):
         or diff.get("fixture_changes")
         or diff.get("new_fixtures")
         or diff.get("removed_fixtures")
+        or diff.get("table_changed")
     )

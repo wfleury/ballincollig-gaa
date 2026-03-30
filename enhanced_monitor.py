@@ -7,22 +7,21 @@ import io
 import os
 import json
 from datetime import datetime, timedelta
-from scraper import GAAClubScraper
 from selenium_scraper import SeleniumScraper
 import hashlib
 import subprocess
 import sys
 import requests
-from team_mapping import map_team_name as _map_team_name, determine_event_type as _determine_event_type
+from team_mapping import map_team_name, determine_event_type
 from config import (
-    CLUB_NAME, CLUB_ID, TEAM_ID, COMPETITION_ID,
+    CLUB_NAME, CLUB_ID, TEAM_ID,
     HASH_FILE, LOG_FILE, FIXTURES_CSV, NTFY_TOPIC, NTFY_ICON,
     NTFY_FIXTURES_URL, team_ntfy_topic, team_fixtures_url,
+    CHANGE_COLS,
 )
 
 class EnhancedFixtureMonitor:
     def __init__(self):
-        self.scraper = GAAClubScraper()
         self.selenium_scraper = SeleniumScraper()
         self.hash_file = HASH_FILE
         self.log_file = LOG_FILE
@@ -40,97 +39,74 @@ class EnhancedFixtureMonitor:
         print(message)
     
     def get_fixtures_data(self):
-        """Get current fixtures data using Selenium for complete coverage"""
-        try:
-            # Use Selenium scraper for complete fixture coverage
-            fixtures = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
-            
-            if fixtures:
-                # Convert to CSV format using csv.writer for proper escaping
-                output = io.StringIO()
-                writer = csv.writer(output)
-                writer.writerow(["Date", "Time", "Venue", "Ground", "Referee",
-                                 "Team", "Competition Name", "Your Club Name",
-                                 "Opponent", "Event Type"])
-                
-                fixture_count = 0
-                for fixture in fixtures:
-                    # Process fixture data
-                    home_team = fixture.get('home', '')
-                    away_team = fixture.get('away', '')
-                    date = fixture.get('date', '')
-                    time_val = fixture.get('time', '')
-                    venue = fixture.get('venue', '')
-                    competition = fixture.get('competition', '')
-                    
-                    # Determine if club is home or away
-                    if CLUB_NAME in home_team:
-                        ground = 'Home'
-                        opponent = away_team
-                    elif CLUB_NAME in away_team:
-                        ground = 'Away'
-                        opponent = home_team
-                    else:
-                        continue  # Skip if club not found
-                    
-                    # Map team name and event type
-                    team = self.map_team_name(competition)
-                    event_type = self.determine_event_type(competition)
-                    
-                    # Format date
-                    try:
-                        dt = datetime.strptime(date, '%d %b %Y')
-                        formatted_date = dt.strftime('%d/%m/%Y')
-                    except (ValueError, TypeError):
-                        formatted_date = date
-                    
-                    # Format time (add leading 0 if needed)
-                    # 00:00 means fixture is cancelled/postponed
-                    if time_val == '00:00' or time_val == '0:00':
-                        time_val = 'Postponed'
-                        event_type = 'Postponed'
-                    elif time_val and len(time_val) == 4:
-                        time_val = f'0{time_val}'
-                    
-                    referee = fixture.get('referee', '').strip()
-                    if not referee:
-                        referee = 'TBC (Pending)'
-                    
-                    writer.writerow([formatted_date, time_val, venue, ground, referee,
-                                     team, competition, CLUB_NAME, opponent, event_type])
-                    fixture_count += 1
-                
-                fixtures_text = output.getvalue().rstrip('\r\n')
-                fixtures_hash = hashlib.sha256(fixtures_text.encode()).hexdigest()
-                
-                return {
-                    'hash': fixtures_hash,
-                    'text': fixtures_text,
-                    'count': fixture_count,
-                    'timestamp': datetime.now().isoformat()
-                }
-            else:
-                self.log_message("No fixtures found with Selenium")
-                return None
-                
-        except Exception as e:
-            self.log_message(f"Error with Selenium scraper: {e}")
-            # Fallback to original scraper
-            self.log_message("Falling back to original scraper...")
-            club_data = self.scraper.scrape_club_profile(club_id=CLUB_ID, competition_id=COMPETITION_ID, team_id=TEAM_ID)
-            
-            if club_data and club_data.get('fixtures'):
-                fixtures_text = club_data['fixtures']
-                fixtures_hash = hashlib.sha256(fixtures_text.encode()).hexdigest()
-                fixture_count = len(fixtures_text.split('\n')) - 1  # Subtract header
-                
-                return {
-                    'hash': fixtures_hash,
-                    'text': fixtures_text,
-                    'count': fixture_count,
-                    'timestamp': datetime.now().isoformat()
-                }
+        """Get current fixtures data using Selenium for complete coverage."""
+        fixtures = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
+
+        if not fixtures:
+            self.log_message("No fixtures found with Selenium")
             return None
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["Date", "Time", "Venue", "Ground", "Referee",
+                         "Team", "Competition Name", "Your Club Name",
+                         "Opponent", "Event Type"])
+
+        fixture_count = 0
+        for fixture in fixtures:
+            home_team = fixture.get('home', '')
+            away_team = fixture.get('away', '')
+            date = fixture.get('date', '')
+            time_val = fixture.get('time', '')
+            venue = fixture.get('venue', '')
+            competition = fixture.get('competition', '')
+
+            # Determine if club is home or away
+            if CLUB_NAME in home_team:
+                ground = 'Home'
+                opponent = away_team
+            elif CLUB_NAME in away_team:
+                ground = 'Away'
+                opponent = home_team
+            else:
+                continue  # Skip if club not found
+
+            # Map team name and event type
+            team = map_team_name(competition)
+            event_type = determine_event_type(competition)
+
+            # Format date
+            try:
+                dt = datetime.strptime(date, '%d %b %Y')
+                formatted_date = dt.strftime('%d/%m/%Y')
+            except (ValueError, TypeError):
+                formatted_date = date
+
+            # Format time (add leading 0 if needed)
+            # 00:00 means fixture is cancelled/postponed
+            if time_val == '00:00' or time_val == '0:00':
+                time_val = 'Postponed'
+                event_type = 'Postponed'
+            elif time_val and len(time_val) == 4:
+                time_val = f'0{time_val}'
+
+            referee = fixture.get('referee', '').strip()
+            if not referee:
+                referee = 'TBC (Pending)'
+
+            writer.writerow([formatted_date, time_val, venue, ground, referee,
+                             team, competition, CLUB_NAME, opponent, event_type])
+            fixture_count += 1
+
+        fixtures_text = output.getvalue().rstrip('\r\n')
+        fixtures_hash = hashlib.sha256(fixtures_text.encode()).hexdigest()
+
+        return {
+            'hash': fixtures_hash,
+            'text': fixtures_text,
+            'count': fixture_count,
+            'timestamp': datetime.now().isoformat()
+        }
     
     def load_previous_data(self):
         """Load previous fixture data"""
@@ -146,14 +122,6 @@ class EnhancedFixtureMonitor:
         """Save current fixture data"""
         with open(self.hash_file, 'w') as f:
             json.dump(data, f, indent=2)
-    
-    def map_team_name(self, competition_name):
-        """Map competition name to Ballincollig ClubZap team name."""
-        return _map_team_name(competition_name)
-    
-    def determine_event_type(self, competition_name):
-        """Determine event type from competition name."""
-        return _determine_event_type(competition_name)
     
     def regenerate_csv(self, fixtures_text):
         """Regenerate the fixtures CSV"""
@@ -262,17 +230,116 @@ Add-Type -AssemblyName System.Windows.Forms
             'removed_count': len(removed)
         }
     
+    def _build_diff_summary(self):
+        """Compare current fixtures CSV against the ClubZap baseline.
+
+        Returns:
+            tuple: (diff_summary_text, team_changes_dict) where team_changes
+                   maps team name -> list of human-readable change descriptions.
+        """
+        from clubzap_sync import read_csv_fixtures, FULL_CSV, BASELINE_CSV
+
+        current = read_csv_fixtures(FULL_CSV)
+        baseline = read_csv_fixtures(BASELINE_CSV)
+
+        new_items = []
+        changed_items = []
+        postponed_items = []
+        removed_items = []
+        team_changes = {}  # team_name -> [description lines]
+
+        for key, row in current.items():
+            team = row.get('Team', 'Unknown')
+            if row.get('Time', '') == 'Postponed':
+                postponed_items.append(row)
+                team_changes.setdefault(team, []).append(
+                    f"POSTPONED: {row['Date']} vs {row['Opponent']}")
+            elif key not in baseline:
+                new_items.append(row)
+                team_changes.setdefault(team, []).append(
+                    f"NEW: {row['Date']} vs {row['Opponent']}")
+            else:
+                old_row = baseline[key]
+                row_changes = []
+                for col in CHANGE_COLS:
+                    if old_row.get(col, '').strip() != row.get(col, '').strip():
+                        row_changes.append(f"  {col}: {row.get(col, '')}")
+                if row_changes:
+                    changed_items.append((row, row_changes))
+                    detail = ", ".join(
+                        f"{col}: {row.get(col, '')}" for col in CHANGE_COLS
+                        if old_row.get(col, '').strip() != row.get(col, '').strip()
+                    )
+                    team_changes.setdefault(team, []).append(
+                        f"CHANGED: {row['Date']} vs {row['Opponent']} ({detail})")
+
+        for key, row in baseline.items():
+            if key not in current:
+                removed_items.append(row)
+                team = row.get('Team', 'Unknown')
+                team_changes.setdefault(team, []).append(
+                    f"REMOVED: {row['Date']} vs {row['Opponent']}")
+
+        parts = []
+        if new_items:
+            parts.append(f"NEW ({len(new_items)}):")
+            for r in new_items[:5]:
+                parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
+            if len(new_items) > 5:
+                parts.append(f"  ...and {len(new_items)-5} more")
+
+        if changed_items:
+            parts.append(f"CHANGED ({len(changed_items)}):")
+            for r, ch in changed_items[:5]:
+                parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
+                for c in ch:
+                    parts.append(f"    {c}")
+            if len(changed_items) > 5:
+                parts.append(f"  ...and {len(changed_items)-5} more")
+
+        if postponed_items:
+            parts.append(f"POSTPONED ({len(postponed_items)}):")
+            for r in postponed_items:
+                parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
+
+        if removed_items:
+            parts.append(f"REMOVED ({len(removed_items)}):")
+            for r in removed_items:
+                parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
+
+        diff_summary = "\n".join(parts) if parts else "No ClubZap action needed"
+        return diff_summary, team_changes
+
+    def _run_clubzap_sync(self):
+        """Run the ClubZap sync diff to generate CSV diff files."""
+        from clubzap_sync import diff_fixtures
+        self.log_message("Running ClubZap sync diff...")
+        diff_fixtures()
+
+    def _send_team_notifications(self, team_changes):
+        """Send per-team ntfy notifications so managers only see their team."""
+        for team_name, lines in team_changes.items():
+            team_topic = team_ntfy_topic(team_name)
+            team_msg = f"{CLUB_NAME} {team_name}\n\n" + "\n".join(lines)
+            self.send_ntfy(
+                f"{CLUB_NAME} {team_name} - Fixture Update",
+                team_msg,
+                topic=team_topic,
+                team_name=team_name,
+            )
+
     def check_for_changes(self):
         """Main monitoring function"""
         self.log_message("Starting fixture check...")
-        
+
         current_data = self.get_fixtures_data()
         if not current_data:
             self.log_message("ERROR: Could not retrieve current fixtures")
             return False
-        
+
         previous_data = self.load_previous_data()
-        
+
+        # --- First run ---
         if not previous_data:
             self.log_message("INFO: First run - initializing monitoring")
             self.regenerate_csv(current_data['text'])
@@ -282,131 +349,12 @@ Add-Type -AssemblyName System.Windows.Forms
                 f"Monitoring started with {current_data['count']} fixtures"
             )
             return True
-        
-        if current_data['hash'] != previous_data['hash']:
-            self.log_message("ALERT: FIXTURE CHANGES DETECTED!")
-            
-            # Analyze changes
-            changes = self.analyze_changes(previous_data.get('text'), current_data['text'])
-            
-            self.log_message(f"INFO: Previous: {previous_data['count']} fixtures")
-            self.log_message(f"INFO: Current: {current_data['count']} fixtures")
-            self.log_message(f"INFO: Added: {changes['added_count']} fixtures")
-            self.log_message(f"INFO: Removed: {changes['removed_count']} fixtures")
-            
-            # Regenerate CSV
-            if self.regenerate_csv(current_data['text']):
-                self.save_current_data(current_data)
-                
-                # Run ClubZap sync diff and build detailed notification
-                diff_summary = ""
-                team_changes = {}  # team_name -> list of description lines
-                try:
-                    from clubzap_sync import read_csv_fixtures, fixture_key, FULL_CSV, BASELINE_CSV, CHANGE_COLS
-                    current = read_csv_fixtures(FULL_CSV)
-                    baseline = read_csv_fixtures(BASELINE_CSV)
-                    
-                    new_items = []
-                    changed_items = []
-                    postponed_items = []
-                    removed_items = []
-                    
-                    for key, row in current.items():
-                        team = row.get('Team', 'Unknown')
-                        if row.get('Time', '') == 'Postponed':
-                            postponed_items.append(row)
-                            team_changes.setdefault(team, []).append(
-                                f"POSTPONED: {row['Date']} vs {row['Opponent']}")
-                        elif key not in baseline:
-                            new_items.append(row)
-                            team_changes.setdefault(team, []).append(
-                                f"NEW: {row['Date']} vs {row['Opponent']}")
-                        else:
-                            old_row = baseline[key]
-                            row_changes = []
-                            for col in CHANGE_COLS:
-                                if old_row.get(col, '').strip() != row.get(col, '').strip():
-                                    row_changes.append(f"  {col}: {row.get(col, '')}")
-                            if row_changes:
-                                changed_items.append((row, row_changes))
-                                detail = ", ".join(
-                                    f"{col}: {row.get(col, '')}" for col in CHANGE_COLS
-                                    if old_row.get(col, '').strip() != row.get(col, '').strip()
-                                )
-                                team_changes.setdefault(team, []).append(
-                                    f"CHANGED: {row['Date']} vs {row['Opponent']} ({detail})")
-                    
-                    for key, row in baseline.items():
-                        if key not in current:
-                            removed_items.append(row)
-                            team = row.get('Team', 'Unknown')
-                            team_changes.setdefault(team, []).append(
-                                f"REMOVED: {row['Date']} vs {row['Opponent']}")
-                    
-                    parts = []
-                    if new_items:
-                        parts.append(f"NEW ({len(new_items)}):")
-                        for r in new_items[:5]:
-                            parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
-                        if len(new_items) > 5:
-                            parts.append(f"  ...and {len(new_items)-5} more")
-                    
-                    if changed_items:
-                        parts.append(f"CHANGED ({len(changed_items)}):")
-                        for r, ch in changed_items[:5]:
-                            parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
-                            for c in ch:
-                                parts.append(f"    {c}")
-                        if len(changed_items) > 5:
-                            parts.append(f"  ...and {len(changed_items)-5} more")
-                    
-                    if postponed_items:
-                        parts.append(f"POSTPONED ({len(postponed_items)}):")
-                        for r in postponed_items:
-                            parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
-                    
-                    if removed_items:
-                        parts.append(f"REMOVED ({len(removed_items)}):")
-                        for r in removed_items:
-                            parts.append(f"  {r['Date']} {r['Team']} vs {r['Opponent']}")
-                    
-                    diff_summary = "\n".join(parts) if parts else "No ClubZap action needed"
-                    
-                    # Also run the full diff to generate CSV files
-                    from clubzap_sync import diff_fixtures
-                    self.log_message("Running ClubZap sync diff...")
-                    diff_fixtures()
-                except Exception as e:
-                    self.log_message(f"ClubZap sync diff failed: {e}")
-                    diff_summary = f"Fixtures: {previous_data['count']} -> {current_data['count']}"
-                
-                notification_msg = f"{CLUB_NAME} GAA Fixtures Update\n\n{diff_summary}"
-                
-                # Send main notification (all fixtures topic)
-                self.send_notification(f"{CLUB_NAME} GAA - Fixture Changes", notification_msg)
-                
-                # Send per-team notifications so managers only get their team's changes
-                for team_name, lines in team_changes.items():
-                    team_topic = team_ntfy_topic(team_name)
-                    team_msg = f"{CLUB_NAME} {team_name}\n\n" + "\n".join(lines)
-                    self.send_ntfy(
-                        f"{CLUB_NAME} {team_name} - Fixture Update",
-                        team_msg,
-                        topic=team_topic,
-                        team_name=team_name,
-                    )
-                
-                self.log_message("SUCCESS: Changes processed successfully")
-                return True
-            else:
-                self.log_message("ERROR: Failed to process changes")
-                return False
-        else:
+
+        # --- No changes ---
+        if current_data['hash'] == previous_data['hash']:
             self.log_message(f"INFO: No changes - {current_data['count']} fixtures")
             # Always regenerate CSV so it's available for artifacts and sync
             self.regenerate_csv(current_data['text'])
-            # Send low-priority "all clear" to main topic only
-            # (per-team topics only get notified when there are actual changes)
             all_clear_msg = (
                 f"No fixture changes detected.\n"
                 f"{current_data['count']} fixtures monitored.\n\n"
@@ -419,6 +367,37 @@ Add-Type -AssemblyName System.Windows.Forms
                 priority="low",
             )
             return True
+
+        # --- Changes detected ---
+        self.log_message("ALERT: FIXTURE CHANGES DETECTED!")
+
+        changes = self.analyze_changes(previous_data.get('text'), current_data['text'])
+        self.log_message(f"INFO: Previous: {previous_data['count']} fixtures")
+        self.log_message(f"INFO: Current: {current_data['count']} fixtures")
+        self.log_message(f"INFO: Added: {changes['added_count']} fixtures")
+        self.log_message(f"INFO: Removed: {changes['removed_count']} fixtures")
+
+        if not self.regenerate_csv(current_data['text']):
+            self.log_message("ERROR: Failed to process changes")
+            return False
+
+        self.save_current_data(current_data)
+
+        # Build detailed diff summary and run ClubZap sync
+        team_changes = {}
+        try:
+            diff_summary, team_changes = self._build_diff_summary()
+            self._run_clubzap_sync()
+        except Exception as e:
+            self.log_message(f"ClubZap sync diff failed: {e}")
+            diff_summary = f"Fixtures: {previous_data['count']} -> {current_data['count']}"
+
+        notification_msg = f"{CLUB_NAME} GAA Fixtures Update\n\n{diff_summary}"
+        self.send_notification(f"{CLUB_NAME} GAA - Fixture Changes", notification_msg)
+        self._send_team_notifications(team_changes)
+
+        self.log_message("SUCCESS: Changes processed successfully")
+        return True
 
 def main():
     monitor = EnhancedFixtureMonitor()

@@ -91,6 +91,7 @@ def _process_competition(scraper, comp_name, comp_config):
             notifier.notify_fixture_changes(comp_config, diff, comp_name)
     else:
         print(f"No changes for {comp_name}")
+        notifier.notify_all_clear(comp_config, diff, comp_name)
 
     save_baseline(comp_name, data)
 

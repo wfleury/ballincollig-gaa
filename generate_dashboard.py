@@ -20,6 +20,7 @@ from competition_monitor.config import (
     AGE_GROUPS, BASELINE_DIR, CLUB_NAME, competition_url,
     get_active_competitions,
 )
+from gaa_utils import gaa_total
 
 DASHBOARD_DIR = "dashboard"
 
@@ -121,17 +122,9 @@ a { color: var(--primary); }
 """
 
 
-def _gaa_total(score_str):
-    try:
-        g, p = score_str.split("-")
-        return int(g) * 3 + int(p)
-    except (ValueError, AttributeError):
-        return 0
-
-
 def _result_badge(match):
-    hs = _gaa_total(match.get("home_score", "0-0"))
-    aws = _gaa_total(match.get("away_score", "0-0"))
+    hs = gaa_total(match.get("home_score", "0-0"))
+    aws = gaa_total(match.get("away_score", "0-0"))
     is_home = CLUB_NAME.lower() in match.get("home", "").lower()
     ours = hs if is_home else aws
     theirs = aws if is_home else hs

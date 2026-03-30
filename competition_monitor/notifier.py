@@ -10,6 +10,7 @@ import os
 import requests
 
 from competition_monitor.config import CLUB_NAME, NTFY_ICON, combined_topic_for, competition_url
+from gaa_utils import gaa_total
 
 
 def _priority():
@@ -72,19 +73,10 @@ def _format_score(result):
             f"{result['away_score']} {result['away']}")
 
 
-def _gaa_total(score_str):
-    """Convert '1-6' to total points (1*3 + 6 = 9)."""
-    try:
-        goals, points = score_str.split("-")
-        return int(goals) * 3 + int(points)
-    except (ValueError, AttributeError):
-        return 0
-
-
 def _our_result_line(result):
     """Describe a Ballincollig result in plain English."""
-    home_total = _gaa_total(result["home_score"])
-    away_total = _gaa_total(result["away_score"])
+    home_total = gaa_total(result["home_score"])
+    away_total = gaa_total(result["away_score"])
 
     is_home = CLUB_NAME.lower() in result["home"].lower()
     our_total = home_total if is_home else away_total

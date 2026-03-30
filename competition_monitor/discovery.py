@@ -10,6 +10,8 @@ championship), sends a notification so the user knows to add it.
 import re
 import time
 
+from selenium.webdriver.common.by import By
+
 from competition_monitor.config import (
     AGE_GROUPS, CLUB_NAME, COMPETITIONS, NTFY_COMBINED_TOPIC,
     REBELOG_BASE_URL, get_active_age_groups,
@@ -78,18 +80,17 @@ def discover_new_competitions(driver):
         driver.get(url)
         time.sleep(3)
 
-        page_source = driver.page_source
-
         # Find league links whose link text matches an active age group
-        league_pattern = re.compile(
-            r'href=["\'](?:https?://rebelog\.ie)?/league/(\d+)/?["\'][^>]*>([^<]+)<',
-            re.IGNORECASE,
-        )
+        links = driver.find_elements(By.CSS_SELECTOR, 'a[href*="/league/"]')
         candidate_comps = {}  # id -> name
-        for m in league_pattern.finditer(page_source):
+        for link in links:
+            href = link.get_attribute("href") or ""
+            m = re.search(r'/league/(\d+)', href)
+            if not m:
+                continue
             comp_id = int(m.group(1))
-            comp_name = m.group(2).strip()
-            if _matches_any_age_group(comp_name):
+            comp_name = link.text.strip()
+            if comp_name and _matches_any_age_group(comp_name):
                 candidate_comps[comp_id] = comp_name
 
         # Filter to ones we don't already know, then verify Ballincollig
