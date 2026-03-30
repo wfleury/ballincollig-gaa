@@ -3,105 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ballincollig GAA – Competition Dashboard</title>
+<title>Ballincollig GAA</title>
 <style>:root {
   --primary: #1a5632;
   --primary-light: #e8f5e9;
-  --accent: #ffc107;
   --bg: #f5f5f5;
   --card: #ffffff;
   --text: #212121;
   --muted: #757575;
   --border: #e0e0e0;
-  --highlight: #fff8e1;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg); color: var(--text); line-height: 1.5;
-  max-width: 960px; margin: 0 auto; padding: 16px;
+  max-width: 600px; margin: 0 auto; padding: 32px 16px;
+  text-align: center;
 }
-h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.6em; }
-.subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 20px; }
-h2 { color: var(--primary); margin: 24px 0 12px; font-size: 1.25em;
-     border-bottom: 2px solid var(--primary); padding-bottom: 4px; }
-h3 { color: var(--primary); margin: 16px 0 8px; font-size: 1.05em; }
-.card { background: var(--card); border-radius: 8px; padding: 16px;
-        margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-th { background: var(--primary); color: white; text-align: left;
-     padding: 8px 10px; font-weight: 600; }
-td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
-tr.ours { background: var(--highlight); font-weight: 600; }
-tr:hover { background: var(--primary-light); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 12px;
-         font-size: 0.75em; font-weight: 600; }
-.badge-win { background: #c8e6c9; color: #2e7d32; }
-.badge-loss { background: #ffcdd2; color: #c62828; }
-.badge-draw { background: #fff9c4; color: #f57f17; }
-.badge-postponed { background: #e0e0e0; color: #616161; }
-.badge-upcoming { background: #bbdefb; color: #1565c0; }
-a { color: var(--primary); }
-.fixture-grid { display: grid; gap: 8px; }
-.fixture-row { display: grid; grid-template-columns: 90px 1fr 60px;
-               gap: 8px; align-items: center; padding: 6px 0;
-               border-bottom: 1px solid var(--border); }
-.fixture-date { font-weight: 600; font-size: 0.85em; }
-.fixture-teams { }
-.fixture-time { text-align: right; font-size: 0.85em; color: var(--muted); }
-.empty { color: var(--muted); font-style: italic; padding: 12px 0; }
-.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
-.tab { padding: 6px 14px; border-radius: 20px; cursor: pointer;
-       border: 1px solid var(--border); background: var(--card);
-       font-size: 0.85em; transition: all 0.2s; }
-.tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-@media (max-width: 600px) {
-  body { padding: 10px; }
-  .fixture-row { grid-template-columns: 70px 1fr 50px; }
+.crest { height: 80px; width: auto; margin-bottom: 12px; }
+h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
+.subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 32px; }
+.age-grid { display: grid; gap: 12px; }
+.age-link {
+  display: block; padding: 16px; border-radius: 8px;
+  background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  text-decoration: none; color: var(--primary);
+  font-size: 1.1em; font-weight: 600;
+  transition: background 0.2s, box-shadow 0.2s;
 }
+.age-link:hover { background: var(--primary-light);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
 </style>
 </head>
 <body>
+<img src="img/crest.gif" alt="Ballincollig crest" class="crest">
 <h1>Ballincollig GAA</h1>
-<p class="subtitle">Competition Dashboard &mdash; updated 30 Mar 2026 09:06</p>
-<div class="tabs"><div class="tab active" data-target="ag-u14">U14</div></div>
-<div id="ag-u14" class="tab-content active"><h3><a href="https://rebelog.ie/league/213028/" target="_blank">Fe14 Premier 1 Football</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">30 Mar 2026</div><div class="fixture-teams">Ballincollig vs Nemo Rangers</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">13 Apr 2026</div><div class="fixture-teams">Douglas vs Ballincollig</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">03 Jul 2026</div><div class="fixture-teams">Ballincollig vs Glanmire</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">30 Jul 2026</div><div class="fixture-teams">Carrigaline vs Ballincollig</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">11 Aug 2026</div><div class="fixture-teams">Ballincollig vs Eire Og</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">27 Mar 2026</div><div class="fixture-teams">Ballincollig 2-4 - 2-4 St Colmcilles</div><div class="fixture-time"><span class="badge badge-draw">D</span></div></div>
-<div class="fixture-row"><div class="fixture-date">02 Mar 2026</div><div class="fixture-teams">Mallow 5-8 - 1-6 Ballincollig</div><div class="fixture-time"><span class="badge badge-loss">L</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th></tr></thead><tbody><tr><td>2</td><td>Eire Og</td><td>2</td><td>2</td><td>0</td><td>0</td><td>30</td><td>4</td></tr><tr><td>3</td><td>Carrigaline</td><td>2</td><td>2</td><td>0</td><td>0</td><td>5</td><td>4</td></tr><tr><td>4</td><td>St Colmcilles</td><td>2</td><td>1</td><td>1</td><td>0</td><td>4</td><td>3</td></tr><tr><td>5</td><td>Mallow</td><td>1</td><td>1</td><td>0</td><td>0</td><td>14</td><td>2</td></tr><tr class="ours"><td>6</td><td>Ballincollig</td><td>2</td><td>0</td><td>1</td><td>1</td><td>-14</td><td>1</td></tr><tr><td>7</td><td>Douglas</td><td>2</td><td>0</td><td>0</td><td>2</td><td>-6</td><td>0</td></tr><tr><td>8</td><td>Glanmire</td><td>2</td><td>0</td><td>0</td><td>2</td><td>-7</td><td>0</td></tr><tr><td>9</td><td>Nemo Rangers</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-26</td><td>0</td></tr></tbody></table></div><h3><a href="https://rebelog.ie/league/213159/" target="_blank">Fe14 Premier 2 Hurling</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">17 Mar 2026</div><div class="fixture-teams">Ballincollig vs Killeagh</div><div class="fixture-time">11:00</div></div>
-<div class="fixture-row"><div class="fixture-date">29 Apr 2026</div><div class="fixture-teams">Blarney vs Ballincollig</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">19 Jun 2026</div><div class="fixture-teams">Ballincollig vs Glen Rovers</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">10 Jul 2026</div><div class="fixture-teams">Kiltha Og vs Ballincollig</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">23 Jul 2026</div><div class="fixture-teams">Ballincollig vs Mallow</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">06 Aug 2026</div><div class="fixture-teams">Bride Rovers vs Ballincollig</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><p class="empty">No results yet.</p><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th></tr></thead><tbody><tr><td>2</td><td>Bride Rovers</td><td>1</td><td>1</td><td>0</td><td>0</td><td>8</td><td>2</td></tr><tr class="ours"><td>3</td><td>Ballincollig</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>4</td><td>Killeagh</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>5</td><td>Glen Rovers</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>6</td><td>Mallow</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>7</td><td>Kiltha Og</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>8</td><td>Blarney</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-8</td><td>0</td></tr></tbody></table></div><h3><a href="https://rebelog.ie/league/213068/" target="_blank">Fe14 Div 1 Football (2nd team)</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">01 Apr 2026</div><div class="fixture-teams">Ballincollig 2 vs Glenville</div><div class="fixture-time">20:00</div></div>
-<div class="fixture-row"><div class="fixture-date">10 Apr 2026</div><div class="fixture-teams">Kinsale vs Ballincollig 2</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">03 Jul 2026</div><div class="fixture-teams">Ballincollig 2 vs Courcey Rovers</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">21 Mar 2026</div><div class="fixture-teams">Carrigaline 2 2-10 - 1-10 Ballincollig 2</div><div class="fixture-time"><span class="badge badge-loss">L</span></div></div>
-<div class="fixture-row"><div class="fixture-date">21 Feb 2026</div><div class="fixture-teams">Ballincollig 2 4-8 - 2-2 Ballinhassig</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th></tr></thead><tbody><tr><td>2</td><td>Courcey Rovers</td><td>2</td><td>2</td><td>0</td><td>0</td><td>28</td><td>4</td></tr><tr><td>3</td><td>Glenville</td><td>2</td><td>1</td><td>0</td><td>1</td><td>19</td><td>2</td></tr><tr><td>4</td><td>Kinsale</td><td>2</td><td>1</td><td>0</td><td>1</td><td>-6</td><td>2</td></tr><tr><td>5</td><td>Carrigaline 2</td><td>2</td><td>1</td><td>0</td><td>1</td><td>-18</td><td>2</td></tr><tr class="ours"><td>6</td><td>Ballincollig 2</td><td>2</td><td>1</td><td>0</td><td>1</td><td>9</td><td>2</td></tr><tr><td>7</td><td>Ballinhassig</td><td>2</td><td>0</td><td>0</td><td>2</td><td>-32</td><td>0</td></tr></tbody></table></div><h3><a href="https://rebelog.ie/league/213625/" target="_blank">Fe14 Div 4A Hurling (2nd team)</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">06 Apr 2026</div><div class="fixture-teams">Ballincollig 2 vs Bishopstown 2</div><div class="fixture-time">18:15</div></div>
-<div class="fixture-row"><div class="fixture-date">18 Apr 2026</div><div class="fixture-teams">Blackrock 2 vs Ballincollig 2</div><div class="fixture-time">10:30</div></div>
-<div class="fixture-row"><div class="fixture-date">30 Apr 2026</div><div class="fixture-teams">St Finbarrs 2 vs Ballincollig 2</div><div class="fixture-time">18:30</div></div>
-<div class="fixture-row"><div class="fixture-date">06 May 2026</div><div class="fixture-teams">Ballincollig 2 vs Blarney 2</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">08 Mar 2026</div><div class="fixture-teams">Eire Og 2 2-4 - 4-8 Ballincollig 2</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th></tr></thead><tbody><tr class="ours"><td>2</td><td>Ballincollig 2</td><td>1</td><td>1</td><td>0</td><td>0</td><td>10</td><td>2</td></tr><tr><td>3</td><td>St Finbarrs 2</td><td>1</td><td>1</td><td>0</td><td>0</td><td>7</td><td>2</td></tr><tr><td>4</td><td>Bishopstown 2</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>5</td><td>Blarney 2</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>6</td><td>Blackrock 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-7</td><td>0</td></tr><tr><td>7</td><td>Eire Og 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-10</td><td>0</td></tr></tbody></table></div><h3><a href="https://rebelog.ie/league/213624/" target="_blank">Fe14 Div 4D Football (3rd team)</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">11 Apr 2026</div><div class="fixture-teams">Mallow 3 vs Ballincollig 3</div><div class="fixture-time">17:30</div></div>
-<div class="fixture-row"><div class="fixture-date">25 Apr 2026</div><div class="fixture-teams">Ballincollig 3 vs Douglas 3</div><div class="fixture-time">10:30</div></div>
-<div class="fixture-row"><div class="fixture-date">18 Jul 2026</div><div class="fixture-teams">Ballincollig 3 vs Croke Rovers 2</div><div class="fixture-time">10:30</div></div>
-<div class="fixture-row"><div class="fixture-date">01 Aug 2026</div><div class="fixture-teams">Lisgoold 2 vs Ballincollig 3</div><div class="fixture-time">10:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">25 Mar 2026</div><div class="fixture-teams">Ballincollig 3 2-10 - 0-12 Kildorrery 2</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th></tr></thead><tbody><tr><td>2</td><td>Mallow 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>10</td><td>2</td></tr><tr><td>3</td><td>Douglas 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>5</td><td>2</td></tr><tr class="ours"><td>4</td><td>Ballincollig 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>2</td></tr><tr><td>5</td><td>Kildorrery 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-4</td><td>0</td></tr><tr><td>6</td><td>Lisgoold 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-5</td><td>0</td></tr><tr><td>7</td><td>Croke Rovers 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-10</td><td>0</td></tr></tbody></table></div></div>
-<script>document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.tabs').forEach(function(tabs) {
-    var contents = tabs.parentElement.querySelectorAll('.tab-content');
-    tabs.querySelectorAll('.tab').forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        tabs.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-        contents.forEach(function(c) { c.classList.remove('active'); });
-        tab.classList.add('active');
-        var target = tab.getAttribute('data-target');
-        var el = document.getElementById(target);
-        if (el) el.classList.add('active');
-      });
-    });
-  });
-});
-</script>
+<p class="subtitle">Competition Dashboards &mdash; updated 30 Mar 2026 09:23</p>
+<div class="age-grid">
+<a class="age-link" href="u14/">U14</a>
+
+</div>
 </body>
 </html>
