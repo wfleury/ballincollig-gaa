@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-Generate a static HTML dashboard from competition baselines.
+Generate static HTML dashboards from competition baselines.
 
-Reads the JSON baselines saved by the competition monitor and produces
-a single ``dashboard/index.html`` showing:
-  - Upcoming Ballincollig fixtures across all competitions
-  - Recent results
-  - League tables with Ballincollig highlighted
+Reads the JSON baselines saved by the competition monitor and produces:
+  - ``dashboard/index.html`` — landing page linking to each age group
+  - ``dashboard/{age_group}/index.html`` — per-age-group dashboard
 
 Run after the competition monitor:
     python generate_dashboard.py
@@ -23,7 +21,6 @@ from competition_monitor.config import (
 )
 
 DASHBOARD_DIR = "dashboard"
-OUTPUT_FILE = os.path.join(DASHBOARD_DIR, "index.html")
 
 
 # ------------------------------------------------------------------
@@ -113,35 +110,11 @@ a { color: var(--primary); }
 .fixture-teams { }
 .fixture-time { text-align: right; font-size: 0.85em; color: var(--muted); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
-.tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
-.tab { padding: 6px 14px; border-radius: 20px; cursor: pointer;
-       border: 1px solid var(--border); background: var(--card);
-       font-size: 0.85em; transition: all 0.2s; }
-.tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+a { color: var(--primary); }
 @media (max-width: 600px) {
   body { padding: 10px; }
   .fixture-row { grid-template-columns: 70px 1fr 50px; }
 }
-"""
-
-_JS = """\
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.tabs').forEach(function(tabs) {
-    var contents = tabs.parentElement.querySelectorAll('.tab-content');
-    tabs.querySelectorAll('.tab').forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        tabs.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-        contents.forEach(function(c) { c.classList.remove('active'); });
-        tab.classList.add('active');
-        var target = tab.getAttribute('data-target');
-        var el = document.getElementById(target);
-        if (el) el.classList.add('active');
-      });
-    });
-  });
-});
 """
 
 
@@ -241,6 +214,126 @@ def _render_table(table):
 # Main
 # ------------------------------------------------------------------
 
+_LANDING_CSS = """\
+:root {
+  --primary: #1a5632;
+  --primary-light: #e8f5e9;
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #212121;
+  --muted: #757575;
+  --border: #e0e0e0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.5;
+  max-width: 600px; margin: 0 auto; padding: 32px 16px;
+  text-align: center;
+}
+h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
+.subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 32px; }
+.age-grid { display: grid; gap: 12px; }
+.age-link {
+  display: block; padding: 16px; border-radius: 8px;
+  background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  text-decoration: none; color: var(--primary);
+  font-size: 1.1em; font-weight: 600;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.age-link:hover { background: var(--primary-light);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+"""
+
+
+def _generate_landing_page(age_groups_with_data, now):
+    """Write dashboard/index.html with links to each age group page."""
+    age_labels = {"u13": "U13", "u14": "U14", "u15": "U15",
+                  "u16": "U16", "minor": "Minor"}
+
+    links = ""
+    for ag_key in ["u13", "u14", "u15", "u16", "minor"]:
+        if ag_key not in age_groups_with_data:
+            continue
+        label = age_labels.get(ag_key, ag_key.upper())
+        links += f'<a class="age-link" href="{ag_key}/">{label}</a>\n'
+
+    html = f"""\
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{CLUB_NAME} GAA</title>
+<style>{_LANDING_CSS}</style>
+</head>
+<body>
+<h1>{CLUB_NAME} GAA</h1>
+<p class="subtitle">Competition Dashboards &mdash; updated {now}</p>
+<div class="age-grid">
+{links}
+</div>
+</body>
+</html>
+"""
+    os.makedirs(DASHBOARD_DIR, exist_ok=True)
+    path = os.path.join(DASHBOARD_DIR, "index.html")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"Landing page written to {path}")
+
+
+def _generate_age_group_page(ag_key, comps, baselines, now):
+    """Write dashboard/{ag_key}/index.html for one age group."""
+    age_labels = {"u13": "U13", "u14": "U14", "u15": "U15",
+                  "u16": "U16", "minor": "Minor"}
+    label = age_labels.get(ag_key, ag_key.upper())
+
+    content_html = ""
+    for comp_name, comp_config in comps:
+        baseline = baselines.get(comp_name)
+        url = competition_url(comp_config)
+        content_html += f'<h3><a href="{url}" target="_blank">{escape(comp_name)}</a></h3>'
+        content_html += '<div class="card">'
+        if baseline:
+            fixtures = list(baseline.get("fixtures", {}).values())
+            results = list(baseline.get("results", {}).values())
+            table = baseline.get("table", [])
+
+            content_html += '<h3>Upcoming</h3>'
+            content_html += _render_fixtures(fixtures)
+            content_html += '<h3>Results</h3>'
+            content_html += _render_results(results)
+            content_html += '<h3>Table</h3>'
+            content_html += _render_table(table)
+        else:
+            content_html += '<p class="empty">No data yet — waiting for first monitor run.</p>'
+        content_html += '</div>'
+
+    html = f"""\
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{CLUB_NAME} GAA – {label}</title>
+<style>{_CSS}</style>
+</head>
+<body>
+<h1><a href="../" style="text-decoration:none">{CLUB_NAME} GAA</a></h1>
+<p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
+{content_html}
+</body>
+</html>
+"""
+    out_dir = os.path.join(DASHBOARD_DIR, ag_key)
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, "index.html")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
+    print(f"{label} dashboard written to {path}")
+
+
 def generate():
     competitions = get_active_competitions()
     baselines = _load_baselines(competitions)
@@ -256,70 +349,15 @@ def generate():
         ag = comp_config.get("age_group", "other")
         by_age.setdefault(ag, []).append((comp_name, comp_config))
 
-    # Build the age group tabs + content
-    age_labels = {"u13": "U13", "u14": "U14", "u15": "U15",
-                  "u16": "U16", "minor": "Minor"}
-
-    tabs_html = '<div class="tabs">'
-    content_html = ""
-    first = True
+    # Generate a page per age group
     for ag_key in ["u13", "u14", "u15", "u16", "minor"]:
         comps = by_age.get(ag_key, [])
         if not comps:
             continue
-        label = age_labels.get(ag_key, ag_key.upper())
-        active = " active" if first else ""
-        tab_id = f"ag-{ag_key}"
-        tabs_html += f'<div class="tab{active}" data-target="{tab_id}">{label}</div>'
+        _generate_age_group_page(ag_key, comps, baselines, now)
 
-        section = f'<div id="{tab_id}" class="tab-content{active}">'
-        for comp_name, comp_config in comps:
-            baseline = baselines.get(comp_name)
-            url = competition_url(comp_config)
-            section += f'<h3><a href="{url}" target="_blank">{escape(comp_name)}</a></h3>'
-            section += '<div class="card">'
-            if baseline:
-                fixtures = list(baseline.get("fixtures", {}).values())
-                results = list(baseline.get("results", {}).values())
-                table = baseline.get("table", [])
-
-                section += '<h3>Upcoming</h3>'
-                section += _render_fixtures(fixtures)
-                section += '<h3>Results</h3>'
-                section += _render_results(results)
-                section += '<h3>Table</h3>'
-                section += _render_table(table)
-            else:
-                section += '<p class="empty">No data yet — waiting for first monitor run.</p>'
-            section += '</div>'
-        section += '</div>'
-        content_html += section
-        first = False
-
-    tabs_html += '</div>'
-
-    html = f"""\
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{CLUB_NAME} GAA – Competition Dashboard</title>
-<style>{_CSS}</style>
-</head>
-<body>
-<h1>{CLUB_NAME} GAA</h1>
-<p class="subtitle">Competition Dashboard &mdash; updated {now}</p>
-{tabs_html}
-{content_html}
-<script>{_JS}</script>
-</body>
-</html>
-"""
-    os.makedirs(DASHBOARD_DIR, exist_ok=True)
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"Dashboard written to {OUTPUT_FILE}")
+    # Generate landing page
+    _generate_landing_page(set(by_age.keys()), now)
 
 
 if __name__ == "__main__":
