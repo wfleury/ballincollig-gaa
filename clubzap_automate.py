@@ -223,28 +223,35 @@ class ClubZapAutomation:
             await self.page.wait_for_timeout(8000)
 
         # Check page for success indicators
-        content = await self.page.content()
         log(f"  Current URL: {self.page.url}")
 
-        if 'success' in content.lower() or 'imported' in content.lower() or 'uploaded' in content.lower():
-            log(f"  Successfully uploaded {len(fixtures)} new fixtures")
-            return len(fixtures)
-
-        # Check for error messages
+        # Look for flash/alert messages (specific elements, not page-wide text)
         alerts = await self.page.query_selector_all('.alert, .error, .flash, .notice')
+        success_found = False
         for alert in alerts:
             text = (await alert.inner_text()).strip()
             if text:
                 log(f"  Alert: {text}")
+                if any(w in text.lower() for w in ('success', 'imported', 'uploaded')):
+                    success_found = True
 
-        # Check if fixture count changed
+        # Count fixtures on current page after upload
         rows_after = await self.page.query_selector_all('table tbody tr')
-        log(f"  Fixtures after upload: {len(rows_after)}")
-        if len(rows_after) > len(rows_before):
-            log(f"  Upload appears successful ({len(rows_after) - len(rows_before)} new)")
-            return len(rows_after) - len(rows_before)
+        log(f"  Fixtures after upload: {len(rows_after)} (was {len(rows_before)} on first page)")
 
-        log("  WARNING: Upload may have failed - check ClubZap manually")
+        if len(rows_after) > len(rows_before):
+            actual_new = len(rows_after) - len(rows_before)
+            if actual_new < len(fixtures):
+                log(f"  WARNING: Only {actual_new} of {len(fixtures)} fixtures appeared on page 1 - some may have been rejected")
+            else:
+                log(f"  Upload appears successful ({actual_new} new on first page)")
+            return actual_new
+
+        if success_found:
+            log(f"  Flash message indicated success for {len(fixtures)} fixtures")
+            return len(fixtures)
+
+        log(f"  WARNING: Upload may have failed - fixture count unchanged ({len(rows_before)} -> {len(rows_after)})")
         return 0
 
     async def edit_fixture(self, fixture_id, changes):

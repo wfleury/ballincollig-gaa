@@ -206,7 +206,11 @@ class TestParseFixtureCards:
 
     def test_missing_venue(self):
         fixtures = parse_fixture_cards(AWAY_FIXTURE, "Ballincollig")
-        assert fixtures[0]["venue"] == ""
+        assert fixtures[0]["venue"] == "Na Piarsaigh"
+
+    def test_missing_venue_strips_team_number(self):
+        fixtures = parse_fixture_cards(SECOND_TEAM_FIXTURE, "Ballincollig")
+        assert fixtures[0]["venue"] == "Douglas"
 
 
 # ---------------------------------------------------------------------------

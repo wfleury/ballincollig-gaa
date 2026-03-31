@@ -84,6 +84,9 @@ def parse_fixture_cards(html, club_name):
 
         division = _extract_text(r"Division:</strong>\s*([^<]*)<", card)
         venue = _extract_text(r"Venue:</strong>\s*([^<]*)<", card)
+        if not venue:
+            # Default to home team name (strip trailing team number)
+            venue = re.sub(r"\s+\d+$", "", home)
 
         # Skip duplicate results cards (same fixture appears once as upcoming,
         # once with scores when played).  We detect results by score badges.

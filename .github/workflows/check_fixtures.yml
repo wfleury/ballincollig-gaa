@@ -42,6 +42,16 @@ jobs:
           restore-keys: |
             fixture-data-
 
+      # One-time: strip camogie rows from baseline so they get re-uploaded
+      # with the fixed Venue field.  Safe to remove this step after 2026-04-02.
+      - name: Fix baseline (one-time camogie re-upload)
+        run: |
+          if [ -f clubzap_uploaded_baseline.csv ]; then
+            grep -v "Camogie League" clubzap_uploaded_baseline.csv > /tmp/baseline_clean.csv
+            mv /tmp/baseline_clean.csv clubzap_uploaded_baseline.csv
+            echo "Stripped camogie rows from baseline for re-upload"
+          fi
+
       - name: Run fixture monitor
         run: python enhanced_monitor.py
         env:
