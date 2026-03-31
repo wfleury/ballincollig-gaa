@@ -14,11 +14,11 @@
 Automated fixture management for **Ballincollig GAA Club** (Cork). Two independent systems, both on GitHub Actions:
 
 ### System 1: Fixture Monitor + ClubZap Sync (root-level files)
-Scrapes gaacork.ie club profile daily, detects fixture changes via SHA-256 hash, syncs to ClubZap via Playwright, sends ntfy.sh notifications.
+Scrapes gaacork.ie club profile daily + corkcamogie.com league pages, detects fixture changes via SHA-256 hash, syncs to ClubZap via Playwright, sends ntfy.sh notifications.
 
-**Flow:** `enhanced_monitor.py` -> `selenium_scraper.py` -> `team_mapping.py` -> `clubzap_sync.py` -> `clubzap_automate.py`
+**Flow:** `enhanced_monitor.py` -> `selenium_scraper.py` + `camogie_scraper.py` -> `team_mapping.py` -> `clubzap_sync.py` -> `clubzap_automate.py`
 
-**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, ClubZap IDs, ntfy topics, CSV schema.
+**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, `CAMOGIE_LEAGUES` (corkcamogie.com URLs + team mappings), ClubZap IDs, ntfy topics, CSV schema.
 
 ### System 2: Competition Results Monitor (`competition_monitor/` package)
 Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables via JSON baselines, sends ntfy.sh notifications, generates static HTML dashboard on GitHub Pages.
@@ -39,6 +39,7 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 | `clubzap_sync.py` | Diff engine: compares current CSV vs baseline -> new/changed/removed CSVs. CLI: `diff\|uploaded\|status` |
 | `clubzap_automate.py` | Playwright browser automation for ClubZap CRUD. CLI: `upload\|edit\|delete\|all` |
 | `team_mapping.py` | Maps GAA Cork competition names -> ClubZap team names (e.g., "Fe14..." -> "U14 GAA") |
+| `camogie_scraper.py` | HTTP scraper for corkcamogie.com Foireann widgets. No Selenium needed. Function `scrape_camogie_fixtures()` |
 
 ### System 2 files (`competition_monitor/`)
 | File | Purpose |
@@ -65,6 +66,7 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 | `test_results_tracker.py` | ~25 tests: compute_diff, has_changes, baselines |
 | `test_clubzap_sync.py` | ~13 tests: fixture diff engine |
 | `test_team_mapping.py` | ~40 tests: competition name -> team name mapping |
+| `test_camogie_scraper.py` | ~22 tests: Foireann HTML parsing, date parsing, HTTP mocking |
 
 ### CI/CD (`.github/workflows/`)
 | Workflow | Schedule | What it runs |

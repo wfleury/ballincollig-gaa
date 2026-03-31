@@ -16,7 +16,12 @@ def map_team_name(comp_name):
         Minor Football GAA, Minor Hurling GAA,
         U14 GAA, U16 GAA,
         GAA U21 "A" Football, GAA U21 "A" Hurling,
-        GAA U21 "B" Football, GAA U21 "B" Hurling
+        GAA U21 "B" Football, GAA U21 "B" Hurling,
+        BCC Senior Squad, BCC Junior Squad, BCC 2026 Minor  (Camogie)
+
+    Note: Camogie fixtures from corkcamogie.com are normally pre-mapped by
+    the camogie_scraper (team name set via config), so this function is only
+    a fallback for camogie competition names.
     """
     comp_lower = comp_name.lower()
 

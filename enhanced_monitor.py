@@ -17,8 +17,9 @@ from config import (
     CLUB_NAME, CLUB_ID, TEAM_ID,
     HASH_FILE, LOG_FILE, FIXTURES_CSV, NTFY_TOPIC, NTFY_ICON,
     NTFY_FIXTURES_URL, team_ntfy_topic, team_fixtures_url,
-    CHANGE_COLS,
+    CHANGE_COLS, CAMOGIE_LEAGUES,
 )
+from camogie_scraper import scrape_camogie_fixtures
 
 class EnhancedFixtureMonitor:
     def __init__(self):
@@ -39,11 +40,23 @@ class EnhancedFixtureMonitor:
         print(message)
     
     def get_fixtures_data(self):
-        """Get current fixtures data using Selenium for complete coverage."""
+        """Get current fixtures data using Selenium (GAA Cork) + HTTP (Camogie)."""
         fixtures = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
 
         if not fixtures:
             self.log_message("No fixtures found with Selenium")
+            fixtures = []
+
+        # Scrape camogie fixtures and merge
+        try:
+            camogie_fixtures = scrape_camogie_fixtures()
+            self.log_message(f"Camogie: fetched {len(camogie_fixtures)} fixtures")
+            fixtures.extend(camogie_fixtures)
+        except Exception as e:
+            self.log_message(f"WARNING: Camogie scrape failed: {e}")
+
+        if not fixtures:
+            self.log_message("ERROR: No fixtures from any source")
             return None
 
         output = io.StringIO()
@@ -72,7 +85,7 @@ class EnhancedFixtureMonitor:
                 continue  # Skip if club not found
 
             # Map team name and event type
-            team = map_team_name(competition)
+            team = fixture.get('team') or map_team_name(competition)
             event_type = determine_event_type(competition)
 
             # Format date
