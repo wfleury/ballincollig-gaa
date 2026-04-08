@@ -117,6 +117,11 @@ a { color: var(--primary); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
 .muted { color: var(--muted); }
 .form-cell { white-space: nowrap; }
+.form-cell .badge { cursor: pointer; }
+.form-tip { display: none; position: absolute; background: var(--text); color: white;
+  padding: 4px 10px; border-radius: 6px; font-size: 0.8em; white-space: nowrap;
+  z-index: 10; pointer-events: none; margin-top: 4px; }
+.form-tip.visible { display: block; }
 .section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .section-nav a {
   padding: 6px 16px; border-radius: 6px; font-weight: 600;
@@ -405,6 +410,32 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
 {content_html}
+<script>
+(function(){{
+  var tip = document.createElement('div');
+  tip.className = 'form-tip';
+  document.body.appendChild(tip);
+  document.addEventListener('click', function(e){{
+    var b = e.target.closest('.form-cell .badge[title]');
+    if (b) {{
+      if (tip.classList.contains('visible') && tip._src === b) {{
+        tip.classList.remove('visible');
+        tip._src = null;
+        return;
+      }}
+      tip.textContent = b.getAttribute('title');
+      tip._src = b;
+      var r = b.getBoundingClientRect();
+      tip.style.left = r.left + window.scrollX + 'px';
+      tip.style.top = r.bottom + window.scrollY + 4 + 'px';
+      tip.classList.add('visible');
+    }} else {{
+      tip.classList.remove('visible');
+      tip._src = null;
+    }}
+  }});
+}})();
+</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
