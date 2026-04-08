@@ -97,6 +97,13 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u14-hurling",
         "age_group": "u14",
     },
+    # --- 1st team championship ---
+    "Fe14 Premier 1 S1 Football Championship": {
+        "competition_id": 214876,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-football",
+        "age_group": "u14",
+    },
     # --- 2nd team ---
     "Fe14 Div 1 Football (2nd team)": {
         "competition_id": 213068,
