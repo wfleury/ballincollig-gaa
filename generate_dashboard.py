@@ -144,7 +144,7 @@ a { color: var(--primary); }
 def _compute_form(results, max_recent=5):
     """Compute recent form (W/D/L) per team from results.
 
-    Returns {team_name: [(outcome, summary), ...]} with most recent first,
+    Returns {team_name: [(outcome, summary), ...]} oldest first,
     up to *max_recent* entries.  *summary* is e.g. "3-8 vs Nemo Rangers 1-5".
     """
     by_team = {}
@@ -177,7 +177,9 @@ def _compute_form(results, max_recent=5):
     form = {}
     for team, entries in by_team.items():
         entries.sort(key=lambda e: e[0], reverse=True)
-        form[team] = [(o, s) for _, o, s in entries[:max_recent]]
+        recent = [(o, s) for _, o, s in entries[:max_recent]]
+        recent.reverse()  # oldest first (left to right)
+        form[team] = recent
     return form
 
 
