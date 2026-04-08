@@ -119,8 +119,8 @@ a { color: var(--primary); }
 .form-cell { white-space: nowrap; }
 .form-btn { position: relative; border: none; cursor: pointer;
   font-family: inherit; line-height: inherit; }
-.form-tip { display: none; position: absolute; left: 50%; bottom: 100%;
-  transform: translateX(-50%); background: var(--text); color: white;
+.form-tip { display: none; position: absolute; right: 0; bottom: 100%;
+  background: var(--text); color: white;
   padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 400;
   white-space: nowrap; z-index: 10; margin-bottom: 4px;
   pointer-events: none; }
