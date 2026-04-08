@@ -134,17 +134,20 @@ a { color: var(--primary); }
 def _compute_form(results, max_recent=5):
     """Compute recent form (W/D/L) per team from results.
 
-    Returns {team_name: ["W", "L", "D", ...]} with most recent first,
-    up to *max_recent* entries.
+    Returns {team_name: [(outcome, summary), ...]} with most recent first,
+    up to *max_recent* entries.  *summary* is e.g. "3-8 vs Nemo Rangers 1-5".
     """
-    # Group results by team, sorted by date
     by_team = {}
     for r in results:
         hs = gaa_total(r.get("home_score", "0-0"))
         aws = gaa_total(r.get("away_score", "0-0"))
         dt = _parse_date(r.get("date", ""))
-        for team, is_home in [(r.get("home", ""), True),
-                              (r.get("away", ""), False)]:
+        home = r.get("home", "")
+        away = r.get("away", "")
+        home_score = r.get("home_score", "")
+        away_score = r.get("away_score", "")
+        date_str = r.get("date", "")
+        for team, is_home in [(home, True), (away, False)]:
             if not team:
                 continue
             ours = hs if is_home else aws
@@ -155,13 +158,16 @@ def _compute_form(results, max_recent=5):
                 outcome = "L"
             else:
                 outcome = "D"
-            by_team.setdefault(team, []).append((dt, outcome))
+            opp = away if is_home else home
+            our_score = home_score if is_home else away_score
+            opp_score = away_score if is_home else home_score
+            summary = f"{date_str}: {our_score} vs {opp} {opp_score}"
+            by_team.setdefault(team, []).append((dt, outcome, summary))
 
-    # Sort by date descending and keep only the most recent
     form = {}
     for team, entries in by_team.items():
         entries.sort(key=lambda e: e[0], reverse=True)
-        form[team] = [outcome for _, outcome in entries[:max_recent]]
+        form[team] = [(o, s) for _, o, s in entries[:max_recent]]
     return form
 
 
@@ -238,8 +244,8 @@ def _render_table(table, form=None):
         cls = ' class="ours"' if CLUB_NAME.lower() in team.lower() else ""
         team_form = form.get(team, [])
         form_html = " ".join(
-            f'<span class="badge {badge_cls.get(o, "")}">{o}</span>'
-            for o in team_form
+            f'<span class="badge {badge_cls.get(o, "")}" title="{escape(s)}">{o}</span>'
+            for o, s in team_form
         ) if team_form else '<span class="muted">-</span>'
         html += (
             f'<tr{cls}>'
