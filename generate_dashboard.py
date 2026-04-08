@@ -91,7 +91,8 @@ h2 { color: var(--primary); margin: 24px 0 12px; font-size: 1.25em;
      border-bottom: 2px solid var(--primary); padding-bottom: 4px; }
 h3 { color: var(--primary); margin: 16px 0 8px; font-size: 1.05em; }
 .card { background: var(--card); border-radius: 8px; padding: 16px;
-        margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
 th { background: var(--primary); color: white; text-align: left;
      padding: 8px 10px; font-weight: 600; }
