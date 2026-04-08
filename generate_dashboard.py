@@ -137,6 +137,7 @@ a { color: var(--primary); }
 @media (max-width: 600px) {
   body { padding: 10px; }
   .fixture-row { grid-template-columns: 70px 1fr 50px; }
+  .hide-mobile { display: none; }
 }
 """
 
@@ -247,7 +248,7 @@ def _render_table(table, form=None):
     html = (
         '<table><thead><tr>'
         '<th>#</th><th>Team</th><th>Pld</th>'
-        '<th>W</th><th>D</th><th>L</th>'
+        '<th class="hide-mobile">W</th><th class="hide-mobile">D</th><th class="hide-mobile">L</th>'
         '<th>PD</th><th>Pts</th><th>Form</th>'
         '</tr></thead><tbody>'
     )
@@ -265,9 +266,9 @@ def _render_table(table, form=None):
             f'<td>{row.get("position","")}</td>'
             f'<td>{escape(team)}</td>'
             f'<td>{row.get("played","")}</td>'
-            f'<td>{row.get("won","")}</td>'
-            f'<td>{row.get("drawn","")}</td>'
-            f'<td>{row.get("lost","")}</td>'
+            f'<td class="hide-mobile">{row.get("won","")}</td>'
+            f'<td class="hide-mobile">{row.get("drawn","")}</td>'
+            f'<td class="hide-mobile">{row.get("lost","")}</td>'
             f'<td>{row.get("pd","")}</td>'
             f'<td>{row.get("pts","")}</td>'
             f'<td class="form-cell">{form_html}</td>'
