@@ -117,15 +117,15 @@ a { color: var(--primary); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
 .muted { color: var(--muted); }
 .form-cell { white-space: nowrap; }
-.form-btn { position: relative; border: none; cursor: pointer;
+.form-btn { border: none; cursor: pointer;
   font-family: inherit; line-height: inherit; }
-.form-tip { display: none; position: absolute; right: 0; bottom: 100%;
-  background: var(--text); color: white;
-  padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 400;
-  white-space: nowrap; z-index: 10; margin-bottom: 4px;
-  pointer-events: none; }
+.form-tip { display: none; }
 .form-btn:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
-.form-btn:focus .form-tip { display: block; }
+.form-btn:focus .form-tip { display: block; position: fixed;
+  left: 16px; right: 16px; bottom: 16px;
+  background: var(--text); color: white; padding: 8px 14px;
+  border-radius: 8px; font-size: 0.85em; font-weight: 400;
+  white-space: normal; z-index: 100; text-align: center; }
 .section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .section-nav a {
   padding: 6px 16px; border-radius: 6px; font-weight: 600;
