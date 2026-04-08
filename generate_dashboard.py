@@ -289,26 +289,34 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
                   "u16": "U16", "minor": "Minor"}
     label = age_labels.get(ag_key, ag_key.upper())
 
-    content_html = ""
-    for comp_name, comp_config in comps:
-        baseline = baselines.get(comp_name)
-        url = competition_url(comp_config)
-        content_html += f'<h3><a href="{url}" target="_blank">{escape(comp_name)}</a></h3>'
-        content_html += '<div class="card">'
-        if baseline:
-            fixtures = list(baseline.get("fixtures", {}).values())
-            results = list(baseline.get("results", {}).values())
-            table = baseline.get("table", [])
+    # Split competitions into league vs championship
+    league_comps = [(n, c) for n, c in comps if "championship" not in n.lower()]
+    champ_comps = [(n, c) for n, c in comps if "championship" in n.lower()]
 
-            content_html += '<h3>Upcoming</h3>'
-            content_html += _render_fixtures(fixtures)
-            content_html += '<h3>Results</h3>'
-            content_html += _render_results(results)
-            content_html += '<h3>Table</h3>'
-            content_html += _render_table(table)
-        else:
-            content_html += '<p class="empty">No data yet — waiting for first monitor run.</p>'
-        content_html += '</div>'
+    content_html = ""
+    for section_label, section_comps in [("League", league_comps), ("Championship", champ_comps)]:
+        if not section_comps:
+            continue
+        content_html += f'<h2>{section_label}</h2>'
+        for comp_name, comp_config in section_comps:
+            baseline = baselines.get(comp_name)
+            url = competition_url(comp_config)
+            content_html += f'<h3><a href="{url}" target="_blank">{escape(comp_name)}</a></h3>'
+            content_html += '<div class="card">'
+            if baseline:
+                fixtures = list(baseline.get("fixtures", {}).values())
+                results = list(baseline.get("results", {}).values())
+                table = baseline.get("table", [])
+
+                content_html += '<h3>Upcoming</h3>'
+                content_html += _render_fixtures(fixtures)
+                content_html += '<h3>Results</h3>'
+                content_html += _render_results(results)
+                content_html += '<h3>Table</h3>'
+                content_html += _render_table(table)
+            else:
+                content_html += '<p class="empty">No data yet — waiting for first monitor run.</p>'
+            content_html += '</div>'
 
     html = f"""\
 <!DOCTYPE html>
