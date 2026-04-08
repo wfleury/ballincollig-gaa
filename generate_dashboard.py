@@ -114,6 +114,13 @@ a { color: var(--primary); }
 .fixture-teams { }
 .fixture-time { text-align: right; font-size: 0.85em; color: var(--muted); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
+.section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
+.section-nav a {
+  padding: 6px 16px; border-radius: 6px; font-weight: 600;
+  font-size: 0.9em; text-decoration: none;
+  background: var(--primary); color: white;
+}
+.section-nav a:hover { opacity: 0.85; }
 a { color: var(--primary); }
 @media (max-width: 600px) {
   body { padding: 10px; }
@@ -293,11 +300,22 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
     league_comps = [(n, c) for n, c in comps if "championship" not in n.lower()]
     champ_comps = [(n, c) for n, c in comps if "championship" in n.lower()]
 
+    # Jump links (only when both sections exist)
+    nav_html = ""
+    if league_comps and champ_comps:
+        nav_html = (
+            '<nav class="section-nav">'
+            '<a href="#league">League</a>'
+            '<a href="#championship">Championship</a>'
+            '</nav>'
+        )
+
     content_html = ""
     for section_label, section_comps in [("League", league_comps), ("Championship", champ_comps)]:
         if not section_comps:
             continue
-        content_html += f'<h2>{section_label}</h2>'
+        anchor = section_label.lower()
+        content_html += f'<h2 id="{anchor}">{section_label}</h2>'
         for comp_name, comp_config in section_comps:
             baseline = baselines.get(comp_name)
             url = competition_url(comp_config)
@@ -333,6 +351,7 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
   <h1><a href="../" style="text-decoration:none">{CLUB_NAME} GAA</a></h1>
 </div>
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
+{nav_html}
 {content_html}
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
