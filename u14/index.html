@@ -55,6 +55,11 @@ a { color: var(--primary); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
 .muted { color: var(--muted); }
 .form-cell { white-space: nowrap; }
+.form-cell .badge { cursor: pointer; }
+.form-tip { display: none; position: absolute; background: var(--text); color: white;
+  padding: 4px 10px; border-radius: 6px; font-size: 0.8em; white-space: nowrap;
+  z-index: 10; pointer-events: none; margin-top: 4px; }
+.form-tip.visible { display: block; }
 .section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .section-nav a {
   padding: 6px 16px; border-radius: 6px; font-weight: 600;
@@ -74,7 +79,7 @@ a { color: var(--primary); }
   <a href="../"><img src="../img/crest.gif" alt="Ballincollig crest"></a>
   <h1><a href="../" style="text-decoration:none">Ballincollig GAA</a></h1>
 </div>
-<p class="subtitle">U14 Dashboard &mdash; updated 08 Apr 2026 14:37</p>
+<p class="subtitle">U14 Dashboard &mdash; updated 08 Apr 2026 14:42</p>
 <nav class="section-nav"><a href="#league">League</a><a href="#championship">Championship</a></nav>
 <h2 id="league">League</h2><h3><a href="https://rebelog.ie/league/213028/" target="_blank">Fe14 Premier 1 Football</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">13 Apr 2026</div><div class="fixture-teams">Douglas vs Ballincollig</div><div class="fixture-time">18:30</div></div>
 <div class="fixture-row"><div class="fixture-date">03 Jul 2026</div><div class="fixture-teams">Ballincollig vs Glanmire</div><div class="fixture-time">18:30</div></div>
@@ -98,6 +103,32 @@ a { color: var(--primary); }
 <div class="fixture-row"><div class="fixture-date">01 Aug 2026</div><div class="fixture-teams">Lisgoold 2 vs Ballincollig 3</div><div class="fixture-time">10:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">25 Mar 2026</div><div class="fixture-teams">Ballincollig 3 2-10 - 0-12 Kildorrery 2</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th><th>Form</th></tr></thead><tbody><tr><td>1</td><td>Mallow 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>10</td><td>2</td><td class="form-cell"><span class="badge badge-win" title="21 Mar 2026: 4-15 vs Croke Rovers 2 4-5">W</span></td></tr><tr><td>2</td><td>Douglas 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>5</td><td>2</td><td class="form-cell"><span class="badge badge-win" title="21 Mar 2026: 9-4 vs Lisgoold 2 6-8">W</span></td></tr><tr class="ours"><td>3</td><td>Ballincollig 3</td><td>1</td><td>1</td><td>0</td><td>0</td><td>4</td><td>2</td><td class="form-cell"><span class="badge badge-win" title="25 Mar 2026: 2-10 vs Kildorrery 2 0-12">W</span></td></tr><tr><td>4</td><td>Kildorrery 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-4</td><td>0</td><td class="form-cell"><span class="badge badge-loss" title="25 Mar 2026: 0-12 vs Ballincollig 3 2-10">L</span></td></tr><tr><td>5</td><td>Lisgoold 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-5</td><td>0</td><td class="form-cell"><span class="badge badge-loss" title="21 Mar 2026: 6-8 vs Douglas 3 9-4">L</span></td></tr><tr><td>6</td><td>Croke Rovers 2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>-10</td><td>0</td><td class="form-cell"><span class="badge badge-loss" title="21 Mar 2026: 4-5 vs Mallow 3 4-15">L</span></td></tr></tbody></table></div><h2 id="championship">Championship</h2><h3><a href="https://rebelog.ie/league/214876/" target="_blank">Fe14 Premier 1 S1 Football Championship</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">24 Apr 2026</div><div class="fixture-teams">Ballincollig vs Nemo Rangers</div><div class="fixture-time">19:00</div></div>
 <div class="fixture-row"><div class="fixture-date">08 May 2026</div><div class="fixture-teams">Eire Og vs Ballincollig</div><div class="fixture-time">19:00</div></div>
 <div class="fixture-row"><div class="fixture-date">22 May 2026</div><div class="fixture-teams">St Colmcilles vs Ballincollig</div><div class="fixture-time">19:00</div></div></div><h3>Results</h3><p class="empty">No results yet.</p><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th>W</th><th>D</th><th>L</th><th>PD</th><th>Pts</th><th>Form</th></tr></thead><tbody><tr class="ours"><td>1</td><td>Ballincollig</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>2</td><td>Nemo Rangers</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>3</td><td>St Colmcilles</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>4</td><td>Eire Og</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr></tbody></table></div>
+<script>
+(function(){
+  var tip = document.createElement('div');
+  tip.className = 'form-tip';
+  document.body.appendChild(tip);
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.form-cell .badge[title]');
+    if (b) {
+      if (tip.classList.contains('visible') && tip._src === b) {
+        tip.classList.remove('visible');
+        tip._src = null;
+        return;
+      }
+      tip.textContent = b.getAttribute('title');
+      tip._src = b;
+      var r = b.getBoundingClientRect();
+      tip.style.left = r.left + window.scrollX + 'px';
+      tip.style.top = r.bottom + window.scrollY + 4 + 'px';
+      tip.classList.add('visible');
+    } else {
+      tip.classList.remove('visible');
+      tip._src = null;
+    }
+  });
+})();
+</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
