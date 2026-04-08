@@ -117,11 +117,15 @@ a { color: var(--primary); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
 .muted { color: var(--muted); }
 .form-cell { white-space: nowrap; }
-.form-cell .badge { cursor: pointer; }
-.form-tip { display: none; position: absolute; background: var(--text); color: white;
-  padding: 4px 10px; border-radius: 6px; font-size: 0.8em; white-space: nowrap;
-  z-index: 10; pointer-events: none; margin-top: 4px; }
-.form-tip.visible { display: block; }
+.form-btn { position: relative; border: none; cursor: pointer;
+  font-family: inherit; line-height: inherit; }
+.form-tip { display: none; position: absolute; left: 50%; bottom: 100%;
+  transform: translateX(-50%); background: var(--text); color: white;
+  padding: 4px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 400;
+  white-space: nowrap; z-index: 10; margin-bottom: 4px;
+  pointer-events: none; }
+.form-btn:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.form-btn:focus .form-tip { display: block; }
 .section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .section-nav a {
   padding: 6px 16px; border-radius: 6px; font-weight: 600;
@@ -250,7 +254,8 @@ def _render_table(table, form=None):
         cls = ' class="ours"' if CLUB_NAME.lower() in team.lower() else ""
         team_form = form.get(team, [])
         form_html = " ".join(
-            f'<span class="badge {badge_cls.get(o, "")}" title="{escape(s)}">{o}</span>'
+            f'<button class="form-btn badge {badge_cls.get(o, "")}" title="{escape(s)}">'
+            f'{o}<span class="form-tip">{escape(s)}</span></button>'
             for o, s in team_form
         ) if team_form else '<span class="muted">-</span>'
         html += (
@@ -410,32 +415,6 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
 {content_html}
-<script>
-(function(){{
-  var tip = document.createElement('div');
-  tip.className = 'form-tip';
-  document.body.appendChild(tip);
-  document.addEventListener('click', function(e){{
-    var b = e.target.closest('.form-cell .badge[title]');
-    if (b) {{
-      if (tip.classList.contains('visible') && tip._src === b) {{
-        tip.classList.remove('visible');
-        tip._src = null;
-        return;
-      }}
-      tip.textContent = b.getAttribute('title');
-      tip._src = b;
-      var r = b.getBoundingClientRect();
-      tip.style.left = r.left + window.scrollX + 'px';
-      tip.style.top = r.bottom + window.scrollY + 4 + 'px';
-      tip.classList.add('visible');
-    }} else {{
-      tip.classList.remove('visible');
-      tip._src = null;
-    }}
-  }});
-}})();
-</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
