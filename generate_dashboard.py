@@ -114,6 +114,8 @@ a { color: var(--primary); }
 .fixture-teams { }
 .fixture-time { text-align: right; font-size: 0.85em; color: var(--muted); }
 .empty { color: var(--muted); font-style: italic; padding: 12px 0; }
+.muted { color: var(--muted); }
+.form-cell { white-space: nowrap; }
 .section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
 .section-nav a {
   padding: 6px 16px; border-radius: 6px; font-weight: 600;
@@ -127,6 +129,40 @@ a { color: var(--primary); }
   .fixture-row { grid-template-columns: 70px 1fr 50px; }
 }
 """
+
+
+def _compute_form(results, max_recent=5):
+    """Compute recent form (W/D/L) per team from results.
+
+    Returns {team_name: ["W", "L", "D", ...]} with most recent first,
+    up to *max_recent* entries.
+    """
+    # Group results by team, sorted by date
+    by_team = {}
+    for r in results:
+        hs = gaa_total(r.get("home_score", "0-0"))
+        aws = gaa_total(r.get("away_score", "0-0"))
+        dt = _parse_date(r.get("date", ""))
+        for team, is_home in [(r.get("home", ""), True),
+                              (r.get("away", ""), False)]:
+            if not team:
+                continue
+            ours = hs if is_home else aws
+            theirs = aws if is_home else hs
+            if ours > theirs:
+                outcome = "W"
+            elif ours < theirs:
+                outcome = "L"
+            else:
+                outcome = "D"
+            by_team.setdefault(team, []).append((dt, outcome))
+
+    # Sort by date descending and keep only the most recent
+    form = {}
+    for team, entries in by_team.items():
+        entries.sort(key=lambda e: e[0], reverse=True)
+        form[team] = [outcome for _, outcome in entries[:max_recent]]
+    return form
 
 
 def _result_badge(match):
@@ -184,29 +220,38 @@ def _render_results(results):
     return '<div class="fixture-grid">' + "\n".join(rows) + '</div>'
 
 
-def _render_table(table):
+def _render_table(table, form=None):
     """Render a league table as an HTML table."""
     if not table:
         return '<p class="empty">No league table available.</p>'
+    form = form or {}
+    badge_cls = {"W": "badge-win", "L": "badge-loss", "D": "badge-draw"}
     html = (
         '<table><thead><tr>'
         '<th>#</th><th>Team</th><th>Pld</th>'
         '<th>W</th><th>D</th><th>L</th>'
-        '<th>PD</th><th>Pts</th>'
+        '<th>PD</th><th>Pts</th><th>Form</th>'
         '</tr></thead><tbody>'
     )
     for row in table:
-        cls = ' class="ours"' if CLUB_NAME.lower() in row.get("team", "").lower() else ""
+        team = row.get("team", "")
+        cls = ' class="ours"' if CLUB_NAME.lower() in team.lower() else ""
+        team_form = form.get(team, [])
+        form_html = " ".join(
+            f'<span class="badge {badge_cls.get(o, "")}">{o}</span>'
+            for o in team_form
+        ) if team_form else '<span class="muted">-</span>'
         html += (
             f'<tr{cls}>'
             f'<td>{row.get("position","")}</td>'
-            f'<td>{escape(row.get("team",""))}</td>'
+            f'<td>{escape(team)}</td>'
             f'<td>{row.get("played","")}</td>'
             f'<td>{row.get("won","")}</td>'
             f'<td>{row.get("drawn","")}</td>'
             f'<td>{row.get("lost","")}</td>'
             f'<td>{row.get("pd","")}</td>'
             f'<td>{row.get("pts","")}</td>'
+            f'<td class="form-cell">{form_html}</td>'
             f'</tr>'
         )
     html += '</tbody></table>'
@@ -331,7 +376,7 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
                 content_html += '<h3>Results</h3>'
                 content_html += _render_results(results)
                 content_html += '<h3>Table</h3>'
-                content_html += _render_table(table)
+                content_html += _render_table(table, _compute_form(results))
             else:
                 content_html += '<p class="empty">No data yet — waiting for first monitor run.</p>'
             content_html += '</div>'
