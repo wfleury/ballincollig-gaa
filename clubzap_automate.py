@@ -816,6 +816,19 @@ class ClubZapAutomation:
         await self.page.wait_for_timeout(3000)
         
         try:
+            # Debug: Check what page we're actually on
+            current_url = self.page.url
+            log(f"      DEBUG: Current URL after navigation: {current_url}")
+            
+            # Debug: Get page title
+            page_title = await self.page.title()
+            log(f"      DEBUG: Page title: {page_title}")
+            
+            # Debug: Check for error messages or redirects
+            body_text = await self.page.evaluate('() => document.body.innerText')
+            if 'error' in body_text.lower() or 'permission' in body_text.lower() or 'access denied' in body_text.lower():
+                log(f"      DEBUG: Page contains error/permission text: {body_text[:200]}")
+            
             # Debug: Log all input fields on the page
             all_inputs = await self.page.query_selector_all('input, select, textarea')
             log(f"      DEBUG: Found {len(all_inputs)} form fields on brand_new page")
