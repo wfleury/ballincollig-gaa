@@ -857,29 +857,26 @@ class ClubZapAutomation:
                 await date_field.fill(datetime_value)
                 log(f"      ✓ Entered date: {datetime_value}")
             
-            # Event type selection (dropdown) - likely required
+            # Event type selection (dropdown) - required field
+            # Options: League, Championship / Cup, Friendly
             event_type_field = await self.page.query_selector(
                 'select[name="result[event_attributes][event_type]"]'
             )
             if event_type_field:
-                # Try to select "Match" or "Game" as the event type
+                # Default to "League" for most matches
                 try:
-                    await event_type_field.select_option(label='Match')
-                    log(f"      ✓ Selected event type: Match")
-                except:
+                    await event_type_field.select_option(label='League')
+                    await self.page.wait_for_timeout(500)  # Wait for selection to register
+                    log(f"      ✓ Selected event type: League")
+                except Exception as e:
+                    log(f"      ⚠️  Could not select 'League' event type: {e}")
+                    # Try selecting by index (1 = League, 2 = Championship/Cup, 3 = Friendly)
                     try:
-                        await event_type_field.select_option(label='Game')
-                        log(f"      ✓ Selected event type: Game")
+                        await event_type_field.select_option(index=1)
+                        await self.page.wait_for_timeout(500)
+                        log(f"      ✓ Selected event type by index")
                     except:
-                        # Just select the first non-empty option
-                        options = await event_type_field.query_selector_all('option')
-                        for option in options[1:]:  # Skip first (usually empty)
-                            value = await option.get_attribute('value')
-                            if value:
-                                await event_type_field.select_option(value=value)
-                                label = await option.inner_text()
-                                log(f"      ✓ Selected event type: {label}")
-                                break
+                        log(f"      ❌ Failed to select event type")
             
             # Team selection (dropdown)
             team_field = await self.page.query_selector(
@@ -887,6 +884,7 @@ class ClubZapAutomation:
             )
             if team_field:
                 await team_field.select_option(label=result['team'])
+                await self.page.wait_for_timeout(500)  # Wait for selection to register
                 log(f"      ✓ Selected team: {result['team']}")
             
             # Competition name (text field) - required
@@ -897,6 +895,7 @@ class ClubZapAutomation:
                 # Use competition from result if available, otherwise use a default
                 competition_name = result.get('competition', 'League Match')
                 await competition_field.fill(competition_name)
+                await self.page.wait_for_timeout(500)  # Wait for input to register
                 log(f"      ✓ Entered competition: {competition_name}")
             
             # Opponent field
