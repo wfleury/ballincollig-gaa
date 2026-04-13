@@ -857,6 +857,30 @@ class ClubZapAutomation:
                 await date_field.fill(datetime_value)
                 log(f"      ✓ Entered date: {datetime_value}")
             
+            # Event type selection (dropdown) - likely required
+            event_type_field = await self.page.query_selector(
+                'select[name="result[event_attributes][event_type]"]'
+            )
+            if event_type_field:
+                # Try to select "Match" or "Game" as the event type
+                try:
+                    await event_type_field.select_option(label='Match')
+                    log(f"      ✓ Selected event type: Match")
+                except:
+                    try:
+                        await event_type_field.select_option(label='Game')
+                        log(f"      ✓ Selected event type: Game")
+                    except:
+                        # Just select the first non-empty option
+                        options = await event_type_field.query_selector_all('option')
+                        for option in options[1:]:  # Skip first (usually empty)
+                            value = await option.get_attribute('value')
+                            if value:
+                                await event_type_field.select_option(value=value)
+                                label = await option.inner_text()
+                                log(f"      ✓ Selected event type: {label}")
+                                break
+            
             # Team selection (dropdown)
             team_field = await self.page.query_selector(
                 'select[name="result[event_attributes][team_id]"]'
@@ -950,13 +974,23 @@ class ClubZapAutomation:
                         if error_text.strip():
                             log(f"      ❌ Error: {error_text.strip()}")
                     
+                    # Get the entire page text to see all validation messages
+                    log(f"      DEBUG: Searching for validation errors in page content...")
+                    page_content = await self.page.content()
+                    
+                    # Look for common error patterns in the HTML
+                    if 'Event type' in page_content and ('required' in page_content or "can't be blank" in page_content):
+                        log(f"        - Event type is required")
+                    if 'Competition' in page_content and ('required' in page_content or "can't be blank" in page_content):
+                        log(f"        - Competition is required")
+                    
                     # Also check for field-specific errors (often shown near inputs)
-                    field_errors = await self.page.query_selector_all('.field_with_errors, .invalid-feedback, .help-block.error')
+                    field_errors = await self.page.query_selector_all('.field_with_errors, .invalid-feedback, .help-block.error, .text-danger, li')
                     if field_errors:
-                        log(f"      Field validation errors:")
+                        log(f"      Field validation errors found:")
                         for field_error in field_errors[:10]:
                             error_text = await field_error.inner_text()
-                            if error_text.strip():
+                            if error_text.strip() and len(error_text.strip()) < 100:  # Avoid huge blocks
                                 log(f"        - {error_text.strip()}")
                     
                     return False
