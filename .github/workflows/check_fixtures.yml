@@ -1,4 +1,4 @@
-name: GAA Fixture Monitor
+name: GAA Fixture & Results Monitor
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:  # Allows manual trigger from GitHub
 
 jobs:
-  check-fixtures:
+  check-fixtures-and-results:
     runs-on: ubuntu-latest
     
     steps:
@@ -32,50 +32,63 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium
 
-      - name: Restore previous fixture data
+      - name: Restore previous data
         uses: actions/cache@v4
         with:
           path: |
             fixture_hashes.json
+            results_hashes.json
             clubzap_uploaded_baseline.csv
-          key: fixture-data-${{ github.run_number }}
+            clubzap_results_baseline.json
+          key: gaa-data-${{ github.run_number }}
           restore-keys: |
-            fixture-data-
+            gaa-data-
 
-      - name: Run fixture monitor
+      - name: Run fixture & results monitor
         run: python enhanced_monitor.py
         env:
           DISPLAY: ':99'
           NTFY_QUIET: '1'
 
-      - name: Run ClubZap sync diff
+      - name: Run ClubZap fixture sync diff
         run: python clubzap_sync.py diff
 
-      - name: Sync changes to ClubZap
+      - name: Run ClubZap results sync diff  
+        run: python results_sync.py diff
+
+      - name: Sync changes to ClubZap (fixtures + results)
         continue-on-error: true
-        run: python clubzap_automate.py
+        run: python clubzap_automate.py all
         env:
           CLUBZAP_EMAIL: ${{ secrets.CLUBZAP_EMAIL }}
           CLUBZAP_PASSWORD: ${{ secrets.CLUBZAP_PASSWORD }}
+          CLUBZAP_WITHHOLD_SCORES: true
+          CLUBZAP_DISABLE_FACEBOOK: true
+          CLUBZAP_DISABLE_TWITTER: true
 
-      - name: Upload fixture CSVs
+      - name: Upload fixture & result files
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: fixture-csvs-${{ github.run_number }}
+          name: gaa-sync-files-${{ github.run_number }}
           path: |
             Ballincollig_Fixtures_Final.csv
+            current_results.json
             clubzap_new_fixtures.csv
             clubzap_changed_fixtures.csv
             clubzap_removed_fixtures.csv
+            new_results_to_sync.json
+            monitoring_log.txt
           if-no-files-found: ignore
           retention-days: 30
 
-      - name: Save fixture data for next run
+      - name: Save data for next run
         if: always()
         uses: actions/cache/save@v4
         with:
           path: |
             fixture_hashes.json
+            results_hashes.json
             clubzap_uploaded_baseline.csv
-          key: fixture-data-${{ github.run_number }}
+            clubzap_results_baseline.json
+          key: gaa-data-${{ github.run_number }}

@@ -4,21 +4,28 @@
 
 - **Run tests:** `python3 -m pytest tests/ -q`
 - **Competition monitor:** `python -m competition_monitor` (all) or `--comp "Fe14 Premier 1 Football"` (one) or `--list`
-- **Fixture monitor:** `python enhanced_monitor.py`
-- **ClubZap sync:** `python clubzap_sync.py diff` then `python clubzap_automate.py`
+- **Fixture & Results monitor:** `python enhanced_monitor.py`
+- **ClubZap fixture sync:** `python clubzap_sync.py diff` then `python clubzap_automate.py`
+- **ClubZap results sync:** `python results_sync.py diff` then `python clubzap_automate.py results`
+- **ClubZap full sync:** `python clubzap_automate.py all` (fixtures + results)
 - **Dashboard:** `python generate_dashboard.py`
 - **Deps:** `pip install -r requirements.txt`
 
 ## Overview
 
-Automated fixture management for **Ballincollig GAA Club** (Cork). Two independent systems, both on GitHub Actions:
+Automated fixture and results management for **Ballincollig GAA Club** (Cork). Two independent systems, both on GitHub Actions:
 
-### System 1: Fixture Monitor + ClubZap Sync (root-level files)
-Scrapes gaacork.ie club profile daily + corkcamogie.com league pages, detects fixture changes via SHA-256 hash, syncs to ClubZap via Playwright, sends ntfy.sh notifications.
+### System 1: Fixture & Results Monitor + ClubZap Sync (root-level files)
+Scrapes gaacork.ie club profile daily + corkcamogie.com league pages, detects fixture/result changes via SHA-256 hash, syncs to ClubZap via Playwright, sends ntfy.sh notifications.
 
-**Flow:** `enhanced_monitor.py` -> `selenium_scraper.py` + `camogie_scraper.py` -> `team_mapping.py` -> `clubzap_sync.py` -> `clubzap_automate.py`
+**Flow:** `enhanced_monitor.py` -> `selenium_scraper.py` + `camogie_scraper.py` -> `team_mapping.py` -> `clubzap_sync.py` + `results_sync.py` -> `clubzap_automate.py`
 
-**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, `CAMOGIE_LEAGUES` (corkcamogie.com URLs + team mappings), ClubZap IDs, ntfy topics, CSV schema.
+**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, `CAMOGIE_LEAGUES` (corkcamogie.com URLs + team mappings), ClubZap IDs, ntfy topics, CSV schema, results publishing options.
+
+**ClubZap Results Publishing Options:**
+- `CLUBZAP_WITHHOLD_SCORES=true` - Results show as Win/Loss/Draw only (no actual scores)
+- `CLUBZAP_DISABLE_FACEBOOK=true` - Don't publish results to Facebook
+- `CLUBZAP_DISABLE_TWITTER=true` - Don't publish results to Twitter
 
 ### System 2: Competition Results Monitor (`competition_monitor/` package)
 Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables via JSON baselines, sends ntfy.sh notifications, generates static HTML dashboard on GitHub Pages.
@@ -32,12 +39,14 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 ### System 1 files (root level)
 | File | Purpose |
 |---|---|
-| `config.py` | Root config: CLUB_NAME, CLUB_ID, BASE_URL (gaacork.ie), ClubZap IDs, CSV KEY_COLS/CHANGE_COLS |
-| `enhanced_monitor.py` | Main orchestrator: scrape -> hash compare -> diff -> notify. Class `EnhancedFixtureMonitor` |
-| `selenium_scraper.py` | Selenium scraper for gaacork.ie/clubprofile/ pages. Class `SeleniumScraper` |
+| `config.py` | Root config: CLUB_NAME, CLUB_ID, BASE_URL (gaacork.ie), ClubZap IDs, CSV KEY_COLS/CHANGE_COLS, results publishing options |
+| `enhanced_monitor.py` | Main orchestrator: scrape -> hash compare -> diff -> notify. Class `EnhancedFixtureAndResultsMonitor` |
+| `selenium_scraper.py` | Selenium scraper for gaacork.ie/clubprofile/ pages. Class `SeleniumScraper`. Returns fixtures + results |
 | `scraper.py` | BeautifulSoup scraper (legacy fallback). Class `GAAClubScraper` |
-| `clubzap_sync.py` | Diff engine: compares current CSV vs baseline -> new/changed/removed CSVs. CLI: `diff\|uploaded\|status` |
-| `clubzap_automate.py` | Playwright browser automation for ClubZap CRUD. CLI: `upload\|edit\|delete\|all` |
+| `clubzap_sync.py` | Fixture diff engine: compares current CSV vs baseline -> new/changed/removed CSVs. CLI: `diff\|uploaded\|status` |
+| `results_scraper.py` | Results processor: extracts and formats match results from GAA Cork. Class `ResultsScraper` |
+| `results_sync.py` | Results diff engine: compares current results vs baseline -> new results JSON. CLI: `diff\|synced\|status` |
+| `clubzap_automate.py` | Playwright browser automation for ClubZap CRUD. CLI: `upload\|edit\|delete\|results\|all`. Handles result publishing options |
 | `team_mapping.py` | Maps GAA Cork competition names -> ClubZap team names (e.g., "Fe14..." -> "U14 GAA") |
 | `camogie_scraper.py` | HTTP scraper for corkcamogie.com Foireann widgets. No Selenium needed. Function `scrape_camogie_fixtures()` |
 

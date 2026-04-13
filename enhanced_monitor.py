@@ -1,5 +1,5 @@
 """
-Enhanced GAA Fixture Monitor with notifications and logging
+Enhanced GAA Fixture and Results Monitor with notifications and logging
 """
 
 import csv
@@ -21,13 +21,17 @@ from config import (
 )
 from camogie_scraper import scrape_camogie_fixtures
 
-class EnhancedFixtureMonitor:
+class EnhancedFixtureAndResultsMonitor:
     def __init__(self):
         self.selenium_scraper = SeleniumScraper()
         self.hash_file = HASH_FILE
         self.log_file = LOG_FILE
         self.output_file = FIXTURES_CSV
         self.ntfy_topic = NTFY_TOPIC
+        
+        # Results tracking files
+        self.results_hash_file = "results_hashes.json"
+        self.results_json_file = "current_results.json"
         
     def log_message(self, message):
         """Log message to file"""
@@ -39,13 +43,17 @@ class EnhancedFixtureMonitor:
         
         print(message)
     
-    def get_fixtures_data(self):
-        """Get current fixtures data using Selenium (GAA Cork) + HTTP (Camogie)."""
-        fixtures = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
+    def get_fixtures_and_results_data(self):
+        """Get current fixtures and results data using Selenium (GAA Cork) + HTTP (Camogie)."""
+        fixtures, results = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
 
         if not fixtures:
             self.log_message("No fixtures found with Selenium")
             fixtures = []
+            
+        if not results:
+            self.log_message("No results found with Selenium")
+            results = []
 
         # Scrape camogie fixtures and merge
         try:
@@ -55,12 +63,13 @@ class EnhancedFixtureMonitor:
         except Exception as e:
             self.log_message(f"WARNING: Camogie scrape failed: {e}")
 
-        if not fixtures:
-            self.log_message("ERROR: No fixtures from any source")
-            return None
+        if not fixtures and not results:
+            self.log_message("ERROR: No fixtures or results from any source")
+            return None, None
 
-        output = io.StringIO()
-        writer = csv.writer(output)
+        # Process fixtures into CSV format
+        fixtures_output = io.StringIO()
+        writer = csv.writer(fixtures_output)
         writer.writerow(["Date", "Time", "Venue", "Ground", "Referee",
                          "Team", "Competition Name", "Your Club Name",
                          "Opponent", "Event Type"])
@@ -111,15 +120,33 @@ class EnhancedFixtureMonitor:
                              team, competition, CLUB_NAME, opponent, event_type])
             fixture_count += 1
 
-        fixtures_text = output.getvalue().rstrip('\r\n')
+        fixtures_text = fixtures_output.getvalue().rstrip('\r\n')
         fixtures_hash = hashlib.sha256(fixtures_text.encode()).hexdigest()
 
-        return {
+        # Process results
+        from results_scraper import ResultsScraper
+        results_scraper = ResultsScraper()
+        processed_results = results_scraper.process_results(results)
+        
+        # Create results hash
+        results_json = json.dumps(processed_results, sort_keys=True)
+        results_hash = hashlib.sha256(results_json.encode()).hexdigest()
+
+        fixtures_data = {
             'hash': fixtures_hash,
             'text': fixtures_text,
             'count': fixture_count,
             'timestamp': datetime.now().isoformat()
         }
+        
+        results_data = {
+            'hash': results_hash,
+            'results': processed_results,
+            'count': len(processed_results),
+            'timestamp': datetime.now().isoformat()
+        }
+
+        return fixtures_data, results_data
     
     def load_previous_data(self):
         """Load previous fixture data"""
@@ -131,10 +158,34 @@ class EnhancedFixtureMonitor:
                 self.log_message("WARNING: Corrupt hash file, treating as fresh run")
         return None
     
+    def load_previous_results_data(self):
+        """Load previous results data"""
+        if os.path.exists(self.results_hash_file):
+            try:
+                with open(self.results_hash_file, 'r') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, ValueError):
+                self.log_message("WARNING: Corrupt results hash file, treating as fresh run")
+        return None
+    
     def save_current_data(self, data):
         """Save current fixture data"""
         with open(self.hash_file, 'w') as f:
             json.dump(data, f, indent=2)
+    
+    def save_current_results_data(self, data):
+        """Save current results data"""
+        with open(self.results_hash_file, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        # Also save results in the format expected by results_sync.py
+        results_data = {
+            'timestamp': data['timestamp'],
+            'count': data['count'],
+            'results': data['results']
+        }
+        with open(self.results_json_file, 'w', encoding='utf-8') as f:
+            json.dump(results_data, f, indent=2, ensure_ascii=False)
     
     def regenerate_csv(self, fixtures_text):
         """Regenerate the fixtures CSV"""
@@ -328,6 +379,15 @@ Add-Type -AssemblyName System.Windows.Forms
         from clubzap_sync import diff_fixtures
         self.log_message("Running ClubZap sync diff...")
         diff_fixtures()
+    
+    def _run_results_sync(self):
+        """Run the results sync diff to generate results diff files."""
+        import subprocess
+        self.log_message("Running results sync diff...")
+        try:
+            subprocess.run([sys.executable, "results_sync.py", "diff"], check=True)
+        except subprocess.CalledProcessError as e:
+            self.log_message(f"Results sync diff failed: {e}")
 
     def _send_team_notifications(self, team_changes):
         """Send per-team ntfy notifications so managers only see their team."""
@@ -342,35 +402,118 @@ Add-Type -AssemblyName System.Windows.Forms
             )
 
     def check_for_changes(self):
-        """Main monitoring function"""
-        self.log_message("Starting fixture check...")
+        """Main monitoring function for both fixtures and results"""
+        self.log_message("Starting fixture and results check...")
 
-        current_data = self.get_fixtures_data()
-        if not current_data:
-            self.log_message("ERROR: Could not retrieve current fixtures")
+        current_fixtures_data, current_results_data = self.get_fixtures_and_results_data()
+        if not current_fixtures_data and not current_results_data:
+            self.log_message("ERROR: Could not retrieve current fixtures or results")
             return False
 
-        previous_data = self.load_previous_data()
+        previous_fixtures_data = self.load_previous_data()
+        previous_results_data = self.load_previous_results_data()
 
-        # --- First run ---
-        if not previous_data:
-            self.log_message("INFO: First run - initializing monitoring")
-            self.regenerate_csv(current_data['text'])
-            self.save_current_data(current_data)
-            self.send_notification(
-                "GAA Fixture Monitor Initialized",
-                f"Monitoring started with {current_data['count']} fixtures"
-            )
-            return True
+        fixtures_changed = False
+        results_changed = False
 
-        # --- No changes ---
-        if current_data['hash'] == previous_data['hash']:
-            self.log_message(f"INFO: No changes - {current_data['count']} fixtures")
-            # Always regenerate CSV so it's available for artifacts and sync
-            self.regenerate_csv(current_data['text'])
+        # --- Check fixtures ---
+        if current_fixtures_data:
+            if not previous_fixtures_data:
+                self.log_message("INFO: First run - initializing fixture monitoring")
+                self.regenerate_csv(current_fixtures_data['text'])
+                self.save_current_data(current_fixtures_data)
+                fixtures_changed = True
+            elif current_fixtures_data['hash'] != previous_fixtures_data['hash']:
+                self.log_message("ALERT: FIXTURE CHANGES DETECTED!")
+                fixtures_changed = True
+                
+                changes = self.analyze_changes(previous_fixtures_data.get('text'), current_fixtures_data['text'])
+                self.log_message(f"INFO: Previous: {previous_fixtures_data['count']} fixtures")
+                self.log_message(f"INFO: Current: {current_fixtures_data['count']} fixtures")
+                self.log_message(f"INFO: Added: {changes['added_count']} fixtures")
+                self.log_message(f"INFO: Removed: {changes['removed_count']} fixtures")
+
+                if not self.regenerate_csv(current_fixtures_data['text']):
+                    self.log_message("ERROR: Failed to process fixture changes")
+                    return False
+
+                self.save_current_data(current_fixtures_data)
+
+                # Build detailed diff summary and run ClubZap sync
+                team_changes = {}
+                try:
+                    diff_summary, team_changes = self._build_diff_summary()
+                    self._run_clubzap_sync()
+                except Exception as e:
+                    self.log_message(f"ClubZap sync diff failed: {e}")
+                    diff_summary = f"Fixtures: {previous_fixtures_data['count']} -> {current_fixtures_data['count']}"
+
+                notification_msg = f"{CLUB_NAME} GAA Fixtures Update\n\n{diff_summary}"
+                self.send_notification(f"{CLUB_NAME} GAA - Fixture Changes", notification_msg)
+                self._send_team_notifications(team_changes)
+            else:
+                self.log_message(f"INFO: No fixture changes - {current_fixtures_data['count']} fixtures")
+                # Always regenerate CSV so it's available for artifacts and sync
+                self.regenerate_csv(current_fixtures_data['text'])
+
+        # --- Check results ---
+        if current_results_data:
+            if not previous_results_data:
+                self.log_message("INFO: First run - initializing results monitoring")
+                self.save_current_results_data(current_results_data)
+                if current_results_data['count'] > 0:
+                    results_changed = True
+                    self.send_notification(
+                        f"{CLUB_NAME} GAA - Results Monitor Initialized",
+                        f"Results monitoring started with {current_results_data['count']} results"
+                    )
+            elif current_results_data['hash'] != previous_results_data['hash']:
+                self.log_message("ALERT: NEW RESULTS DETECTED!")
+                results_changed = True
+                
+                self.log_message(f"INFO: Previous: {previous_results_data['count']} results")
+                self.log_message(f"INFO: Current: {current_results_data['count']} results")
+                
+                # Find new results
+                previous_results = {self._result_key(r): r for r in previous_results_data.get('results', [])}
+                current_results = {self._result_key(r): r for r in current_results_data['results']}
+                
+                new_results = []
+                for key, result in current_results.items():
+                    if key not in previous_results:
+                        new_results.append(result)
+                
+                self.log_message(f"INFO: New results: {len(new_results)}")
+                
+                self.save_current_results_data(current_results_data)
+                
+                # Run results sync diff
+                try:
+                    self._run_results_sync()
+                except Exception as e:
+                    self.log_message(f"Results sync diff failed: {e}")
+                
+                # Send notification about new results
+                if new_results:
+                    results_summary = []
+                    for result in new_results[-5:]:  # Show last 5
+                        results_summary.append(
+                            f"{result['date']} - {result['team']} {result['our_score']} v {result['opponent_score']} {result['opponent']} ({result['result']})"
+                        )
+                    if len(new_results) > 5:
+                        results_summary.append(f"...and {len(new_results) - 5} more results")
+                    
+                    notification_msg = f"{CLUB_NAME} GAA New Results\n\n" + "\n".join(results_summary)
+                    self.send_notification(f"{CLUB_NAME} GAA - New Results", notification_msg)
+            else:
+                self.log_message(f"INFO: No new results - {current_results_data['count']} results")
+
+        # --- Send all-clear notification if no changes ---
+        if not fixtures_changed and not results_changed and previous_fixtures_data and previous_results_data:
             all_clear_msg = (
-                f"No fixture changes detected.\n"
-                f"{current_data['count']} fixtures monitored.\n\n"
+                f"No fixture or result changes detected.\n"
+                f"{current_fixtures_data['count'] if current_fixtures_data else 0} fixtures, "
+                f"{current_results_data['count'] if current_results_data else 0} results monitored.\n\n"
                 "If you're seeing this for the first time — "
                 "welcome! Notifications are working."
             )
@@ -379,41 +522,16 @@ Add-Type -AssemblyName System.Windows.Forms
                 all_clear_msg,
                 priority="low",
             )
-            return True
-
-        # --- Changes detected ---
-        self.log_message("ALERT: FIXTURE CHANGES DETECTED!")
-
-        changes = self.analyze_changes(previous_data.get('text'), current_data['text'])
-        self.log_message(f"INFO: Previous: {previous_data['count']} fixtures")
-        self.log_message(f"INFO: Current: {current_data['count']} fixtures")
-        self.log_message(f"INFO: Added: {changes['added_count']} fixtures")
-        self.log_message(f"INFO: Removed: {changes['removed_count']} fixtures")
-
-        if not self.regenerate_csv(current_data['text']):
-            self.log_message("ERROR: Failed to process changes")
-            return False
-
-        self.save_current_data(current_data)
-
-        # Build detailed diff summary and run ClubZap sync
-        team_changes = {}
-        try:
-            diff_summary, team_changes = self._build_diff_summary()
-            self._run_clubzap_sync()
-        except Exception as e:
-            self.log_message(f"ClubZap sync diff failed: {e}")
-            diff_summary = f"Fixtures: {previous_data['count']} -> {current_data['count']}"
-
-        notification_msg = f"{CLUB_NAME} GAA Fixtures Update\n\n{diff_summary}"
-        self.send_notification(f"{CLUB_NAME} GAA - Fixture Changes", notification_msg)
-        self._send_team_notifications(team_changes)
 
         self.log_message("SUCCESS: Changes processed successfully")
         return True
+    
+    def _result_key(self, result):
+        """Generate a unique key for a result."""
+        return f"{result['date']}|{result['team']}|{result['opponent']}|{result['competition']}"
 
 def main():
-    monitor = EnhancedFixtureMonitor()
+    monitor = EnhancedFixtureAndResultsMonitor()
     try:
         monitor.check_for_changes()
     finally:

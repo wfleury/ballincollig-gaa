@@ -20,13 +20,19 @@ import csv
 import os
 import sys
 import re
+import json
 from datetime import datetime
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 
 from config import (
     CLUBZAP_BASE_URL as BASE_URL, CLUBZAP_FIXTURES_URL as FIXTURES_URL,
     BASELINE_CSV, NEW_CSV, CHANGED_CSV, REMOVED_CSV,
+    CLUBZAP_WITHHOLD_SCORES, CLUBZAP_DISABLE_FACEBOOK, CLUBZAP_DISABLE_TWITTER,
 )
+
+# Results sync files
+NEW_RESULTS_JSON = "new_results_to_sync.json"
+RESULTS_BASELINE_JSON = "clubzap_results_baseline.json"
 
 
 def log(msg):
@@ -441,10 +447,310 @@ class ClubZapAutomation:
 
         return deleted_count
 
+    async def find_fixture_for_result(self, result):
+        """Find the ClubZap fixture ID that corresponds to this result."""
+        date_str = result['date']
+        team = result['team']
+        opponent = result['opponent']
+        
+        fixture_id = self.find_fixture_id(date_str, team, opponent)
+        if fixture_id:
+            log(f"    Found fixture ID {fixture_id} for {date_str} {team} vs {opponent}")
+            return fixture_id
+        else:
+            log(f"    WARNING: Could not find fixture for {date_str} {team} vs {opponent}")
+            return None
+
+    async def enter_result_for_fixture(self, fixture_id, result):
+        """Enter a result for a specific fixture in ClubZap."""
+        log(f"      🎯 Entering result for fixture ID: {fixture_id}")
+        log(f"      📊 Result: {result['home_team']} {result['home_score']} v {result['away_score']} {result['away_team']}")
+        
+        # Navigate to the fixture page to look for result entry option
+        fixture_url = f"{BASE_URL}/fixtures/{fixture_id}"
+        log(f"      🌐 Navigating to: {fixture_url}")
+        await self.page.goto(fixture_url, wait_until='domcontentloaded')
+        await self.page.wait_for_timeout(2000)
+        
+        # Look for "Add Result" or "Enter Result" button/link
+        result_btn = await self.page.query_selector(
+            'a:has-text("Add Result"), a:has-text("Enter Result"), '
+            'button:has-text("Add Result"), button:has-text("Enter Result"), '
+            'a[href*="/result"], a[href*="/score"]'
+        )
+        
+        if not result_btn:
+            # Try alternative patterns
+            result_btn = await self.page.query_selector(
+                'a:has-text("Result"), button:has-text("Result")'
+            )
+        
+        if not result_btn:
+            log(f"      No result entry button found for fixture {fixture_id}")
+            return False
+        
+        # Click the result entry button
+        await result_btn.click()
+        await self.page.wait_for_timeout(3000)
+        
+        # Now we should be on the result entry form
+        # The form structure will depend on ClubZap's implementation
+        # Common patterns for GAA results:
+        
+        try:
+            # Try to find score input fields
+            # Pattern 1: Separate goals and points fields
+            home_goals = await self.page.query_selector(
+                'input[name*="home"][name*="goal"], input[id*="home"][id*="goal"]'
+            )
+            home_points = await self.page.query_selector(
+                'input[name*="home"][name*="point"], input[id*="home"][id*="point"]'
+            )
+            away_goals = await self.page.query_selector(
+                'input[name*="away"][name*="goal"], input[id*="away"][id*="goal"]'
+            )
+            away_points = await self.page.query_selector(
+                'input[name*="away"][name*="point"], input[id*="away"][id*="point"]'
+            )
+            
+            if home_goals and home_points and away_goals and away_points:
+                # Parse GAA scores (e.g., "1-6" -> 1 goal, 6 points)
+                home_score_parts = result['home_score'].split('-')
+                away_score_parts = result['away_score'].split('-')
+                
+                await home_goals.fill(home_score_parts[0])
+                await home_points.fill(home_score_parts[1])
+                await away_goals.fill(away_score_parts[0])
+                await away_points.fill(away_score_parts[1])
+                
+                log(f"      Entered scores: Home {result['home_score']}, Away {result['away_score']}")
+            else:
+                # Pattern 2: Single score fields (might accept "1-6" format)
+                home_score_field = await self.page.query_selector(
+                    'input[name*="home"][name*="score"], input[id*="home"][id*="score"]'
+                )
+                away_score_field = await self.page.query_selector(
+                    'input[name*="away"][name*="score"], input[id*="away"][id*="score"]'
+                )
+                
+                if home_score_field and away_score_field:
+                    await home_score_field.fill(result['home_score'])
+                    await away_score_field.fill(result['away_score'])
+                    log(f"      Entered scores: Home {result['home_score']}, Away {result['away_score']}")
+                else:
+                    log(f"      Could not find score input fields")
+                    return False
+            
+            # Look for additional fields that might be available
+            # Referee field
+            referee_field = await self.page.query_selector(
+                'input[name*="referee"], input[id*="referee"]'
+            )
+            if referee_field and result.get('referee'):
+                await referee_field.fill(result['referee'])
+            
+            # Handle result publishing options
+            await self._configure_result_publishing_options()
+            
+            # Submit the result
+            submit_btn = await self.page.query_selector(
+                'input[type="submit"], button[type="submit"], '
+                'input[value*="Save"], button:has-text("Save")'
+            )
+            
+            if submit_btn:
+                await submit_btn.click()
+                await self.page.wait_for_timeout(3000)
+                
+                # Check for success indicators
+                if '/fixtures/' in self.page.url and f'/{fixture_id}' not in self.page.url:
+                    # Redirected away from the form, likely success
+                    return True
+                
+                # Look for success messages
+                success_indicators = await self.page.query_selector_all(
+                    '.alert-success, .success, .flash-success'
+                )
+                for indicator in success_indicators:
+                    text = await indicator.inner_text()
+                    if 'success' in text.lower() or 'saved' in text.lower():
+                        return True
+                
+                # If still on the form page, check for errors
+                error_indicators = await self.page.query_selector_all(
+                    '.alert-error, .error, .flash-error'
+                )
+                if error_indicators:
+                    for error in error_indicators:
+                        error_text = await error.inner_text()
+                        log(f"      Error: {error_text}")
+                    return False
+                
+                return True  # Assume success if no errors found
+            else:
+                log(f"      Could not find submit button")
+                return False
+                
+        except Exception as e:
+            log(f"      Error entering result: {e}")
+            return False
+
+    async def _configure_result_publishing_options(self):
+        """Configure result publishing options based on config settings."""
+        try:
+            # Option 1: "Withhold Scores from Application, Website & Social"
+            # This makes the result show only as Win/Loss/Draw without actual scores
+            if CLUBZAP_WITHHOLD_SCORES:
+                withhold_checkbox = await self.page.query_selector(
+                    'input[type="checkbox"][name*="withhold"], '
+                    'input[type="checkbox"][name*="hide"], '
+                    'input[type="checkbox"][id*="withhold"], '
+                    'input[type="checkbox"][id*="hide"]'
+                )
+                
+                if not withhold_checkbox:
+                    # Try alternative patterns for withholding scores
+                    withhold_checkbox = await self.page.query_selector(
+                        'input[type="checkbox"]:near(:text("Withhold")), '
+                        'input[type="checkbox"]:near(:text("Hide")), '
+                        'input[type="checkbox"]:near(:text("Win, Loss or Draw"))'
+                    )
+                
+                if withhold_checkbox:
+                    # Check if it's already checked
+                    is_checked = await withhold_checkbox.is_checked()
+                    if not is_checked:
+                        await withhold_checkbox.check()
+                        log(f"      ✓ Enabled 'Withhold Scores' - result will show as Win/Loss/Draw only")
+                    else:
+                        log(f"      ✓ 'Withhold Scores' already enabled")
+                else:
+                    log(f"      Could not find 'Withhold Scores' checkbox")
+            else:
+                log(f"      Withhold scores disabled in config")
+            
+            # Option 2: Disable Facebook publishing
+            if CLUBZAP_DISABLE_FACEBOOK:
+                facebook_checkbox = await self.page.query_selector(
+                    'input[type="checkbox"][name*="facebook"], '
+                    'input[type="checkbox"][id*="facebook"]'
+                )
+                
+                if not facebook_checkbox:
+                    # Try alternative patterns
+                    facebook_checkbox = await self.page.query_selector(
+                        'input[type="checkbox"]:near(:text("Facebook")), '
+                        'input[type="checkbox"]:near(:text("FB"))'
+                    )
+                
+                if facebook_checkbox:
+                    is_checked = await facebook_checkbox.is_checked()
+                    if is_checked:
+                        await facebook_checkbox.uncheck()
+                        log(f"      ✓ Disabled Facebook publishing")
+                    else:
+                        log(f"      ✓ Facebook publishing already disabled")
+                else:
+                    log(f"      Could not find Facebook checkbox")
+            else:
+                log(f"      Facebook publishing enabled in config")
+            
+            # Option 3: Disable Twitter publishing
+            if CLUBZAP_DISABLE_TWITTER:
+                twitter_checkbox = await self.page.query_selector(
+                    'input[type="checkbox"][name*="twitter"], '
+                    'input[type="checkbox"][id*="twitter"]'
+                )
+                
+                if not twitter_checkbox:
+                    # Try alternative patterns
+                    twitter_checkbox = await self.page.query_selector(
+                        'input[type="checkbox"]:near(:text("Twitter")), '
+                        'input[type="checkbox"]:near(:text("X"))'
+                    )
+                
+                if twitter_checkbox:
+                    is_checked = await twitter_checkbox.is_checked()
+                    if is_checked:
+                        await twitter_checkbox.uncheck()
+                        log(f"      ✓ Disabled Twitter publishing")
+                    else:
+                        log(f"      ✓ Twitter publishing already disabled")
+                else:
+                    log(f"      Could not find Twitter checkbox")
+            else:
+                log(f"      Twitter publishing enabled in config")
+            
+        except Exception as e:
+            log(f"      Warning: Error configuring publishing options: {e}")
+            # Don't fail the entire result entry if publishing options fail
+
+    async def sync_results(self, test_mode=False):
+        """Sync new results to ClubZap."""
+        results_file = "test_single_result.json" if test_mode else NEW_RESULTS_JSON
+        
+        if not os.path.exists(results_file):
+            log(f"No results file found: {results_file}")
+            return 0
+        
+        # Load new results
+        try:
+            with open(results_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                new_results = data.get('results', [])
+        except Exception as e:
+            log(f"Error loading results from {results_file}: {e}")
+            return 0
+        
+        if not new_results:
+            log("No new results to sync")
+            return 0
+        
+        log(f"Syncing {len(new_results)} new results to ClubZap...")
+        
+        # Build fixture map first
+        await self.build_fixture_map()
+        
+        synced_count = 0
+        failed_results = []
+        
+        for result in new_results:
+            date = result['date']
+            team = result['team']
+            opponent = result['opponent']
+            our_score = result['our_score']
+            opponent_score = result['opponent_score']
+            
+            log(f"  Processing: {date} {team} {our_score} v {opponent_score} {opponent}")
+            
+            # Find corresponding fixture
+            fixture_id = await self.find_fixture_for_result(result)
+            if not fixture_id:
+                failed_results.append(result)
+                continue
+            
+            # Enter the result
+            success = await self.enter_result_for_fixture(fixture_id, result)
+            if success:
+                log(f"    ✓ Result entered successfully")
+                synced_count += 1
+            else:
+                log(f"    ✗ Failed to enter result")
+                failed_results.append(result)
+        
+        log(f"Results sync complete: {synced_count} synced, {len(failed_results)} failed")
+        
+        if failed_results:
+            log("Failed results:")
+            for result in failed_results:
+                log(f"  - {result['date']} {result['team']} vs {result['opponent']}")
+        
+        return synced_count
+
     async def sync(self, actions=None):
-        """Run full sync: upload new, edit changed, delete removed."""
+        """Run full sync: upload new fixtures, edit changed fixtures, delete removed fixtures, sync results."""
         if actions is None:
-            actions = ['upload', 'edit', 'delete']
+            actions = ['upload', 'edit', 'delete', 'results']
 
         self._edit_failures = False  # reset for this run
 
@@ -467,15 +773,21 @@ class ClubZapAutomation:
             if 'delete' in actions and os.path.exists(REMOVED_CSV):
                 results['deleted'] = await self.delete_removed_fixtures()
 
+            if 'results' in actions and os.path.exists(NEW_RESULTS_JSON):
+                test_mode = 'test' in actions
+                results['results_synced'] = await self.sync_results(test_mode=test_mode)
+
             log("=" * 50)
             log("  ClubZap Sync Complete")
             log("=" * 50)
             if 'uploaded' in results:
-                log(f"  Uploaded: {results['uploaded']} new fixtures")
+                log(f"  Uploaded:      {results['uploaded']} new fixtures")
             if 'edited' in results:
-                log(f"  Edited:   {results['edited']} fixtures")
+                log(f"  Edited:        {results['edited']} fixtures")
             if 'deleted' in results:
-                log(f"  Deleted:  {results['deleted']} fixtures")
+                log(f"  Deleted:       {results['deleted']} fixtures")
+            if 'results_synced' in results:
+                log(f"  Results synced: {results['results_synced']} results")
             log("=" * 50)
 
             if any(v > 0 for v in results.values()):
@@ -485,8 +797,14 @@ class ClubZapAutomation:
                 else:
                     try:
                         from clubzap_sync import mark_uploaded
-                        log("Updating baseline...")
+                        log("Updating fixtures baseline...")
                         mark_uploaded()
+                        
+                        # Update results baseline if results were synced
+                        if results.get('results_synced', 0) > 0:
+                            from results_sync import mark_synced
+                            log("Updating results baseline...")
+                            mark_synced()
                     except Exception as e:
                         log(f"WARNING: Could not update baseline: {e}")
 
@@ -509,7 +827,7 @@ async def main():
         sys.exit(0)
 
     # Check if there are any diff files to process
-    has_work = any(os.path.exists(f) for f in [NEW_CSV, CHANGED_CSV, REMOVED_CSV])
+    has_work = any(os.path.exists(f) for f in [NEW_CSV, CHANGED_CSV, REMOVED_CSV, NEW_RESULTS_JSON])
     if not has_work:
         log("No diff files found - nothing to sync to ClubZap")
         sys.exit(0)
@@ -528,13 +846,13 @@ async def main():
     actions = None
     if len(sys.argv) > 1:
         action = sys.argv[1].lower()
-        if action in ('upload', 'edit', 'delete'):
+        if action in ('upload', 'edit', 'delete', 'results', 'test'):
             actions = [action]
         elif action == 'all':
             actions = None
         else:
             print(f"Unknown action: {action}")
-            print("Usage: py clubzap_automate.py [upload|edit|delete|all]")
+            print("Usage: py clubzap_automate.py [upload|edit|delete|results|test|all]")
             sys.exit(1)
 
     headless = os.environ.get('CLUBZAP_HEADLESS', 'true').lower() != 'false'

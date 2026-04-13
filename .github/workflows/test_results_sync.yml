@@ -1,0 +1,126 @@
+name: Test ClubZap Results Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Test mode to run'
+        required: true
+        type: choice
+        options:
+          - 'single-result'
+          - 'all-results'
+          - 'dry-run'
+
+jobs:
+  test-results-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: "Dry Run: Check available results"
+        if: ${{ github.event.inputs.mode == 'dry-run' }}
+        run: |
+          echo "🔍 Checking what results are available..."
+          python results_sync.py diff
+          echo ""
+          echo "📊 Results summary:"
+          python results_sync.py status
+          echo ""
+          echo "🧪 Test result preview:"
+          python -c "
+          import json
+          try:
+              with open('new_results_to_sync.json', 'r') as f:
+                  data = json.load(f)
+                  results = data['results'][:3]
+                  for r in results:
+                      print(f'  {r[\"date\"]} - {r[\"team\"]} {r[\"our_score\"]} v {r[\"opponent_score\"]} {r[\"opponent\"]} ({r[\"result\"]})')
+          except FileNotFoundError:
+              print('  No results file found')
+          "
+
+      - name: "Test: Single result sync"
+        if: ${{ github.event.inputs.mode == 'single-result' }}
+        run: |
+          echo "🧪 Testing single result sync..."
+          echo "📥 Fetching latest results from GAA Cork..."
+          python results_sync.py diff
+          
+          echo "🎯 Creating test result..."
+          python create_test_result.py
+          
+          echo "🚀 Syncing single test result to ClubZap..."
+          echo "   - Will withhold scores (show Win/Loss/Draw only)"
+          echo "   - Will disable Facebook/Twitter publishing"
+          python clubzap_automate.py test
+        env:
+          CLUBZAP_EMAIL: ${{ secrets.CLUBZAP_EMAIL }}
+          CLUBZAP_PASSWORD: ${{ secrets.CLUBZAP_PASSWORD }}
+          CLUBZAP_WITHHOLD_SCORES: true
+          CLUBZAP_DISABLE_FACEBOOK: true
+          CLUBZAP_DISABLE_TWITTER: true
+
+      - name: "Production: Sync all results"
+        if: ${{ github.event.inputs.mode == 'all-results' }}
+        run: |
+          echo "🚀 Syncing ALL results to ClubZap..."
+          echo "⚠️  This will sync all new results found!"
+          
+          echo "📥 Fetching latest results from GAA Cork..."
+          python results_sync.py diff
+          
+          echo "📊 Results to sync:"
+          python -c "
+          import json
+          try:
+              with open('new_results_to_sync.json', 'r') as f:
+                  data = json.load(f)
+                  print(f'   Total: {data[\"count\"]} results')
+                  for r in data['results'][:5]:
+                      print(f'   {r[\"date\"]} - {r[\"team\"]} {r[\"our_score\"]} v {r[\"opponent_score\"]} {r[\"opponent\"]} ({r[\"result\"]})')
+                  if data['count'] > 5:
+                      print(f'   ...and {data[\"count\"] - 5} more')
+          except FileNotFoundError:
+              print('   No results to sync')
+              exit(0)
+          "
+          
+          echo "🎯 Syncing to ClubZap with settings:"
+          echo "   - Withhold scores: $CLUBZAP_WITHHOLD_SCORES"
+          echo "   - Disable Facebook: $CLUBZAP_DISABLE_FACEBOOK" 
+          echo "   - Disable Twitter: $CLUBZAP_DISABLE_TWITTER"
+          
+          python clubzap_automate.py results
+          
+          echo "✅ Updating baseline..."
+          python results_sync.py synced
+        env:
+          CLUBZAP_EMAIL: ${{ secrets.CLUBZAP_EMAIL }}
+          CLUBZAP_PASSWORD: ${{ secrets.CLUBZAP_PASSWORD }}
+          CLUBZAP_WITHHOLD_SCORES: true
+          CLUBZAP_DISABLE_FACEBOOK: true
+          CLUBZAP_DISABLE_TWITTER: true
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clubzap-logs
+          path: |
+            *.log
+            *.json
+            monitoring_log.txt
+          retention-days: 7

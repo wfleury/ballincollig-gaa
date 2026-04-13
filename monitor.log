@@ -5533,3 +5533,2119 @@ Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-footba
 Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
 Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
 SUCCESS: Changes processed successfully
+. : File C:\Users\fleurw\OneDrive - Dell Technologies\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 
+cannot be loaded because running scripts is disabled on this system. For more information, see 
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:3
++ . 'C:\Users\fleurw\OneDrive - Dell Technologies\Documents\WindowsPowe ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Waiting for JavaScript to load fixtures...
+Attempt 1/3 (waiting up to 15s)...
+Found 206 fixture elements via CSS selector
+Found fixture: 02 Apr 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 02 Apr 2026 - Blackrock vs Ballincollig (AOS Security Hurling League Div 3 )
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 03 Apr 2026 - Ballincollig vs Carrigaline (Red FM Division 2 HL)
+Found fixture: 04 Apr 2026 - Ballincollig 3 vs Inniscarra 2 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 04 Apr 2026 - Inniscarra vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 06 Apr 2026 - Kilshannig vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 06 Apr 2026 - Bandon vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 06 Apr 2026 - Ballincollig 2 vs Bishopstown 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Apr 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig vs Ballyphehane (AOS Security Football League Div 4)
+Found fixture: 08 Apr 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 09 Apr 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 09 Apr 2026 - Ballincollig 2 vs St Finbarrs 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 10 Apr 2026 - Blarney 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 10 Apr 2026 - Kinsale vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 10 Apr 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 10 Apr 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 11 Apr 2026 - Ballincollig 2 vs Kinsale 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 11 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 11 Apr 2026 - Ballincollig vs St Michaels (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Apr 2026 - Ballincollig 3 vs Bishopstown 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 11 Apr 2026 - Ballincollig vs Aghabullogue (EPH Junior Football League Division 1)
+Found fixture: 12 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 12 Apr 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 13 Apr 2026 - Douglas vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 13 Apr 2026 - St Colmcilles vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 14 Apr 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 14 Apr 2026 - Ballincollig 2 vs Midleton 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 14 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 15 Apr 2026 - Ballincollig 3 vs Aghada 2 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 15 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 15 Apr 2026 - Ballincollig vs Carrigtwohill (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 16 Apr 2026 - Glen Rovers vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Apr 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 17 Apr 2026 - Ballincollig vs Erins Own (Red FM Division 2 HL)
+Found fixture: 18 Apr 2026 - Blackrock 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 18 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig 3 vs Blarney 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig vs Dripsey (Cumnor Junior Hurling League Division 1)
+Found fixture: 19 Apr 2026 - Nemo Rangers 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 19 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 20 Apr 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig 2 vs St Michaels 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 21 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 21 Apr 2026 - Ballincollig vs Douglas (AOS Security Hurling League Div 3 )
+Found fixture: 22 Apr 2026 - Ballincollig 2 vs Croke Rovers (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 23 Apr 2026 - Imokilly vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 24 Apr 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 25 Apr 2026 - Bishopstown 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 25 Apr 2026 - Kilmichael vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 26 Apr 2026 - Ballincollig vs St Vincents (AOS Security Football League Div 2 G2 )
+Found fixture: 26 Apr 2026 - Ballincollig vs Dohenys (McCarthy Insurance Group Division 2 FL)
+Found fixture: 26 Apr 2026 - Ballincollig 3 vs Carrigaline 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 26 Apr 2026 - Ballincollig vs Na Laochra Aeracha (AOS Security Football League Div 4)
+Found fixture: 26 Apr 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 27 Apr 2026 - Ballincollig vs Donoughmore (EPH Junior Football League Division 2 East)
+Found fixture: 27 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 27 Apr 2026 - Ballincollig 2 vs Mallow (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 28 Apr 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 28 Apr 2026 - Sarsfields 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 28 Apr 2026 - Cobh 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Apr 2026 - Ballincollig vs Carrigaline (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 28 Apr 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 29 Apr 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Apr 2026 - Carbery vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 30 Apr 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 30 Apr 2026 - Newcestown vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 01 May 2026 - Midleton vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 02 May 2026 - Ballincollig 2 vs Erins Own 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 02 May 2026 - Grenagh vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 May 2026 - Na Piarsaigh vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 05 May 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 05 May 2026 - Ballincollig 3 vs Glanmire 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 05 May 2026 - Bandon 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 06 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 06 May 2026 - Ballincollig 2 vs Blarney 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 May 2026 - Blarney vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 07 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 08 May 2026 - Clyda Rovers vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 09 May 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 09 May 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 1)
+Found fixture: 10 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 10 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 10 May 2026 - Ballincollig vs Ballinora (EPH Junior Football League Division 3 East)
+Found fixture: 11 May 2026 - Ballincollig vs Ballyhea Milford (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 12 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 12 May 2026 - Ballincollig 2 vs Carrigtwohill 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 13 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 13 May 2026 - Ballincollig 3 vs Sarsfields 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 15 May 2026 - Ballincollig vs Na Piarsaigh (Red FM Division 2 HL)
+Found fixture: 16 May 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 16 May 2026 - Ballincollig vs Eire Og (Cumnor Junior Hurling League Division 1)
+Found fixture: 17 May 2026 - Nemo Rangers vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 17 May 2026 - Blackrock vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 17 May 2026 - Ballincollig vs Kilmichael (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 May 2026 - Ballincollig vs Macroom (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 19 May 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 19 May 2026 - Ballincollig vs Beara (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 19 May 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 20 May 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 May 2026 - Donoughmore vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 23 May 2026 - Clondrohid vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 24 May 2026 - Ballincollig vs Uibh Laoire (McCarthy Insurance Group Division 2 FL)
+Found fixture: 25 May 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 26 May 2026 - Ballincollig 3 vs Bandon 2 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 26 May 2026 - Watergrasshill 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 26 May 2026 - Gleann na Laoi vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 28 May 2026 - Aghabullogue vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 29 May 2026 - Kanturk vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 30 May 2026 - Mallow 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 30 May 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 31 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 31 May 2026 - Donoughmore vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 31 May 2026 - Laochra Og vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 04 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 06 Jun 2026 - Ballincollig vs Donoughmore (Cumnor Junior Hurling League Division 1)
+Found fixture: 07 Jun 2026 - O Donovan Rossa vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 08 Jun 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 2 East)
+Found fixture: 09 Jun 2026 - Cloughduv vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 09 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 09 Jun 2026 - Ballincollig 2 vs Blackrock 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 11 Jun 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 13 Jun 2026 - Donoughmore 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 13 Jun 2026 - Blarney vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 14 Jun 2026 - Ballincollig vs Bride Rovers (Red FM Division 2 HL)
+Found fixture: 14 Jun 2026 - Ballincollig vs Gleann na Laoi (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 17 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 18 Jun 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 19 Jun 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 21 Jun 2026 - Ballincollig vs Valley Rovers (McCarthy Insurance Group Division 2 FL)
+Found fixture: 21 Jun 2026 - Ballincollig vs Grenagh (EPH Junior Football League Division 3 East)
+Found fixture: 22 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 24 Jun 2026 - Sarsfields vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 25 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 27 Jun 2026 - Ballincollig 3 vs Ballyhea /Milford 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 28 Jun 2026 - Newtownshandrum vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 28 Jun 2026 - Ballincollig vs Ballyphehane (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 03 Jul 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 03 Jul 2026 - Ballincollig 2 vs Courcey Rovers (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 05 Jul 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 08 Jul 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Jul 2026 - Duhallow vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 10 Jul 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 12 Jul 2026 - Lough Rovers vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 Jul 2026 - Ballincollig 3 vs Croke Rovers 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Jul 2026 - Ballincollig vs Mallow (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Aug 2026 - Lisgoold 2 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 06 Aug 2026 - Bride Rovers vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 11 Aug 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Apr 2026 - Ballincollig 2 vs Glenville (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 01 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 31 Mar 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig 2 vs Bishopstown (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig vs Blarney (EPH Junior Football League Division 2 East)
+Found fixture: 30 Mar 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 29 Mar 2026 - Bishopstown vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 29 Mar 2026 - St Dominics 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 28 Mar 2026 - Castletownbere vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 28 Mar 2026 - Ballincollig 2 vs Glen Rovers 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 27 Mar 2026 - Grenagh vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 27 Mar 2026 - Ballincollig vs St Colmcilles (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 25 Mar 2026 - Ballincollig 3 vs Kildorrery 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Mar 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Mar 2026 - Ballincollig vs Ballyphehane (AOS Security Hurling League Div 3 )
+Found fixture: 22 Mar 2026 - Duarigle Gaels vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Mar 2026 - Valley Rovers vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 21 Mar 2026 - Ballincollig vs Kilmichael (Cumnor Junior Hurling League Division 1)
+Found fixture: 21 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 19 Mar 2026 - Ballincollig vs Lough Rovers (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Mar 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 16 Mar 2026 - Fermoy vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 15 Mar 2026 - Ballinora vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 15 Mar 2026 - Whitechurch vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 15 Mar 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 Mar 2026 - Ballincollig vs Ballingeary (EPH Junior Football League Division 1)
+Found fixture: 13 Mar 2026 - Ballincollig vs Béal Átha'n Ghaorthaidh (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Mar 2026 - Clyda Rovers vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Mar 2026 - St Finbarrs vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 08 Mar 2026 - Ballincollig vs Delanys (AOS Security Hurling League Div 3 )
+Found fixture: 08 Mar 2026 - Ballymartle vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 08 Mar 2026 - Mayfield vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 08 Mar 2026 - Eire Og 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Mar 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 04 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Mar 2026 - Mallow vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Mar 2026 - Aghabullogue vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig vs Whites Cross (AOS Security Football League Div 4)
+Found fixture: 28 Feb 2026 - Ballincollig vs Canovee (EPH Junior Football League Division 1)
+Found fixture: 28 Feb 2026 - Carrigaline vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 22 Feb 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 21 Feb 2026 - Ballincollig 2 vs Ballinhassig (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Processed 206 Ballincollig fixtures
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+WARNING: Could not fetch https://corkcamogie.com/barry-osullivan-league-2026/: 500 Server Error: Internal Server Error for url: https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 5 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 15 total fixtures across 4 leagues
+Camogie: fetched 15 fixtures
+ALERT: FIXTURE CHANGES DETECTED!
+INFO: Previous: 205 fixtures
+INFO: Current: 221 fixtures
+INFO: Added: 34 fixtures
+INFO: Removed: 18 fixtures
+Running ClubZap sync diff...
+============================================================
+  ClubZap Sync - Fixture Diff Report
+  02/04/2026 20:19
+============================================================
+  Current fixtures (website):  221
+  Baseline (uploaded):         118
+------------------------------------------------------------
+
+  NEW fixtures (bulk import):   133
+  CHANGED fixtures (edit):      27
+  POSTPONED (delete):           0
+  REMOVED fixtures (delete):    30
+  Unchanged:                    61
+
+  -> clubzap_new_fixtures.csv
+     Bulk upload this file to ClubZap
+     Contains 133 new fixtures:
+       02/04/2026 Minor Football GAA vs Inniscarra
+       02/04/2026 Junior B Hurling vs Blackrock
+       03/04/2026 U13 GAA vs Clonakilty
+       04/04/2026 U13 GAA vs Inniscarra 2
+       06/04/2026 U13 GAA vs Bandon
+       ... and 128 more
+
+  -> clubzap_changed_fixtures.csv
+     Manually update these 27 fixtures in ClubZap:
+       03/04/2026 Minor Football GAA vs Clonakilty
+         Time: '18:30' -> '16:00'
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       03/04/2026 Premier Inter Hurling vs Carrigaline
+         Time: '19:00' -> '18:45'
+         Referee: 'TBC (Pending)' -> 'Patrick O Mahony'
+       04/04/2026 Junior A Hurling vs Inniscarra
+         Referee: 'TBC (Pending)' -> 'Joe Larkin'
+       06/04/2026 Minor Football GAA vs Kilshannig
+         Time: '18:30' -> '11:00'
+         Venue: 'Kilshannig' -> 'Glantane'
+         Referee: 'TBC (Pending)' -> 'Johnny O’Connell'
+       08/04/2026 U16 GAA vs St Michaels
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Niall Hayes Blarney'
+       10/04/2026 U14 GAA vs Kinsale
+         Referee: 'TBC (Pending)' -> 'Anthony O Regan (Kilb)'
+       13/04/2026 U16 GAA vs St Colmcilles
+         Referee: 'TBC (Pending)' -> 'Conor McHugh (Pending)'
+       15/04/2026 Minor Hurling GAA vs Carrigtwohill
+         Time: '18:30' -> '20:15'
+       20/04/2026 U16 GAA vs Douglas 2
+         Time: '18:30' -> '20:00'
+       26/04/2026 Junior A Football vs St Vincents
+         Referee: 'TBC (Pending)' -> 'Finbarr  O Riordan'
+       26/04/2026 Senior Football vs Dohenys
+         Time: '11:30' -> '11:00'
+       27/04/2026 U16 GAA vs Mallow
+         Time: '18:30' -> '20:00'
+       01/04/2026 U14 GAA vs Glenville
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Roy  Galvin'
+       30/03/2026 U16 GAA vs Bishopstown
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Peter Cotter'
+       30/03/2026 Junior B Football vs Blarney
+         Venue: 'Ballincollig' -> 'Blarney'
+         Referee: 'TBC (Pending)' -> 'Brian Harte'
+       29/03/2026 Junior A Football vs Bishopstown
+         Referee: 'TBC (Pending)' -> 'Trevor Lyons'
+       22/03/2026 Minor Football GAA vs Duarigle Gaels
+         Venue: 'Duarigle Gaels' -> 'Cullen'
+         Referee: 'TBC (Pending)' -> 'Adrian O Connor'
+       22/03/2026 Premier Inter Hurling vs Valley Rovers
+         Referee: 'TBC (Pending)' -> 'Ian McCarthy'
+       21/03/2026 Junior A Hurling vs Kilmichael
+         Referee: 'TBC (Pending)' -> 'Joe Larkin (Pending)'
+       17/03/2026 U16 GAA vs Kiltha Og
+         Venue: 'Castlemartyr' -> 'Dungourney'
+         Referee: 'TBC (Pending)' -> 'Arthur Murphy'
+       15/03/2026 Junior B Football vs Ballinora
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       14/03/2026 Junior A Football vs Ballingeary
+         Referee: 'TBC (Pending)' -> 'Pat O Leary (Kilmurry) (Pending)'
+       13/03/2026 Senior Football vs Béal Átha'n Ghaorthaidh
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor'
+       08/03/2026 U16 GAA vs St Finbarrs
+         Time: '12:30' -> '16:00'
+       08/03/2026 Premier Inter Hurling vs Ballymartle
+         Referee: 'TBC (Pending)' -> 'Kevin O Sullivan'
+       01/03/2026 Minor Football GAA vs Aghabullogue
+         Time: '12:30' -> '19:30'
+         Venue: 'Coachford' -> 'Ballincollig'
+       28/02/2026 Senior Football vs Carrigaline
+         Referee: 'Alan O'Connor (Pending)' -> 'Alan O'Connor'
+
+  -> clubzap_removed_fixtures.csv
+     Manually delete these 30 fixtures from ClubZap:
+       23/02/2026 U16 GAA vs Inniscarra
+       27/02/2026 Junior A Football vs Brian Dillons
+       08/03/2026 U16 GAA vs Clyda Rovers
+       14/03/2026 U14 GAA vs Killeagh
+       15/03/2026 Minor Hurling GAA vs Carrigaline
+       17/03/2026 U16 GAA vs Fermoy
+       22/03/2026 Junior A Hurling vs Lough Rovers
+       22/03/2026 U14 GAA vs Carrigaline 2
+       22/03/2026 Minor Football GAA vs Douglas
+       22/03/2026 U14 GAA vs St Colmcilles
+       28/03/2026 Junior A Football vs Grenagh
+       29/03/2026 Senior Football vs Castletownbere
+       29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+       30/03/2026 U16 GAA vs Eire Og
+       01/04/2026 U14 GAA vs Nemo Rangers
+       03/04/2026 Minor Football GAA vs Inniscarra
+       06/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 U16 GAA vs Eire Og
+       10/04/2026 U14 GAA vs Douglas
+       12/04/2026 Junior A Football vs Glanmire
+       13/04/2026 U16 GAA vs Glen Rovers
+       13/04/2026 Junior B Football vs Inniscarra
+       20/04/2026 U16 GAA vs Nemo Rangers
+       27/04/2026 U16 GAA vs Ballinora
+       10/05/2026 Senior Football vs Clyda Rovers
+       17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+       24/05/2026 Junior B Football vs Donoughmore
+       25/05/2026 Junior B Football vs Gleann na Laoi
+       30/05/2026 Junior A Hurling vs Aghabullogue
+       31/05/2026 Premier Inter Hurling vs Kanturk
+
+  After making changes in ClubZap, run:
+  py clubzap_sync.py uploaded
+============================================================
+Failed to send Windows notification: Command '['powershell', '-Command', '\nAdd-Type -AssemblyName System.Windows.Forms\n[System.Windows.Forms.MessageBox]::Show("Ballincollig GAA Fixtures Update\n\nNEW (133):\n  02/04/2026 Minor Football GAA vs Inniscarra\n  02/04/2026 Junior B Hurling vs Blackrock\n  03/04/2026 U13 GAA vs Clonakilty\n  04/04/2026 U13 GAA vs Inniscarra 2\n  06/04/2026 U13 GAA vs Bandon\n  ...and 128 more\nCHANGED (27):\n  03/04/2026 Minor Football GAA vs Clonakilty\n      Time: 16:00\n      Referee: Tom Manley\n  03/04/2026 Premier Inter Hurling vs Carrigaline\n      Time: 18:45\n      Referee: Patrick O Mahony\n  04/04/2026 Junior A Hurling vs Inniscarra\n      Referee: Joe Larkin\n  06/04/2026 Minor Football GAA vs Kilshannig\n      Time: 11:00\n      Venue: Glantane\n      Referee: Johnny O’Connell\n  08/04/2026 U16 GAA vs St Michaels\n      Time: 20:00\n      Referee: Niall Hayes Blarney\n  ...and 22 more\nREMOVED (30):\n  23/02/2026 U16 GAA vs Inniscarra\n  27/02/2026 Junior A Football vs Brian Dillons\n  08/03/2026 U16 GAA vs Clyda Rovers\n  14/03/2026 U14 GAA vs Killeagh\n  15/03/2026 Minor Hurling GAA vs Carrigaline\n  17/03/2026 U16 GAA vs Fermoy\n  22/03/2026 Junior A Hurling vs Lough Rovers\n  22/03/2026 U14 GAA vs Carrigaline 2\n  22/03/2026 Minor Football GAA vs Douglas\n  22/03/2026 U14 GAA vs St Colmcilles\n  28/03/2026 Junior A Football vs Grenagh\n  29/03/2026 Senior Football vs Castletownbere\n  29/03/2026 Minor Hurling GAA vs Na Piarsaigh\n  30/03/2026 U16 GAA vs Eire Og\n  01/04/2026 U14 GAA vs Nemo Rangers\n  03/04/2026 Minor Football GAA vs Inniscarra\n  06/04/2026 Minor Football GAA vs Bishopstown\n  08/04/2026 U16 GAA vs Eire Og\n  10/04/2026 U14 GAA vs Douglas\n  12/04/2026 Junior A Football vs Glanmire\n  13/04/2026 U16 GAA vs Glen Rovers\n  13/04/2026 Junior B Football vs Inniscarra\n  20/04/2026 U16 GAA vs Nemo Rangers\n  27/04/2026 U16 GAA vs Ballinora\n  10/05/2026 Senior Football vs Clyda Rovers\n  17/05/2026 Premier Inter Hurling vs Na Piarsaigh\n  24/05/2026 Junior B Football vs Donoughmore\n  25/05/2026 Junior B Football vs Gleann na Laoi\n  30/05/2026 Junior A Hurling vs Aghabullogue\n  31/05/2026 Premier Inter Hurling vs Kanturk", "Ballincollig GAA - Fixture Changes", "OK", "Information")\n']' timed out after 10 seconds
+
+NOTIFICATION: Ballincollig GAA - Fixture Changes
+Message: Ballincollig GAA Fixtures Update
+
+NEW (133):
+  02/04/2026 Minor Football GAA vs Inniscarra
+  02/04/2026 Junior B Hurling vs Blackrock
+  03/04/2026 U13 GAA vs Clonakilty
+  04/04/2026 U13 GAA vs Inniscarra 2
+  06/04/2026 U13 GAA vs Bandon
+  ...and 128 more
+CHANGED (27):
+  03/04/2026 Minor Football GAA vs Clonakilty
+      Time: 16:00
+      Referee: Tom Manley
+  03/04/2026 Premier Inter Hurling vs Carrigaline
+      Time: 18:45
+      Referee: Patrick O Mahony
+  04/04/2026 Junior A Hurling vs Inniscarra
+      Referee: Joe Larkin
+  06/04/2026 Minor Football GAA vs Kilshannig
+      Time: 11:00
+      Venue: Glantane
+      Referee: Johnny O’Connell
+  08/04/2026 U16 GAA vs St Michaels
+      Time: 20:00
+      Referee: Niall Hayes Blarney
+  ...and 22 more
+REMOVED (30):
+  23/02/2026 U16 GAA vs Inniscarra
+  27/02/2026 Junior A Football vs Brian Dillons
+  08/03/2026 U16 GAA vs Clyda Rovers
+  14/03/2026 U14 GAA vs Killeagh
+  15/03/2026 Minor Hurling GAA vs Carrigaline
+  17/03/2026 U16 GAA vs Fermoy
+  22/03/2026 Junior A Hurling vs Lough Rovers
+  22/03/2026 U14 GAA vs Carrigaline 2
+  22/03/2026 Minor Football GAA vs Douglas
+  22/03/2026 U14 GAA vs St Colmcilles
+  28/03/2026 Junior A Football vs Grenagh
+  29/03/2026 Senior Football vs Castletownbere
+  29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+  30/03/2026 U16 GAA vs Eire Og
+  01/04/2026 U14 GAA vs Nemo Rangers
+  03/04/2026 Minor Football GAA vs Inniscarra
+  06/04/2026 Minor Football GAA vs Bishopstown
+  08/04/2026 U16 GAA vs Eire Og
+  10/04/2026 U14 GAA vs Douglas
+  12/04/2026 Junior A Football vs Glanmire
+  13/04/2026 U16 GAA vs Glen Rovers
+  13/04/2026 Junior B Football vs Inniscarra
+  20/04/2026 U16 GAA vs Nemo Rangers
+  27/04/2026 U16 GAA vs Ballinora
+  10/05/2026 Senior Football vs Clyda Rovers
+  17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+  24/05/2026 Junior B Football vs Donoughmore
+  25/05/2026 Junior B Football vs Gleann na Laoi
+  30/05/2026 Junior A Hurling vs Aghabullogue
+  31/05/2026 Premier Inter Hurling vs Kanturk
+
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-football-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-football-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u13: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u13 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-premier-inter-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-premier-inter-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u14: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u14 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u16: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u16 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u15: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u15 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u12: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u12 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-senior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-senior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-junior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-junior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-minor: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-minor (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+SUCCESS: Changes processed successfully
+. : File C:\Users\fleurw\OneDrive - Dell Technologies\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 
+cannot be loaded because running scripts is disabled on this system. For more information, see 
+about_Execution_Policies at https:/go.microsoft.com/fwlink/?LinkID=135170.
+At line:1 char:3
++ . 'C:\Users\fleurw\OneDrive - Dell Technologies\Documents\WindowsPowe ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Waiting for JavaScript to load fixtures...
+Attempt 1/3 (waiting up to 15s)...
+Found 205 fixture elements via CSS selector
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 03 Apr 2026 - Ballincollig vs Carrigaline (Red FM Division 2 HL)
+Found fixture: 04 Apr 2026 - Ballincollig 3 vs Inniscarra 2 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 04 Apr 2026 - Inniscarra vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 06 Apr 2026 - Kilshannig vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 06 Apr 2026 - Bandon vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 06 Apr 2026 - Ballincollig 2 vs Bishopstown 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Apr 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig vs Ballyphehane (AOS Security Football League Div 4)
+Found fixture: 08 Apr 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 09 Apr 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 09 Apr 2026 - Ballincollig 2 vs St Finbarrs 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 10 Apr 2026 - Blarney 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 10 Apr 2026 - Kinsale vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 10 Apr 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 10 Apr 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 11 Apr 2026 - Ballincollig 2 vs Kinsale 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 11 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 11 Apr 2026 - Ballincollig vs St Michaels (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Apr 2026 - Ballincollig 3 vs Bishopstown 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 11 Apr 2026 - Ballincollig vs Aghabullogue (EPH Junior Football League Division 1)
+Found fixture: 12 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 12 Apr 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 13 Apr 2026 - St Colmcilles vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 13 Apr 2026 - Douglas vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 14 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 14 Apr 2026 - Ballincollig 2 vs Midleton 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 15 Apr 2026 - Ballincollig 3 vs Aghada 2 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 15 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 15 Apr 2026 - Ballincollig vs Carrigtwohill (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 16 Apr 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 16 Apr 2026 - Glen Rovers vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Apr 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 17 Apr 2026 - Ballincollig vs Erins Own (Red FM Division 2 HL)
+Found fixture: 18 Apr 2026 - Blackrock 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 18 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig 3 vs Blarney 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig vs Dripsey (Cumnor Junior Hurling League Division 1)
+Found fixture: 19 Apr 2026 - Nemo Rangers 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 19 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 20 Apr 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig vs Douglas (AOS Security Hurling League Div 3 )
+Found fixture: 22 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Apr 2026 - Ballincollig 2 vs Croke Rovers (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 23 Apr 2026 - Imokilly vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 23 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 24 Apr 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 24 Apr 2026 - Ballincollig 2 vs St Michaels 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 25 Apr 2026 - Bishopstown 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 25 Apr 2026 - Kilmichael vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 26 Apr 2026 - Ballincollig vs Dohenys (McCarthy Insurance Group Division 2 FL)
+Found fixture: 26 Apr 2026 - Ballincollig vs St Vincents (AOS Security Football League Div 2 G2 )
+Found fixture: 26 Apr 2026 - Ballincollig 3 vs Carrigaline 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 26 Apr 2026 - Ballincollig vs Na Laochra Aeracha (AOS Security Football League Div 4)
+Found fixture: 26 Apr 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 27 Apr 2026 - Ballincollig vs Donoughmore (EPH Junior Football League Division 2 East)
+Found fixture: 27 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 27 Apr 2026 - Ballincollig 2 vs Mallow (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 28 Apr 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 28 Apr 2026 - Ballincollig vs Carrigaline (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 28 Apr 2026 - Cobh 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Apr 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 29 Apr 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Apr 2026 - Carbery vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 30 Apr 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 30 Apr 2026 - Newcestown vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 01 May 2026 - Midleton vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 01 May 2026 - Sarsfields 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 02 May 2026 - Ballincollig 2 vs Erins Own 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 02 May 2026 - Grenagh vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 May 2026 - Na Piarsaigh vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 05 May 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 05 May 2026 - Bandon 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Glanmire 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 06 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 06 May 2026 - Ballincollig 2 vs Blarney 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 May 2026 - Blarney vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 07 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 08 May 2026 - Clyda Rovers vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 09 May 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 09 May 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 1)
+Found fixture: 10 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 10 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 10 May 2026 - Ballincollig vs Ballinora (EPH Junior Football League Division 3 East)
+Found fixture: 11 May 2026 - Ballincollig vs Ballyhea Milford (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 12 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 12 May 2026 - Ballincollig 2 vs Carrigtwohill 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 13 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 13 May 2026 - Ballincollig 3 vs Sarsfields 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 15 May 2026 - Ballincollig vs Na Piarsaigh (Red FM Division 2 HL)
+Found fixture: 16 May 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 16 May 2026 - Ballincollig vs Eire Og (Cumnor Junior Hurling League Division 1)
+Found fixture: 17 May 2026 - Nemo Rangers vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 17 May 2026 - Blackrock vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 17 May 2026 - Ballincollig vs Kilmichael (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 May 2026 - Ballincollig vs Macroom (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 19 May 2026 - Ballincollig vs Beara (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 19 May 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 19 May 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 20 May 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 May 2026 - Donoughmore vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 23 May 2026 - Clondrohid vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 24 May 2026 - Ballincollig vs Uibh Laoire (McCarthy Insurance Group Division 2 FL)
+Found fixture: 25 May 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 26 May 2026 - Ballincollig 3 vs Bandon 2 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 26 May 2026 - Watergrasshill 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 26 May 2026 - Gleann na Laoi vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 28 May 2026 - Aghabullogue vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 29 May 2026 - Kanturk vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 30 May 2026 - Mallow 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 30 May 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 31 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 31 May 2026 - Donoughmore vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 31 May 2026 - Laochra Og vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 04 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 06 Jun 2026 - Ballincollig vs Donoughmore (Cumnor Junior Hurling League Division 1)
+Found fixture: 07 Jun 2026 - O Donovan Rossa vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 08 Jun 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 2 East)
+Found fixture: 09 Jun 2026 - Cloughduv vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 09 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 09 Jun 2026 - Ballincollig 2 vs Blackrock 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 11 Jun 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 13 Jun 2026 - Donoughmore 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 13 Jun 2026 - Blarney vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 14 Jun 2026 - Ballincollig vs Bride Rovers (Red FM Division 2 HL)
+Found fixture: 14 Jun 2026 - Ballincollig vs Gleann na Laoi (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 17 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 18 Jun 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 19 Jun 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 21 Jun 2026 - Ballincollig vs Valley Rovers (McCarthy Insurance Group Division 2 FL)
+Found fixture: 21 Jun 2026 - Ballincollig vs Grenagh (EPH Junior Football League Division 3 East)
+Found fixture: 22 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 24 Jun 2026 - Sarsfields vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 25 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 27 Jun 2026 - Ballincollig 3 vs Ballyhea /Milford 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 28 Jun 2026 - Newtownshandrum vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 28 Jun 2026 - Ballincollig vs Ballyphehane (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 03 Jul 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 03 Jul 2026 - Ballincollig 2 vs Courcey Rovers (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 05 Jul 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 08 Jul 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Jul 2026 - Duhallow vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 10 Jul 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 12 Jul 2026 - Lough Rovers vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 Jul 2026 - Ballincollig 3 vs Croke Rovers 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Jul 2026 - Ballincollig vs Mallow (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Aug 2026 - Lisgoold 2 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 06 Aug 2026 - Bride Rovers vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 11 Aug 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Apr 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 02 Apr 2026 - Blackrock vs Ballincollig (AOS Security Hurling League Div 3 )
+Found fixture: 01 Apr 2026 - Ballincollig 2 vs Glenville (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 01 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 31 Mar 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig 2 vs Bishopstown (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig vs Blarney (EPH Junior Football League Division 2 East)
+Found fixture: 30 Mar 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 29 Mar 2026 - Bishopstown vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 29 Mar 2026 - St Dominics 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 28 Mar 2026 - Castletownbere vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 28 Mar 2026 - Ballincollig 2 vs Glen Rovers 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 27 Mar 2026 - Ballincollig vs St Colmcilles (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 27 Mar 2026 - Grenagh vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 25 Mar 2026 - Ballincollig 3 vs Kildorrery 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Mar 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Mar 2026 - Ballincollig vs Ballyphehane (AOS Security Hurling League Div 3 )
+Found fixture: 22 Mar 2026 - Duarigle Gaels vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Mar 2026 - Valley Rovers vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 21 Mar 2026 - Ballincollig vs Kilmichael (Cumnor Junior Hurling League Division 1)
+Found fixture: 21 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 19 Mar 2026 - Ballincollig vs Lough Rovers (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Mar 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 16 Mar 2026 - Fermoy vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 15 Mar 2026 - Ballinora vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 15 Mar 2026 - Whitechurch vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 15 Mar 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 Mar 2026 - Ballincollig vs Ballingeary (EPH Junior Football League Division 1)
+Found fixture: 13 Mar 2026 - Ballincollig vs Béal Átha'n Ghaorthaidh (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Mar 2026 - Clyda Rovers vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Mar 2026 - St Finbarrs vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 08 Mar 2026 - Ballincollig vs Delanys (AOS Security Hurling League Div 3 )
+Found fixture: 08 Mar 2026 - Ballymartle vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 08 Mar 2026 - Mayfield vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 08 Mar 2026 - Eire Og 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Mar 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 04 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Mar 2026 - Mallow vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Mar 2026 - Aghabullogue vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig vs Whites Cross (AOS Security Football League Div 4)
+Found fixture: 28 Feb 2026 - Ballincollig vs Canovee (EPH Junior Football League Division 1)
+Found fixture: 28 Feb 2026 - Carrigaline vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 22 Feb 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 21 Feb 2026 - Ballincollig 2 vs Ballinhassig (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Processed 205 Ballincollig fixtures
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+WARNING: Could not fetch https://corkcamogie.com/barry-osullivan-league-2026/: 500 Server Error: Internal Server Error for url: https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 5 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 15 total fixtures across 4 leagues
+Camogie: fetched 15 fixtures
+ALERT: FIXTURE CHANGES DETECTED!
+INFO: Previous: 221 fixtures
+INFO: Current: 220 fixtures
+INFO: Added: 6 fixtures
+INFO: Removed: 7 fixtures
+Running ClubZap sync diff...
+============================================================
+  ClubZap Sync - Fixture Diff Report
+  03/04/2026 18:07
+============================================================
+  Current fixtures (website):  220
+  Baseline (uploaded):         118
+------------------------------------------------------------
+
+  NEW fixtures (bulk import):   131
+  CHANGED fixtures (edit):      27
+  POSTPONED (delete):           1
+  REMOVED fixtures (delete):    30
+  Unchanged:                    61
+
+  -> clubzap_new_fixtures.csv
+     Bulk upload this file to ClubZap
+     Contains 131 new fixtures:
+       03/04/2026 U13 GAA vs Clonakilty
+       04/04/2026 U13 GAA vs Inniscarra 2
+       06/04/2026 U13 GAA vs Bandon
+       06/04/2026 U14 GAA vs Bishopstown 2
+       07/04/2026 Minor Football GAA vs Bishopstown
+       ... and 126 more
+
+  -> clubzap_changed_fixtures.csv
+     Manually update these 27 fixtures in ClubZap:
+       03/04/2026 Premier Inter Hurling vs Carrigaline
+         Time: '19:00' -> '18:45'
+         Referee: 'TBC (Pending)' -> 'Patrick O Mahony'
+       04/04/2026 Junior A Hurling vs Inniscarra
+         Referee: 'TBC (Pending)' -> 'Joe Larkin'
+       06/04/2026 Minor Football GAA vs Kilshannig
+         Time: '18:30' -> '11:00'
+         Venue: 'Kilshannig' -> 'Glantane'
+         Referee: 'TBC (Pending)' -> 'Johnny O’Connell'
+       08/04/2026 U16 GAA vs St Michaels
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Niall Hayes Blarney'
+       10/04/2026 U14 GAA vs Kinsale
+         Referee: 'TBC (Pending)' -> 'Anthony O Regan (Kilb)'
+       13/04/2026 U16 GAA vs St Colmcilles
+         Referee: 'TBC (Pending)' -> 'Conor McHugh (Pending)'
+       15/04/2026 Minor Hurling GAA vs Carrigtwohill
+         Time: '18:30' -> '20:15'
+       20/04/2026 U16 GAA vs Douglas 2
+         Time: '18:30' -> '20:00'
+       26/04/2026 Senior Football vs Dohenys
+         Time: '11:30' -> '11:00'
+       26/04/2026 Junior A Football vs St Vincents
+         Referee: 'TBC (Pending)' -> 'Finbarr  O Riordan'
+       27/04/2026 U16 GAA vs Mallow
+         Time: '18:30' -> '20:00'
+       03/04/2026 Minor Football GAA vs Clonakilty
+         Time: '18:30' -> '16:00'
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       01/04/2026 U14 GAA vs Glenville
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Roy  Galvin'
+       30/03/2026 U16 GAA vs Bishopstown
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Peter Cotter'
+       30/03/2026 Junior B Football vs Blarney
+         Venue: 'Ballincollig' -> 'Blarney'
+         Referee: 'TBC (Pending)' -> 'Brian Harte'
+       29/03/2026 Junior A Football vs Bishopstown
+         Referee: 'TBC (Pending)' -> 'Trevor Lyons'
+       22/03/2026 Minor Football GAA vs Duarigle Gaels
+         Venue: 'Duarigle Gaels' -> 'Cullen'
+         Referee: 'TBC (Pending)' -> 'Adrian O Connor'
+       22/03/2026 Premier Inter Hurling vs Valley Rovers
+         Referee: 'TBC (Pending)' -> 'Ian McCarthy'
+       21/03/2026 Junior A Hurling vs Kilmichael
+         Referee: 'TBC (Pending)' -> 'Joe Larkin (Pending)'
+       17/03/2026 U16 GAA vs Kiltha Og
+         Venue: 'Castlemartyr' -> 'Dungourney'
+         Referee: 'TBC (Pending)' -> 'Arthur Murphy'
+       15/03/2026 Junior B Football vs Ballinora
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       14/03/2026 Junior A Football vs Ballingeary
+         Referee: 'TBC (Pending)' -> 'Pat O Leary (Kilmurry) (Pending)'
+       13/03/2026 Senior Football vs Béal Átha'n Ghaorthaidh
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor'
+       08/03/2026 U16 GAA vs St Finbarrs
+         Time: '12:30' -> '16:00'
+       08/03/2026 Premier Inter Hurling vs Ballymartle
+         Referee: 'TBC (Pending)' -> 'Kevin O Sullivan'
+       01/03/2026 Minor Football GAA vs Aghabullogue
+         Time: '12:30' -> '19:30'
+         Venue: 'Coachford' -> 'Ballincollig'
+       28/02/2026 Senior Football vs Carrigaline
+         Referee: 'Alan O'Connor (Pending)' -> 'Alan O'Connor'
+
+  POSTPONED - Delete these from ClubZap:
+       11/04/2026 Junior B Football vs Glanmire (cancelled/postponed)
+
+  -> clubzap_removed_fixtures.csv
+     Manually delete these 30 fixtures from ClubZap:
+       23/02/2026 U16 GAA vs Inniscarra
+       27/02/2026 Junior A Football vs Brian Dillons
+       08/03/2026 U16 GAA vs Clyda Rovers
+       14/03/2026 U14 GAA vs Killeagh
+       15/03/2026 Minor Hurling GAA vs Carrigaline
+       17/03/2026 U16 GAA vs Fermoy
+       22/03/2026 Junior A Hurling vs Lough Rovers
+       22/03/2026 U14 GAA vs Carrigaline 2
+       22/03/2026 Minor Football GAA vs Douglas
+       22/03/2026 U14 GAA vs St Colmcilles
+       28/03/2026 Junior A Football vs Grenagh
+       29/03/2026 Senior Football vs Castletownbere
+       29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+       30/03/2026 U16 GAA vs Eire Og
+       01/04/2026 U14 GAA vs Nemo Rangers
+       03/04/2026 Minor Football GAA vs Inniscarra
+       06/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 U16 GAA vs Eire Og
+       10/04/2026 U14 GAA vs Douglas
+       12/04/2026 Junior A Football vs Glanmire
+       13/04/2026 U16 GAA vs Glen Rovers
+       13/04/2026 Junior B Football vs Inniscarra
+       20/04/2026 U16 GAA vs Nemo Rangers
+       27/04/2026 U16 GAA vs Ballinora
+       10/05/2026 Senior Football vs Clyda Rovers
+       17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+       24/05/2026 Junior B Football vs Donoughmore
+       25/05/2026 Junior B Football vs Gleann na Laoi
+       30/05/2026 Junior A Hurling vs Aghabullogue
+       31/05/2026 Premier Inter Hurling vs Kanturk
+
+  After making changes in ClubZap, run:
+  py clubzap_sync.py uploaded
+============================================================
+Failed to send Windows notification: Command '['powershell', '-Command', '\nAdd-Type -AssemblyName System.Windows.Forms\n[System.Windows.Forms.MessageBox]::Show("Ballincollig GAA Fixtures Update\n\nNEW (131):\n  03/04/2026 U13 GAA vs Clonakilty\n  04/04/2026 U13 GAA vs Inniscarra 2\n  06/04/2026 U13 GAA vs Bandon\n  06/04/2026 U14 GAA vs Bishopstown 2\n  07/04/2026 Minor Football GAA vs Bishopstown\n  ...and 126 more\nCHANGED (27):\n  03/04/2026 Premier Inter Hurling vs Carrigaline\n      Time: 18:45\n      Referee: Patrick O Mahony\n  04/04/2026 Junior A Hurling vs Inniscarra\n      Referee: Joe Larkin\n  06/04/2026 Minor Football GAA vs Kilshannig\n      Time: 11:00\n      Venue: Glantane\n      Referee: Johnny O’Connell\n  08/04/2026 U16 GAA vs St Michaels\n      Time: 20:00\n      Referee: Niall Hayes Blarney\n  10/04/2026 U14 GAA vs Kinsale\n      Referee: Anthony O Regan (Kilb)\n  ...and 22 more\nPOSTPONED (1):\n  11/04/2026 Junior B Football vs Glanmire\nREMOVED (30):\n  23/02/2026 U16 GAA vs Inniscarra\n  27/02/2026 Junior A Football vs Brian Dillons\n  08/03/2026 U16 GAA vs Clyda Rovers\n  14/03/2026 U14 GAA vs Killeagh\n  15/03/2026 Minor Hurling GAA vs Carrigaline\n  17/03/2026 U16 GAA vs Fermoy\n  22/03/2026 Junior A Hurling vs Lough Rovers\n  22/03/2026 U14 GAA vs Carrigaline 2\n  22/03/2026 Minor Football GAA vs Douglas\n  22/03/2026 U14 GAA vs St Colmcilles\n  28/03/2026 Junior A Football vs Grenagh\n  29/03/2026 Senior Football vs Castletownbere\n  29/03/2026 Minor Hurling GAA vs Na Piarsaigh\n  30/03/2026 U16 GAA vs Eire Og\n  01/04/2026 U14 GAA vs Nemo Rangers\n  03/04/2026 Minor Football GAA vs Inniscarra\n  06/04/2026 Minor Football GAA vs Bishopstown\n  08/04/2026 U16 GAA vs Eire Og\n  10/04/2026 U14 GAA vs Douglas\n  12/04/2026 Junior A Football vs Glanmire\n  13/04/2026 U16 GAA vs Glen Rovers\n  13/04/2026 Junior B Football vs Inniscarra\n  20/04/2026 U16 GAA vs Nemo Rangers\n  27/04/2026 U16 GAA vs Ballinora\n  10/05/2026 Senior Football vs Clyda Rovers\n  17/05/2026 Premier Inter Hurling vs Na Piarsaigh\n  24/05/2026 Junior B Football vs Donoughmore\n  25/05/2026 Junior B Football vs Gleann na Laoi\n  30/05/2026 Junior A Hurling vs Aghabullogue\n  31/05/2026 Premier Inter Hurling vs Kanturk", "Ballincollig GAA - Fixture Changes", "OK", "Information")\n']' timed out after 10 seconds
+
+NOTIFICATION: Ballincollig GAA - Fixture Changes
+Message: Ballincollig GAA Fixtures Update
+
+NEW (131):
+  03/04/2026 U13 GAA vs Clonakilty
+  04/04/2026 U13 GAA vs Inniscarra 2
+  06/04/2026 U13 GAA vs Bandon
+  06/04/2026 U14 GAA vs Bishopstown 2
+  07/04/2026 Minor Football GAA vs Bishopstown
+  ...and 126 more
+CHANGED (27):
+  03/04/2026 Premier Inter Hurling vs Carrigaline
+      Time: 18:45
+      Referee: Patrick O Mahony
+  04/04/2026 Junior A Hurling vs Inniscarra
+      Referee: Joe Larkin
+  06/04/2026 Minor Football GAA vs Kilshannig
+      Time: 11:00
+      Venue: Glantane
+      Referee: Johnny O’Connell
+  08/04/2026 U16 GAA vs St Michaels
+      Time: 20:00
+      Referee: Niall Hayes Blarney
+  10/04/2026 U14 GAA vs Kinsale
+      Referee: Anthony O Regan (Kilb)
+  ...and 22 more
+POSTPONED (1):
+  11/04/2026 Junior B Football vs Glanmire
+REMOVED (30):
+  23/02/2026 U16 GAA vs Inniscarra
+  27/02/2026 Junior A Football vs Brian Dillons
+  08/03/2026 U16 GAA vs Clyda Rovers
+  14/03/2026 U14 GAA vs Killeagh
+  15/03/2026 Minor Hurling GAA vs Carrigaline
+  17/03/2026 U16 GAA vs Fermoy
+  22/03/2026 Junior A Hurling vs Lough Rovers
+  22/03/2026 U14 GAA vs Carrigaline 2
+  22/03/2026 Minor Football GAA vs Douglas
+  22/03/2026 U14 GAA vs St Colmcilles
+  28/03/2026 Junior A Football vs Grenagh
+  29/03/2026 Senior Football vs Castletownbere
+  29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+  30/03/2026 U16 GAA vs Eire Og
+  01/04/2026 U14 GAA vs Nemo Rangers
+  03/04/2026 Minor Football GAA vs Inniscarra
+  06/04/2026 Minor Football GAA vs Bishopstown
+  08/04/2026 U16 GAA vs Eire Og
+  10/04/2026 U14 GAA vs Douglas
+  12/04/2026 Junior A Football vs Glanmire
+  13/04/2026 U16 GAA vs Glen Rovers
+  13/04/2026 Junior B Football vs Inniscarra
+  20/04/2026 U16 GAA vs Nemo Rangers
+  27/04/2026 U16 GAA vs Ballinora
+  10/05/2026 Senior Football vs Clyda Rovers
+  17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+  24/05/2026 Junior B Football vs Donoughmore
+  25/05/2026 Junior B Football vs Gleann na Laoi
+  30/05/2026 Junior A Hurling vs Aghabullogue
+  31/05/2026 Premier Inter Hurling vs Kanturk
+
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u13: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u13 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-premier-inter-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-premier-inter-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-football-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-football-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u14: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u14 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u16: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u16 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u15: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u15 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u12: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u12 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-senior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-senior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-junior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-junior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-minor: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-minor (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+SUCCESS: Changes processed successfully
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Waiting for JavaScript to load fixtures...
+Attempt 1/3 (waiting up to 15s)...
+Found 205 fixture elements via CSS selector
+Found fixture: 07 Apr 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig vs Ballyphehane (AOS Security Football League Div 4)
+Found fixture: 08 Apr 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 09 Apr 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 09 Apr 2026 - Ballincollig 2 vs St Finbarrs 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 10 Apr 2026 - Blarney 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 10 Apr 2026 - Kinsale vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 10 Apr 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 10 Apr 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 11 Apr 2026 - Ballincollig 2 vs Kinsale 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 11 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 11 Apr 2026 - Ballincollig vs St Michaels (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Apr 2026 - Ballincollig 3 vs Bishopstown 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 12 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 12 Apr 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 Apr 2026 - Ballincollig vs Aghabullogue (EPH Junior Football League Division 1)
+Found fixture: 13 Apr 2026 - Douglas vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 13 Apr 2026 - St Colmcilles vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 14 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 14 Apr 2026 - Ballincollig 2 vs Midleton 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 15 Apr 2026 - Ballincollig 3 vs Aghada 2 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 15 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 15 Apr 2026 - Ballincollig vs Carrigtwohill (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 16 Apr 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 16 Apr 2026 - Glen Rovers vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Apr 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 17 Apr 2026 - Ballincollig vs Erins Own (Red FM Division 2 HL)
+Found fixture: 18 Apr 2026 - Blackrock 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 18 Apr 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig 3 vs Blarney 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig vs Dripsey (Cumnor Junior Hurling League Division 1)
+Found fixture: 19 Apr 2026 - Nemo Rangers 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 19 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 20 Apr 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig vs Douglas (AOS Security Hurling League Div 3 )
+Found fixture: 22 Apr 2026 - Ballincollig 2 vs Croke Rovers (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 23 Apr 2026 - Imokilly vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 23 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 24 Apr 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 24 Apr 2026 - Ballincollig 2 vs St Michaels 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 25 Apr 2026 - Bishopstown 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Carrigaline 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 25 Apr 2026 - Kilmichael vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 26 Apr 2026 - Ballincollig vs Dohenys (McCarthy Insurance Group Division 2 FL)
+Found fixture: 26 Apr 2026 - Ballincollig vs St Vincents (AOS Security Football League Div 2 G2 )
+Found fixture: 26 Apr 2026 - Ballincollig vs Na Laochra Aeracha (AOS Security Football League Div 4)
+Found fixture: 26 Apr 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 27 Apr 2026 - Ballincollig vs Donoughmore (EPH Junior Football League Division 2 East)
+Found fixture: 27 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 27 Apr 2026 - Ballincollig 2 vs Mallow (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 28 Apr 2026 - Cobh 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Apr 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 29 Apr 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Apr 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 30 Apr 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 30 Apr 2026 - Carbery vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 30 Apr 2026 - Newcestown vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 01 May 2026 - Midleton vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 01 May 2026 - Sarsfields 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 02 May 2026 - Ballincollig 2 vs Erins Own 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 02 May 2026 - Grenagh vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 May 2026 - Na Piarsaigh vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 04 May 2026 - Ballincollig vs Carrigaline (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 05 May 2026 - Bandon 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 05 May 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 05 May 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Glanmire 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 06 May 2026 - Blarney vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 06 May 2026 - Ballincollig 2 vs Blarney 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 07 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 08 May 2026 - Clyda Rovers vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 09 May 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 09 May 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 1)
+Found fixture: 10 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 10 May 2026 - Ballincollig vs Ballinora (EPH Junior Football League Division 3 East)
+Found fixture: 10 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 11 May 2026 - Ballincollig vs Ballyhea Milford (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 12 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 12 May 2026 - Ballincollig 2 vs Carrigtwohill 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 13 May 2026 - Ballincollig 3 vs Sarsfields 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 13 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 14 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 15 May 2026 - Ballincollig vs Na Piarsaigh (Red FM Division 2 HL)
+Found fixture: 16 May 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 16 May 2026 - Ballincollig vs Eire Og (Cumnor Junior Hurling League Division 1)
+Found fixture: 17 May 2026 - Blackrock vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 17 May 2026 - Nemo Rangers vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 17 May 2026 - Ballincollig vs Kilmichael (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 May 2026 - Ballincollig vs Macroom (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 19 May 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 19 May 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 19 May 2026 - Ballincollig vs Beara (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 20 May 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 May 2026 - Donoughmore vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 23 May 2026 - Clondrohid vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 24 May 2026 - Ballincollig vs Uibh Laoire (McCarthy Insurance Group Division 2 FL)
+Found fixture: 25 May 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 26 May 2026 - Ballincollig 3 vs Bandon 2 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 26 May 2026 - Watergrasshill 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 26 May 2026 - Gleann na Laoi vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 28 May 2026 - Aghabullogue vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 29 May 2026 - Kanturk vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 30 May 2026 - Mallow 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 30 May 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 31 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 31 May 2026 - Donoughmore vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 31 May 2026 - Laochra Og vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 04 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 06 Jun 2026 - Ballincollig vs Donoughmore (Cumnor Junior Hurling League Division 1)
+Found fixture: 07 Jun 2026 - O Donovan Rossa vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 08 Jun 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 2 East)
+Found fixture: 09 Jun 2026 - Cloughduv vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 09 Jun 2026 - Ballincollig 2 vs Blackrock 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 09 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 11 Jun 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 13 Jun 2026 - Donoughmore 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 13 Jun 2026 - Blarney vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 14 Jun 2026 - Ballincollig vs Bride Rovers (Red FM Division 2 HL)
+Found fixture: 14 Jun 2026 - Ballincollig vs Gleann na Laoi (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 17 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 18 Jun 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 19 Jun 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 21 Jun 2026 - Ballincollig vs Valley Rovers (McCarthy Insurance Group Division 2 FL)
+Found fixture: 21 Jun 2026 - Ballincollig vs Grenagh (EPH Junior Football League Division 3 East)
+Found fixture: 22 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 24 Jun 2026 - Sarsfields vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 25 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 27 Jun 2026 - Ballincollig 3 vs Ballyhea /Milford 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 28 Jun 2026 - Newtownshandrum vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 28 Jun 2026 - Ballincollig vs Ballyphehane (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 03 Jul 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 03 Jul 2026 - Ballincollig 2 vs Courcey Rovers (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 05 Jul 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 08 Jul 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Jul 2026 - Duhallow vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 10 Jul 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 12 Jul 2026 - Lough Rovers vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 Jul 2026 - Ballincollig 3 vs Croke Rovers 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Jul 2026 - Ballincollig vs Mallow (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Aug 2026 - Lisgoold 2 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 06 Aug 2026 - Bride Rovers vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 11 Aug 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 06 Apr 2026 - Ballincollig 2 vs Bishopstown 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 Apr 2026 - Bandon vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 06 Apr 2026 - Kilshannig vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 04 Apr 2026 - Inniscarra vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 Apr 2026 - Ballincollig 3 vs Inniscarra 2 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 03 Apr 2026 - Ballincollig vs Carrigaline (Red FM Division 2 HL)
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Apr 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 02 Apr 2026 - Blackrock vs Ballincollig (AOS Security Hurling League Div 3 )
+Found fixture: 01 Apr 2026 - Ballincollig 2 vs Glenville (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 01 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 31 Mar 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig 2 vs Bishopstown (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig vs Blarney (EPH Junior Football League Division 2 East)
+Found fixture: 30 Mar 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 29 Mar 2026 - Bishopstown vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 29 Mar 2026 - St Dominics 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 28 Mar 2026 - Castletownbere vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 28 Mar 2026 - Ballincollig 2 vs Glen Rovers 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 27 Mar 2026 - Ballincollig vs St Colmcilles (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 27 Mar 2026 - Grenagh vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 25 Mar 2026 - Ballincollig 3 vs Kildorrery 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Mar 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Mar 2026 - Ballincollig vs Ballyphehane (AOS Security Hurling League Div 3 )
+Found fixture: 22 Mar 2026 - Duarigle Gaels vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Mar 2026 - Valley Rovers vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 21 Mar 2026 - Ballincollig vs Kilmichael (Cumnor Junior Hurling League Division 1)
+Found fixture: 21 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 19 Mar 2026 - Ballincollig vs Lough Rovers (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Mar 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 16 Mar 2026 - Fermoy vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 15 Mar 2026 - Ballinora vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 15 Mar 2026 - Whitechurch vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 15 Mar 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 Mar 2026 - Ballincollig vs Ballingeary (EPH Junior Football League Division 1)
+Found fixture: 13 Mar 2026 - Ballincollig vs Béal Átha'n Ghaorthaidh (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Mar 2026 - Clyda Rovers vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Mar 2026 - St Finbarrs vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 08 Mar 2026 - Ballincollig vs Delanys (AOS Security Hurling League Div 3 )
+Found fixture: 08 Mar 2026 - Mayfield vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 08 Mar 2026 - Ballymartle vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 08 Mar 2026 - Eire Og 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Mar 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 04 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Mar 2026 - Mallow vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Mar 2026 - Aghabullogue vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig vs Whites Cross (AOS Security Football League Div 4)
+Found fixture: 28 Feb 2026 - Ballincollig vs Canovee (EPH Junior Football League Division 1)
+Found fixture: 28 Feb 2026 - Carrigaline vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 22 Feb 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 21 Feb 2026 - Ballincollig 2 vs Ballinhassig (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Processed 205 Ballincollig fixtures
+Camogie: 7 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+WARNING: Could not fetch https://corkcamogie.com/barry-osullivan-league-2026/: 500 Server Error: Internal Server Error for url: https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 5 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 15 total fixtures across 4 leagues
+Camogie: fetched 15 fixtures
+ALERT: FIXTURE CHANGES DETECTED!
+INFO: Previous: 220 fixtures
+INFO: Current: 220 fixtures
+INFO: Added: 26 fixtures
+INFO: Removed: 26 fixtures
+Running ClubZap sync diff...
+============================================================
+  ClubZap Sync - Fixture Diff Report
+  07/04/2026 17:31
+============================================================
+  Current fixtures (website):  220
+  Baseline (uploaded):         118
+------------------------------------------------------------
+
+  NEW fixtures (bulk import):   133
+  CHANGED fixtures (edit):      28
+  POSTPONED (delete):           0
+  REMOVED fixtures (delete):    31
+  Unchanged:                    59
+
+  -> clubzap_new_fixtures.csv
+     Bulk upload this file to ClubZap
+     Contains 133 new fixtures:
+       07/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 Junior B Football vs Ballyphehane
+       09/04/2026 U16 GAA vs Eire Og
+       09/04/2026 U13 GAA vs St Finbarrs 2
+       10/04/2026 U13 GAA vs Blarney 2
+       ... and 128 more
+
+  -> clubzap_changed_fixtures.csv
+     Manually update these 28 fixtures in ClubZap:
+       08/04/2026 U16 GAA vs St Michaels
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Niall Hayes Blarney'
+       10/04/2026 U14 GAA vs Kinsale
+         Referee: 'TBC (Pending)' -> 'Anthony O Regan (Kilb)'
+       11/04/2026 Senior Football vs St Michaels
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor (Pending)'
+       15/04/2026 Minor Hurling GAA vs Carrigtwohill
+         Time: '18:30' -> '20:15'
+       20/04/2026 U16 GAA vs Douglas 2
+         Time: '18:30' -> '20:00'
+       22/04/2026 Minor Football GAA vs Nemo Rangers
+         Time: '18:30' -> '20:00'
+       26/04/2026 Senior Football vs Dohenys
+         Time: '11:30' -> '11:00'
+       26/04/2026 Junior A Football vs St Vincents
+         Referee: 'TBC (Pending)' -> 'Finbarr  O Riordan'
+       27/04/2026 U16 GAA vs Mallow
+         Time: '18:30' -> '20:00'
+       06/04/2026 Minor Football GAA vs Kilshannig
+         Time: '18:30' -> '11:00'
+         Venue: 'Kilshannig' -> 'Glantane'
+         Referee: 'TBC (Pending)' -> 'Johnny O’Connell'
+       04/04/2026 Junior A Hurling vs Inniscarra
+         Referee: 'TBC (Pending)' -> 'Joe Larkin'
+       03/04/2026 Premier Inter Hurling vs Carrigaline
+         Time: '19:00' -> '18:45'
+         Referee: 'TBC (Pending)' -> 'Patrick O Mahony'
+       03/04/2026 Minor Football GAA vs Clonakilty
+         Time: '18:30' -> '16:00'
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       01/04/2026 U14 GAA vs Glenville
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Roy  Galvin'
+       30/03/2026 U16 GAA vs Bishopstown
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Peter Cotter'
+       30/03/2026 Junior B Football vs Blarney
+         Venue: 'Ballincollig' -> 'Blarney'
+         Referee: 'TBC (Pending)' -> 'Brian Harte'
+       29/03/2026 Junior A Football vs Bishopstown
+         Referee: 'TBC (Pending)' -> 'Trevor Lyons'
+       22/03/2026 Minor Football GAA vs Duarigle Gaels
+         Venue: 'Duarigle Gaels' -> 'Cullen'
+         Referee: 'TBC (Pending)' -> 'Adrian O Connor'
+       22/03/2026 Premier Inter Hurling vs Valley Rovers
+         Referee: 'TBC (Pending)' -> 'Ian McCarthy'
+       21/03/2026 Junior A Hurling vs Kilmichael
+         Referee: 'TBC (Pending)' -> 'Joe Larkin (Pending)'
+       17/03/2026 U16 GAA vs Kiltha Og
+         Venue: 'Castlemartyr' -> 'Dungourney'
+         Referee: 'TBC (Pending)' -> 'Arthur Murphy'
+       15/03/2026 Junior B Football vs Ballinora
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       14/03/2026 Junior A Football vs Ballingeary
+         Referee: 'TBC (Pending)' -> 'Pat O Leary (Kilmurry) (Pending)'
+       13/03/2026 Senior Football vs Béal Átha'n Ghaorthaidh
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor'
+       08/03/2026 U16 GAA vs St Finbarrs
+         Time: '12:30' -> '16:00'
+       08/03/2026 Premier Inter Hurling vs Ballymartle
+         Referee: 'TBC (Pending)' -> 'Kevin O Sullivan'
+       01/03/2026 Minor Football GAA vs Aghabullogue
+         Time: '12:30' -> '19:30'
+         Venue: 'Coachford' -> 'Ballincollig'
+       28/02/2026 Senior Football vs Carrigaline
+         Referee: 'Alan O'Connor (Pending)' -> 'Alan O'Connor'
+
+  -> clubzap_removed_fixtures.csv
+     Manually delete these 31 fixtures from ClubZap:
+       23/02/2026 U16 GAA vs Inniscarra
+       27/02/2026 Junior A Football vs Brian Dillons
+       08/03/2026 U16 GAA vs Clyda Rovers
+       14/03/2026 U14 GAA vs Killeagh
+       15/03/2026 Minor Hurling GAA vs Carrigaline
+       17/03/2026 U16 GAA vs Fermoy
+       22/03/2026 Junior A Hurling vs Lough Rovers
+       22/03/2026 U14 GAA vs Carrigaline 2
+       22/03/2026 Minor Football GAA vs Douglas
+       22/03/2026 U14 GAA vs St Colmcilles
+       28/03/2026 Junior A Football vs Grenagh
+       29/03/2026 Senior Football vs Castletownbere
+       29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+       30/03/2026 U16 GAA vs Eire Og
+       01/04/2026 U14 GAA vs Nemo Rangers
+       03/04/2026 Minor Football GAA vs Inniscarra
+       06/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 U16 GAA vs Eire Og
+       10/04/2026 U14 GAA vs Douglas
+       11/04/2026 Junior A Football vs Aghabullogue
+       12/04/2026 Junior A Football vs Glanmire
+       13/04/2026 U16 GAA vs Glen Rovers
+       13/04/2026 Junior B Football vs Inniscarra
+       20/04/2026 U16 GAA vs Nemo Rangers
+       27/04/2026 U16 GAA vs Ballinora
+       10/05/2026 Senior Football vs Clyda Rovers
+       17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+       24/05/2026 Junior B Football vs Donoughmore
+       25/05/2026 Junior B Football vs Gleann na Laoi
+       30/05/2026 Junior A Hurling vs Aghabullogue
+       31/05/2026 Premier Inter Hurling vs Kanturk
+
+  After making changes in ClubZap, run:
+  py clubzap_sync.py uploaded
+============================================================
+Windows toast notification sent
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-football-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-football-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u16: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u16 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u13: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u13 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u14: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u14 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u15: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u15 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u12: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u12 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-premier-inter-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-premier-inter-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-senior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-senior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-junior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-junior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-minor: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-minor (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+SUCCESS: Changes processed successfully
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Waiting for JavaScript to load fixtures...
+Attempt 1/3 (waiting up to 15s)...
+Found 213 fixture elements via CSS selector
+Found fixture: 09 Apr 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 09 Apr 2026 - Ballincollig 2 vs St Finbarrs 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 10 Apr 2026 - Blarney 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 10 Apr 2026 - Kinsale vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 10 Apr 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 10 Apr 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 11 Apr 2026 - Ballincollig 2 vs Kinsale 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 11 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 11 Apr 2026 - Ballincollig vs St Michaels (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Apr 2026 - Ballincollig 3 vs Bishopstown 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 12 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 12 Apr 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 Apr 2026 - Ballincollig vs Aghabullogue (EPH Junior Football League Division 1)
+Found fixture: 13 Apr 2026 - St Colmcilles vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 13 Apr 2026 - Douglas vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 14 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 14 Apr 2026 - Ballincollig 2 vs Midleton 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 15 Apr 2026 - Ballincollig 3 vs Aghada 2 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 15 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 15 Apr 2026 - Ballincollig vs Carrigtwohill (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 16 Apr 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 16 Apr 2026 - Glen Rovers vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Apr 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 17 Apr 2026 - Ballincollig vs Erins Own (Red FM Division 2 HL)
+Found fixture: 18 Apr 2026 - Blackrock 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 18 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig 3 vs Blarney 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig vs Dripsey (Cumnor Junior Hurling League Division 1)
+Found fixture: 19 Apr 2026 - Nemo Rangers 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 19 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 20 Apr 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig 2 vs Croke Rovers (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig vs Douglas (AOS Security Hurling League Div 3 )
+Found fixture: 22 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 23 Apr 2026 - Imokilly vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 23 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 24 Apr 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 24 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 24 Apr 2026 - Ballincollig 2 vs St Michaels 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 25 Apr 2026 - Bishopstown 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 25 Apr 2026 - Ballincollig 2 vs St Colmcilles 2 (Rebel Og Mid Fe14 Division 1 Section A Section 2 Football Championship)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Carrigaline 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 25 Apr 2026 - Kilmichael vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 26 Apr 2026 - Ballincollig vs Dohenys (McCarthy Insurance Group Division 2 FL)
+Found fixture: 26 Apr 2026 - Ballincollig vs St Vincents (AOS Security Football League Div 2 G2 )
+Found fixture: 26 Apr 2026 - Ballincollig vs Na Laochra Aeracha (AOS Security Football League Div 4)
+Found fixture: 26 Apr 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 27 Apr 2026 - Ballincollig vs Donoughmore (EPH Junior Football League Division 2 East)
+Found fixture: 27 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 27 Apr 2026 - Ballincollig 2 vs Mallow (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 28 Apr 2026 - Cobh 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Apr 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 29 Apr 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Apr 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 30 Apr 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 30 Apr 2026 - Carbery vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 30 Apr 2026 - Newcestown vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 01 May 2026 - Midleton vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 01 May 2026 - Sarsfields 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 02 May 2026 - Ballincollig 2 vs Erins Own 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 02 May 2026 - Grenagh vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 May 2026 - Na Piarsaigh vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 04 May 2026 - Ballincollig vs Carrigaline (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Glanmire 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 05 May 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 05 May 2026 - Bandon 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 06 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 06 May 2026 - Blarney vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 06 May 2026 - Ballincollig 2 vs Blarney 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 08 May 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 08 May 2026 - Clyda Rovers vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 09 May 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 09 May 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 1)
+Found fixture: 10 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 10 May 2026 - Ballincollig vs Ballinora (EPH Junior Football League Division 3 East)
+Found fixture: 10 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 11 May 2026 - Ballincollig vs Ballyhea Milford (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 12 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 12 May 2026 - Ballincollig 2 vs Carrigtwohill 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 13 May 2026 - Ballincollig 3 vs Sarsfields 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 13 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 14 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 15 May 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 15 May 2026 - Ballincollig vs Na Piarsaigh (Red FM Division 2 HL)
+Found fixture: 16 May 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 16 May 2026 - Ballincollig vs Eire Og (Cumnor Junior Hurling League Division 1)
+Found fixture: 17 May 2026 - Nemo Rangers vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 17 May 2026 - Blackrock vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 17 May 2026 - Ballincollig vs Kilmichael (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 May 2026 - Ballincollig vs Macroom (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 19 May 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 19 May 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 19 May 2026 - Ballincollig vs Beara (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 20 May 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 May 2026 - St Colmcilles vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 22 May 2026 - Donoughmore vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 23 May 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section A Section 2 Football Championship)
+Found fixture: 23 May 2026 - Clondrohid vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 24 May 2026 - Ballincollig vs Uibh Laoire (McCarthy Insurance Group Division 2 FL)
+Found fixture: 25 May 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 26 May 2026 - Ballincollig 3 vs Bandon 2 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 26 May 2026 - Watergrasshill 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 26 May 2026 - Gleann na Laoi vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 28 May 2026 - Aghabullogue vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 29 May 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 29 May 2026 - Kanturk vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 30 May 2026 - Mallow 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 30 May 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 30 May 2026 - Donoughmore vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 31 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 31 May 2026 - Laochra Og vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 04 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 05 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 06 Jun 2026 - Ballincollig vs Donoughmore (Cumnor Junior Hurling League Division 1)
+Found fixture: 07 Jun 2026 - O Donovan Rossa vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 08 Jun 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 2 East)
+Found fixture: 09 Jun 2026 - Cloughduv vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 09 Jun 2026 - Ballincollig 2 vs Blackrock 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 09 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 11 Jun 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 13 Jun 2026 - Donoughmore 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 13 Jun 2026 - Blarney vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 14 Jun 2026 - Ballincollig vs Bride Rovers (Red FM Division 2 HL)
+Found fixture: 14 Jun 2026 - Ballincollig vs Gleann na Laoi (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 17 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 18 Jun 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 19 Jun 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 21 Jun 2026 - Ballincollig vs Valley Rovers (McCarthy Insurance Group Division 2 FL)
+Found fixture: 21 Jun 2026 - Ballincollig vs Grenagh (EPH Junior Football League Division 3 East)
+Found fixture: 22 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 24 Jun 2026 - Sarsfields vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 25 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 27 Jun 2026 - Ballincollig 3 vs Ballyhea /Milford 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 28 Jun 2026 - Newtownshandrum vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 28 Jun 2026 - Ballincollig vs Ballyphehane (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 03 Jul 2026 - Ballincollig 2 vs Courcey Rovers (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 03 Jul 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 05 Jul 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 08 Jul 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Jul 2026 - Duhallow vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 10 Jul 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 12 Jul 2026 - Lough Rovers vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 Jul 2026 - Ballincollig 3 vs Croke Rovers 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Jul 2026 - Ballincollig vs Mallow (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Aug 2026 - Lisgoold 2 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 06 Aug 2026 - Bride Rovers vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 11 Aug 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig vs Ballyphehane (AOS Security Football League Div 4)
+Found fixture: 07 Apr 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 06 Apr 2026 - Ballincollig 2 vs Bishopstown 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 Apr 2026 - Bandon vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 06 Apr 2026 - Kilshannig vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 04 Apr 2026 - Inniscarra vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 Apr 2026 - Ballincollig 3 vs Inniscarra 2 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 03 Apr 2026 - Ballincollig vs Carrigaline (Red FM Division 2 HL)
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Apr 2026 - Blackrock vs Ballincollig (AOS Security Hurling League Div 3 )
+Found fixture: 02 Apr 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Apr 2026 - Ballincollig 2 vs Glenville (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 01 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 31 Mar 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig 2 vs Bishopstown (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig vs Blarney (EPH Junior Football League Division 2 East)
+Found fixture: 30 Mar 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 29 Mar 2026 - Bishopstown vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 29 Mar 2026 - St Dominics 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 28 Mar 2026 - Castletownbere vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 28 Mar 2026 - Ballincollig 2 vs Glen Rovers 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 27 Mar 2026 - Ballincollig vs St Colmcilles (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 27 Mar 2026 - Grenagh vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 25 Mar 2026 - Ballincollig 3 vs Kildorrery 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Mar 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Mar 2026 - Ballincollig vs Ballyphehane (AOS Security Hurling League Div 3 )
+Found fixture: 22 Mar 2026 - Duarigle Gaels vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Mar 2026 - Valley Rovers vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 21 Mar 2026 - Ballincollig vs Kilmichael (Cumnor Junior Hurling League Division 1)
+Found fixture: 21 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 19 Mar 2026 - Ballincollig vs Lough Rovers (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Mar 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 16 Mar 2026 - Fermoy vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 15 Mar 2026 - Ballinora vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 15 Mar 2026 - Whitechurch vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 15 Mar 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 Mar 2026 - Ballincollig vs Ballingeary (EPH Junior Football League Division 1)
+Found fixture: 13 Mar 2026 - Ballincollig vs Béal Átha'n Ghaorthaidh (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Mar 2026 - Clyda Rovers vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Mar 2026 - St Finbarrs vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 08 Mar 2026 - Ballincollig vs Delanys (AOS Security Hurling League Div 3 )
+Found fixture: 08 Mar 2026 - Ballymartle vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 08 Mar 2026 - Mayfield vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 08 Mar 2026 - Eire Og 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Mar 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 04 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Mar 2026 - Mallow vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Mar 2026 - Aghabullogue vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig vs Whites Cross (AOS Security Football League Div 4)
+Found fixture: 28 Feb 2026 - Ballincollig vs Canovee (EPH Junior Football League Division 1)
+Found fixture: 28 Feb 2026 - Carrigaline vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 22 Feb 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 21 Feb 2026 - Ballincollig 2 vs Ballinhassig (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Processed 213 Ballincollig fixtures
+Camogie: 7 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+WARNING: Could not fetch https://corkcamogie.com/barry-osullivan-league-2026/: 500 Server Error: Internal Server Error for url: https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 5 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 15 total fixtures across 4 leagues
+Camogie: fetched 15 fixtures
+ALERT: FIXTURE CHANGES DETECTED!
+INFO: Previous: 220 fixtures
+INFO: Current: 228 fixtures
+INFO: Added: 17 fixtures
+INFO: Removed: 9 fixtures
+Running ClubZap sync diff...
+============================================================
+  ClubZap Sync - Fixture Diff Report
+  09/04/2026 09:07
+============================================================
+  Current fixtures (website):  228
+  Baseline (uploaded):         118
+------------------------------------------------------------
+
+  NEW fixtures (bulk import):   142
+  CHANGED fixtures (edit):      28
+  POSTPONED (delete):           0
+  REMOVED fixtures (delete):    32
+  Unchanged:                    58
+
+  -> clubzap_new_fixtures.csv
+     Bulk upload this file to ClubZap
+     Contains 142 new fixtures:
+       09/04/2026 U16 GAA vs Eire Og
+       09/04/2026 U13 GAA vs St Finbarrs 2
+       10/04/2026 U13 GAA vs Blarney 2
+       10/04/2026 Junior B Football vs Inniscarra
+       10/04/2026 U15 GAA vs St Finbarrs
+       ... and 137 more
+
+  -> clubzap_changed_fixtures.csv
+     Manually update these 28 fixtures in ClubZap:
+       10/04/2026 U14 GAA vs Kinsale
+         Referee: 'TBC (Pending)' -> 'Anthony O Regan (Kilb)'
+       11/04/2026 Senior Football vs St Michaels
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor (Pending)'
+       15/04/2026 Minor Hurling GAA vs Carrigtwohill
+         Time: '18:30' -> '20:15'
+       20/04/2026 U16 GAA vs Douglas 2
+         Time: '18:30' -> '20:00'
+       22/04/2026 Minor Football GAA vs Nemo Rangers
+         Time: '18:30' -> '20:00'
+       26/04/2026 Senior Football vs Dohenys
+         Time: '11:30' -> '11:00'
+       26/04/2026 Junior A Football vs St Vincents
+         Referee: 'TBC (Pending)' -> 'Finbarr  O Riordan'
+       27/04/2026 U16 GAA vs Mallow
+         Time: '18:30' -> '20:00'
+       08/04/2026 U16 GAA vs St Michaels
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Niall Hayes Blarney'
+       06/04/2026 Minor Football GAA vs Kilshannig
+         Time: '18:30' -> '11:00'
+         Venue: 'Kilshannig' -> 'Glantane'
+         Referee: 'TBC (Pending)' -> 'Johnny O’Connell'
+       04/04/2026 Junior A Hurling vs Inniscarra
+         Referee: 'TBC (Pending)' -> 'Joe Larkin'
+       03/04/2026 Premier Inter Hurling vs Carrigaline
+         Time: '19:00' -> '18:45'
+         Referee: 'TBC (Pending)' -> 'Patrick O Mahony'
+       03/04/2026 Minor Football GAA vs Clonakilty
+         Time: '18:30' -> '16:00'
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       01/04/2026 U14 GAA vs Glenville
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Roy  Galvin'
+       30/03/2026 U16 GAA vs Bishopstown
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Peter Cotter'
+       30/03/2026 Junior B Football vs Blarney
+         Venue: 'Ballincollig' -> 'Blarney'
+         Referee: 'TBC (Pending)' -> 'Brian Harte'
+       29/03/2026 Junior A Football vs Bishopstown
+         Referee: 'TBC (Pending)' -> 'Trevor Lyons'
+       22/03/2026 Minor Football GAA vs Duarigle Gaels
+         Venue: 'Duarigle Gaels' -> 'Cullen'
+         Referee: 'TBC (Pending)' -> 'Adrian O Connor'
+       22/03/2026 Premier Inter Hurling vs Valley Rovers
+         Referee: 'TBC (Pending)' -> 'Ian McCarthy'
+       21/03/2026 Junior A Hurling vs Kilmichael
+         Referee: 'TBC (Pending)' -> 'Joe Larkin (Pending)'
+       17/03/2026 U16 GAA vs Kiltha Og
+         Venue: 'Castlemartyr' -> 'Dungourney'
+         Referee: 'TBC (Pending)' -> 'Arthur Murphy'
+       15/03/2026 Junior B Football vs Ballinora
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       14/03/2026 Junior A Football vs Ballingeary
+         Referee: 'TBC (Pending)' -> 'Pat O Leary (Kilmurry) (Pending)'
+       13/03/2026 Senior Football vs Béal Átha'n Ghaorthaidh
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor'
+       08/03/2026 U16 GAA vs St Finbarrs
+         Time: '12:30' -> '16:00'
+       08/03/2026 Premier Inter Hurling vs Ballymartle
+         Referee: 'TBC (Pending)' -> 'Kevin O Sullivan'
+       01/03/2026 Minor Football GAA vs Aghabullogue
+         Time: '12:30' -> '19:30'
+         Venue: 'Coachford' -> 'Ballincollig'
+       28/02/2026 Senior Football vs Carrigaline
+         Referee: 'Alan O'Connor (Pending)' -> 'Alan O'Connor'
+
+  -> clubzap_removed_fixtures.csv
+     Manually delete these 32 fixtures from ClubZap:
+       23/02/2026 U16 GAA vs Inniscarra
+       27/02/2026 Junior A Football vs Brian Dillons
+       08/03/2026 U16 GAA vs Clyda Rovers
+       14/03/2026 U14 GAA vs Killeagh
+       15/03/2026 Minor Hurling GAA vs Carrigaline
+       17/03/2026 U16 GAA vs Fermoy
+       22/03/2026 Junior A Hurling vs Lough Rovers
+       22/03/2026 U14 GAA vs Carrigaline 2
+       22/03/2026 Minor Football GAA vs Douglas
+       22/03/2026 U14 GAA vs St Colmcilles
+       28/03/2026 Junior A Football vs Grenagh
+       29/03/2026 Senior Football vs Castletownbere
+       29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+       30/03/2026 U16 GAA vs Eire Og
+       01/04/2026 U14 GAA vs Nemo Rangers
+       03/04/2026 Minor Football GAA vs Inniscarra
+       06/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 U16 GAA vs Eire Og
+       10/04/2026 U14 GAA vs Douglas
+       11/04/2026 Junior A Football vs Aghabullogue
+       12/04/2026 Junior A Football vs Glanmire
+       13/04/2026 U16 GAA vs Glen Rovers
+       13/04/2026 Junior B Football vs Inniscarra
+       20/04/2026 U16 GAA vs Nemo Rangers
+       22/04/2026 Minor Football GAA vs Croke Rovers
+       27/04/2026 U16 GAA vs Ballinora
+       10/05/2026 Senior Football vs Clyda Rovers
+       17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+       24/05/2026 Junior B Football vs Donoughmore
+       25/05/2026 Junior B Football vs Gleann na Laoi
+       30/05/2026 Junior A Hurling vs Aghabullogue
+       31/05/2026 Premier Inter Hurling vs Kanturk
+
+  After making changes in ClubZap, run:
+  py clubzap_sync.py uploaded
+============================================================
+Failed to send Windows notification: Command '['powershell', '-Command', '\n[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null\n[Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null\n[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null\n\n$xml = New-Object Windows.Data.Xml.Dom.XmlDocument\n$xml.LoadXml(\'<toast><visual><binding template="ToastGeneric"><text>Ballincollig GAA - Fixture Changes</text><text>Ballincollig GAA Fixtures Update\n\nNEW (142):\n  09/04/2026 U16 GAA vs Eire Og\n  09/04/2026 U13 GAA vs St Finbarrs 2\n  10/04/2026 U13 GAA vs Blarney 2\n  10/04/2026 Junior B Football vs Inniscarra\n  10/04/2026 U15 GAA vs St Finbarrs\n  ...and 137 more\nCHANGED (28):\n  10/04/2026 U14 GAA vs Kinsale\n      Referee: Anthony O Regan (Kilb)\n  11/04/2026 Senior Football vs St Michaels\n      Referee: Alan O&apos;Connor (Pending)\n  15/04/2026 Minor Hurling GAA vs Carrigtwohill\n      Time: 20:15\n  20/04/2026 U16 GAA vs Douglas 2\n      Time: 20:00\n  22/04/2026 Minor Football GAA vs Nemo Rangers\n      Time: 20:00\n  ...and 23 more\nREMOVED (32):\n  23/02/2026 U16 GAA vs Inniscarra\n  27/02/2026 Junior A Football vs Brian Dillons\n  08/03/2026 U16 GAA vs Clyda Rovers\n  14/03/2026 U14 GAA vs Killeagh\n  15/03/2026 Minor Hurling GAA vs Carrigaline\n  17/03/2026 U16 GAA vs Fermoy\n  22/03/2026 Junior A Hurling vs Lough Rovers\n  22/03/2026 U14 GAA vs Carrigaline 2\n  22/03/2026 Minor Football GAA vs Douglas\n  22/03/2026 U14 GAA vs St Colmcilles\n  28/03/2026 Junior A Football vs Grenagh\n  29/03/2026 Senior Football vs Castletownbere\n  29/03/2026 Minor Hurling GAA vs Na Piarsaigh\n  30/03/2026 U16 GAA vs Eire Og\n  01/04/2026 U14 GAA vs Nemo Rangers\n  03/04/2026 Minor Football GAA vs Inniscarra\n  06/04/2026 Minor Football GAA vs Bishopstown\n  08/04/2026 U16 GAA vs Eire Og\n  10/04/2026 U14 GAA vs Douglas\n  11/04/2026 Junior A Football vs Aghabullogue\n  12/04/2026 Junior A Football vs Glanmire\n  13/04/2026 U16 GAA vs Glen Rovers\n  13/04/2026 Junior B Football vs Inniscarra\n  20/04/2026 U16 GAA vs Nemo Rangers\n  22/04/2026 Minor Football GAA vs Croke Rovers\n  27/04/2026 U16 GAA vs Ballinora\n  10/05/2026 Senior Football vs Clyda Rovers\n  17/05/2026 Premier Inter Hurling vs Na Piarsaigh\n  24/05/2026 Junior B Football vs Donoughmore\n  25/05/2026 Junior B Football vs Gleann na Laoi\n  30/05/2026 Junior A Hurling vs Aghabullogue\n  31/05/2026 Premier Inter Hurling vs Kanturk</text></binding></visual></toast>\')\n\n$toast = New-Object Windows.UI.Notifications.ToastNotification($xml)\n[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("GAA Monitor").Show($toast)\n']' timed out after 5 seconds
+
+NOTIFICATION: Ballincollig GAA - Fixture Changes
+Message: Ballincollig GAA Fixtures Update
+
+NEW (142):
+  09/04/2026 U16 GAA vs Eire Og
+  09/04/2026 U13 GAA vs St Finbarrs 2
+  10/04/2026 U13 GAA vs Blarney 2
+  10/04/2026 Junior B Football vs Inniscarra
+  10/04/2026 U15 GAA vs St Finbarrs
+  ...and 137 more
+CHANGED (28):
+  10/04/2026 U14 GAA vs Kinsale
+      Referee: Anthony O Regan (Kilb)
+  11/04/2026 Senior Football vs St Michaels
+      Referee: Alan O'Connor (Pending)
+  15/04/2026 Minor Hurling GAA vs Carrigtwohill
+      Time: 20:15
+  20/04/2026 U16 GAA vs Douglas 2
+      Time: 20:00
+  22/04/2026 Minor Football GAA vs Nemo Rangers
+      Time: 20:00
+  ...and 23 more
+REMOVED (32):
+  23/02/2026 U16 GAA vs Inniscarra
+  27/02/2026 Junior A Football vs Brian Dillons
+  08/03/2026 U16 GAA vs Clyda Rovers
+  14/03/2026 U14 GAA vs Killeagh
+  15/03/2026 Minor Hurling GAA vs Carrigaline
+  17/03/2026 U16 GAA vs Fermoy
+  22/03/2026 Junior A Hurling vs Lough Rovers
+  22/03/2026 U14 GAA vs Carrigaline 2
+  22/03/2026 Minor Football GAA vs Douglas
+  22/03/2026 U14 GAA vs St Colmcilles
+  28/03/2026 Junior A Football vs Grenagh
+  29/03/2026 Senior Football vs Castletownbere
+  29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+  30/03/2026 U16 GAA vs Eire Og
+  01/04/2026 U14 GAA vs Nemo Rangers
+  03/04/2026 Minor Football GAA vs Inniscarra
+  06/04/2026 Minor Football GAA vs Bishopstown
+  08/04/2026 U16 GAA vs Eire Og
+  10/04/2026 U14 GAA vs Douglas
+  11/04/2026 Junior A Football vs Aghabullogue
+  12/04/2026 Junior A Football vs Glanmire
+  13/04/2026 U16 GAA vs Glen Rovers
+  13/04/2026 Junior B Football vs Inniscarra
+  20/04/2026 U16 GAA vs Nemo Rangers
+  22/04/2026 Minor Football GAA vs Croke Rovers
+  27/04/2026 U16 GAA vs Ballinora
+  10/05/2026 Senior Football vs Clyda Rovers
+  17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+  24/05/2026 Junior B Football vs Donoughmore
+  25/05/2026 Junior B Football vs Gleann na Laoi
+  30/05/2026 Junior A Hurling vs Aghabullogue
+  31/05/2026 Premier Inter Hurling vs Kanturk
+
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u16: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u16 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u13: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u13 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u14: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u14 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u15: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u15 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u12: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u12 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-football-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-football-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-premier-inter-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-premier-inter-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-senior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-senior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-junior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-junior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-minor: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-minor (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+SUCCESS: Changes processed successfully
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Waiting for JavaScript to load fixtures...
+Attempt 1/3 (waiting up to 15s)...
+Found 236 fixture elements via CSS selector
+Found fixture: 09 Apr 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 09 Apr 2026 - Ballincollig 2 vs St Finbarrs 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 10 Apr 2026 - Blarney 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 10 Apr 2026 - Kinsale vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 10 Apr 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 10 Apr 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 11 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 11 Apr 2026 - Ballincollig 2 vs Kinsale 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 11 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 11 Apr 2026 - Ballincollig vs St Michaels (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Apr 2026 - Ballincollig 3 vs Bishopstown 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 12 Apr 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 12 Apr 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 Apr 2026 - Ballincollig vs Aghabullogue (EPH Junior Football League Division 1)
+Found fixture: 13 Apr 2026 - St Colmcilles vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 13 Apr 2026 - Douglas vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 14 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 14 Apr 2026 - Ballincollig 2 vs Midleton 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 15 Apr 2026 - Ballincollig 3 vs Aghada 2 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 15 Apr 2026 - Glanmire vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 15 Apr 2026 - Ballincollig vs Carrigtwohill (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 16 Apr 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 16 Apr 2026 - Glen Rovers vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Apr 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 17 Apr 2026 - Ballincollig vs Erins Own (Red FM Division 2 HL)
+Found fixture: 18 Apr 2026 - Blackrock 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 18 Apr 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 18 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig 3 vs Blarney 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 18 Apr 2026 - Ballincollig vs Dripsey (Cumnor Junior Hurling League Division 1)
+Found fixture: 19 Apr 2026 - Nemo Rangers 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 19 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 20 Apr 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig 2 vs Croke Rovers (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 21 Apr 2026 - Ballincollig vs Douglas (AOS Security Hurling League Div 3 )
+Found fixture: 22 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 23 Apr 2026 - Imokilly vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 23 Apr 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 24 Apr 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 24 Apr 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 24 Apr 2026 - Ballincollig 2 vs St Michaels 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 25 Apr 2026 - Bishopstown 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 25 Apr 2026 - Ballincollig 2 vs St Colmcilles 2 (Rebel Og Mid Fe14 Division 1 Section A Section 2 Football Championship)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 25 Apr 2026 - Ballincollig 3 vs Carrigaline 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 25 Apr 2026 - Kilmichael vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 26 Apr 2026 - Ballincollig vs Dohenys (McCarthy Insurance Group Division 2 FL)
+Found fixture: 26 Apr 2026 - Ballincollig vs St Vincents (AOS Security Football League Div 2 G2 )
+Found fixture: 26 Apr 2026 - Ballincollig vs Na Laochra Aeracha (AOS Security Football League Div 4)
+Found fixture: 26 Apr 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 27 Apr 2026 - Ballincollig vs Donoughmore (EPH Junior Football League Division 2 East)
+Found fixture: 27 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 27 Apr 2026 - Ballincollig 2 vs Mallow (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 28 Apr 2026 - Cobh 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Apr 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 29 Apr 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 30 Apr 2026 - Carbery vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 30 Apr 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 30 Apr 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 30 Apr 2026 - Newcestown vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 01 May 2026 - Midleton vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 01 May 2026 - Sarsfields 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 02 May 2026 - Ballincollig 2 vs Erins Own 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 02 May 2026 - Grenagh vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 May 2026 - Ballincollig vs Carrigaline (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 04 May 2026 - Na Piarsaigh vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 05 May 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 05 May 2026 - Bandon 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Douglas 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 05 May 2026 - Ballincollig 3 vs Glanmire 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 06 May 2026 - Ballincollig 2 vs Blarney 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 06 May 2026 - Blarney vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 07 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 08 May 2026 - Eire Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 08 May 2026 - Clyda Rovers vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 09 May 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe12 Football League Group 6 Section 1)
+Found fixture: 09 May 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 1)
+Found fixture: 10 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Football League Group 1 Section 1)
+Found fixture: 10 May 2026 - Ballincollig vs Ballinora (EPH Junior Football League Division 3 East)
+Found fixture: 10 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe12 Football League Group 6 Section 3)
+Found fixture: 11 May 2026 - Ballincollig vs Ballyhea Milford (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 12 May 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 12 May 2026 - Ballincollig 2 vs Carrigtwohill 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 12 May 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 13 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 13 May 2026 - Ballincollig 3 vs Sarsfields 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 May 2026 - Ballincollig vs Blackrock (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 15 May 2026 - Inniscarra vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 15 May 2026 - Ballincollig vs Na Piarsaigh (Red FM Division 2 HL)
+Found fixture: 16 May 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 16 May 2026 - Ballincollig vs Eire Og (Cumnor Junior Hurling League Division 1)
+Found fixture: 17 May 2026 - Nemo Rangers vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 17 May 2026 - Blackrock vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 17 May 2026 - Ballincollig vs Kilmichael (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 18 May 2026 - Ballincollig vs Macroom (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 19 May 2026 - Ballincollig vs Beara (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 19 May 2026 - Ballincollig 2 vs Douglas 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 19 May 2026 - Bishopstown 2 vs Ballincollig 3 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 20 May 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 May 2026 - St Colmcilles vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Section 1 Football Championship)
+Found fixture: 22 May 2026 - Donoughmore vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 23 May 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section A Section 2 Football Championship)
+Found fixture: 23 May 2026 - Clondrohid vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 24 May 2026 - Ballincollig vs Uibh Laoire (McCarthy Insurance Group Division 2 FL)
+Found fixture: 25 May 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 26 May 2026 - Ballincollig 3 vs Bandon 2 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 26 May 2026 - Watergrasshill 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 26 May 2026 - Gleann na Laoi vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 28 May 2026 - Aghabullogue vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 29 May 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 29 May 2026 - Kanturk vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 30 May 2026 - Mallow 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 30 May 2026 - St Finbarrs 2 vs Ballincollig 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 30 May 2026 - Donoughmore vs Ballincollig 2 (Rebel Og Mid Fe12 Hurling League Group 2)
+Found fixture: 31 May 2026 - Carrigaline vs Ballincollig (Rebel Og Mid Fe12 Hurling League Group 1 Section 1)
+Found fixture: 31 May 2026 - Laochra Og vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 04 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 05 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 1 Hurling Championship)
+Found fixture: 06 Jun 2026 - Ballincollig vs Donoughmore (Cumnor Junior Hurling League Division 1)
+Found fixture: 07 Jun 2026 - O Donovan Rossa vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 08 Jun 2026 - Ballincollig vs Eire Og (EPH Junior Football League Division 2 East)
+Found fixture: 09 Jun 2026 - Cloughduv vs Ballincollig 3 (Rebel Og Coiste Fe13 Hurling  League Group 4C)
+Found fixture: 09 Jun 2026 - Ballincollig 2 vs Blackrock 2 (Rebel Og Coiste Fe13 Hurling  League Group 4A)
+Found fixture: 09 Jun 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe13 Hurling  League Group 1B)
+Found fixture: 11 Jun 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 13 Jun 2026 - Donoughmore 2 vs Ballincollig 3 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 13 Jun 2026 - Blarney vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 14 Jun 2026 - Ballincollig vs Bride Rovers (Red FM Division 2 HL)
+Found fixture: 14 Jun 2026 - Ballincollig vs Gleann na Laoi (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 17 Jun 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 18 Jun 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 19 Jun 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 21 Jun 2026 - Ballincollig vs Valley Rovers (McCarthy Insurance Group Division 2 FL)
+Found fixture: 21 Jun 2026 - Ballincollig vs Grenagh (EPH Junior Football League Division 3 East)
+Found fixture: 22 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 24 Jun 2026 - Sarsfields vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 25 Jun 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 27 Jun 2026 - Ballincollig 3 vs Ballyhea /Milford 2 (Rebel Og Mid Fe12 Hurling League Group 6 Section 1)
+Found fixture: 28 Jun 2026 - Newtownshandrum vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 28 Jun 2026 - Ballincollig vs Ballyphehane (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 03 Jul 2026 - Ballincollig vs Glanmire (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 03 Jul 2026 - Ballincollig 2 vs Courcey Rovers (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 05 Jul 2026 - Inniscarra vs Ballincollig (EPH Junior Football League Division 3 East)
+Found fixture: 06 Jul 2026 - Ballincollig 2 vs Aghabullogue (Rebel Og Mid Fe16 Division 1 Hurling Championship)
+Found fixture: 06 Jul 2026 - Ballincollig vs Midleton (Rebel Og Coiste Fe16 Premier 1 Section 2 Hurling Championship)
+Found fixture: 08 Jul 2026 - Ballincollig vs Glen Rovers (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Jul 2026 - Duhallow vs Ballincollig (Rebel Og Coiste Fe15 Hurling League Group 1)
+Found fixture: 10 Jul 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 12 Jul 2026 - Lough Rovers vs Ballincollig (Erneside Eng Junior Hurling League Division 3)
+Found fixture: 13 Jul 2026 - Canovee vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 1 Football Championship)
+Found fixture: 13 Jul 2026 - Ballincollig vs St Finbarrs (Rebel Og Coiste Fe16 Premier 1 Section 2 Football Championship)
+Found fixture: 15 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Section 1 Football Championship)
+Found fixture: 15 Jul 2026 - Ballincollig 2 vs Glanmire 2 (Rebel Og Mid Fe18 Division 1 Section 2 Football Championship)
+Found fixture: 18 Jul 2026 - Ballincollig 3 vs Croke Rovers 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 22 Jul 2026 - Ballincollig vs Na Piarsaigh (Rebel Og Coiste Fe18 Premier 1 Section 1 Hurling Championship)
+Found fixture: 23 Jul 2026 - Ballincollig vs Mallow (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 24 Jul 2026 - Inniscarra vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Hurling Championship)
+Found fixture: 24 Jul 2026 - Blarney vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Section 2 Hurling Championship)
+Found fixture: 27 Jul 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Section 2 Football Championship)
+Found fixture: 27 Jul 2026 - Ballincollig 2 vs Nemo Rangers 2 (Rebel Og Mid Fe16 Division 1 Section 1 Football Championship)
+Found fixture: 29 Jul 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe18 Premier 1 Section 1 Football Championship)
+Found fixture: 30 Jul 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Aug 2026 - Lisgoold 2 vs Ballincollig 3 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 03 Aug 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Section 2 Hurling Championship)
+Found fixture: 05 Aug 2026 - Glen Rovers vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Section 1 Hurling Championship)
+Found fixture: 06 Aug 2026 - Bride Rovers vs Ballincollig (Rebel Og Coiste Fe14 Premier 2 Section 2 Hurling League)
+Found fixture: 10 Aug 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe16 Premier 1 Section 2 Football Championship)
+Found fixture: 10 Aug 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 1 Football Championship)
+Found fixture: 11 Aug 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 12 Aug 2026 - Ballincollig vs Bishopstown (Rebel Og Coiste Fe18 Premier 1 Section 1 Football Championship)
+Found fixture: 12 Aug 2026 - Douglas 2 vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 2 Football Championship)
+Found fixture: 17 Aug 2026 - Ballincollig 2 vs Passage (Rebel Og Mid Fe16 Division 1 Hurling Championship)
+Found fixture: 19 Aug 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Section 1 Hurling Championship)
+Found fixture: 26 Aug 2026 - Nemo Rangers 2 vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 2 Football Championship)
+Found fixture: 31 Aug 2026 - Bishopstown vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Hurling Championship)
+Found fixture: 09 Sep 2026 - Ballincollig 2 vs Carrigaline 2 (Rebel Og Mid Fe18 Division 1 Section 2 Football Championship)
+Found fixture: 08 Apr 2026 - Ballincollig 2 vs St Michaels (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Apr 2026 - Ballincollig vs Ballyphehane (AOS Security Football League Div 4)
+Found fixture: 07 Apr 2026 - Bishopstown vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 06 Apr 2026 - Ballincollig 2 vs Bishopstown 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 06 Apr 2026 - Bandon vs Ballincollig (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 06 Apr 2026 - Kilshannig vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 04 Apr 2026 - Inniscarra vs Ballincollig (Cumnor Junior Hurling League Division 1)
+Found fixture: 04 Apr 2026 - Ballincollig 3 vs Inniscarra 2 (Rebel Og Coiste Fe13 Football League Group 4C)
+Found fixture: 03 Apr 2026 - Ballincollig vs Carrigaline (Red FM Division 2 HL)
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe13 Football League Group 1B )
+Found fixture: 03 Apr 2026 - Ballincollig vs Clonakilty (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Apr 2026 - Blackrock vs Ballincollig (AOS Security Hurling League Div 3 )
+Found fixture: 02 Apr 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Apr 2026 - Ballincollig 2 vs Glenville (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 01 Apr 2026 - Nemo Rangers vs Ballincollig (Rebel Og Coiste Fe15 Football League Group 1 )
+Found fixture: 31 Mar 2026 - Ballincollig vs Eire Og (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig 2 vs Bishopstown (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 30 Mar 2026 - Ballincollig vs Blarney (EPH Junior Football League Division 2 East)
+Found fixture: 30 Mar 2026 - Ballincollig vs Nemo Rangers (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 29 Mar 2026 - Bishopstown vs Ballincollig (AOS Security Football League Div 2 G2 )
+Found fixture: 29 Mar 2026 - St Dominics 2 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 28 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Coiste Fe13 Football League Group 4B)
+Found fixture: 28 Mar 2026 - Castletownbere vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 28 Mar 2026 - Ballincollig 2 vs Glen Rovers 2 (Rebel Og Coiste Fe18 Hurling League Division 4A)
+Found fixture: 27 Mar 2026 - Ballincollig vs St Colmcilles (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 27 Mar 2026 - Grenagh vs Ballincollig (EPH Junior Football League Division 1)
+Found fixture: 25 Mar 2026 - Ballincollig 3 vs Kildorrery 2 (Rebel Og Coiste Fe14 Football League Division 4D)
+Found fixture: 23 Mar 2026 - Ballincollig vs Douglas (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 22 Mar 2026 - Ballincollig vs Ballyphehane (AOS Security Hurling League Div 3 )
+Found fixture: 22 Mar 2026 - Duarigle Gaels vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 22 Mar 2026 - Valley Rovers vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 21 Mar 2026 - Ballincollig vs Kilmichael (Cumnor Junior Hurling League Division 1)
+Found fixture: 21 Mar 2026 - Carrigaline 2 vs Ballincollig 2 (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Found fixture: 19 Mar 2026 - Ballincollig vs Lough Rovers (AOS Security Hurling League Div 2 G1 )
+Found fixture: 17 Mar 2026 - Kiltha Og vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Hurling League)
+Found fixture: 16 Mar 2026 - Fermoy vs Ballincollig 2 (Rebel Og East Fe16 Division 1 Section 2 Hurling League)
+Found fixture: 15 Mar 2026 - Ballinora vs Ballincollig (EPH Junior Football League Division 2 East)
+Found fixture: 15 Mar 2026 - Whitechurch vs Ballincollig (AOS Security Football League Div 4)
+Found fixture: 15 Mar 2026 - Douglas 3 vs Ballincollig 3 (Rebel Og East Fe16 Hurling League Division 4F)
+Found fixture: 14 Mar 2026 - Ballincollig vs Ballingeary (EPH Junior Football League Division 1)
+Found fixture: 13 Mar 2026 - Ballincollig vs Béal Átha'n Ghaorthaidh (McCarthy Insurance Group Division 2 FL)
+Found fixture: 11 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Hurling League)
+Found fixture: 09 Mar 2026 - Clyda Rovers vs Ballincollig 2 (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 08 Mar 2026 - St Finbarrs vs Ballincollig (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 08 Mar 2026 - Ballincollig vs Delanys (AOS Security Hurling League Div 3 )
+Found fixture: 08 Mar 2026 - Ballymartle vs Ballincollig (Red FM Division 2 HL)
+Found fixture: 08 Mar 2026 - Mayfield vs Ballincollig (AOS Security Hurling League Div 2 G1 )
+Found fixture: 08 Mar 2026 - Eire Og 2 vs Ballincollig 2 (Rebel Og Coiste Fe14 Hurling League Division 4A)
+Found fixture: 07 Mar 2026 - Mallow 3 vs Ballincollig 3 (Rebel Og Mid Fe16 Football League Division 4E)
+Found fixture: 04 Mar 2026 - Carrigaline vs Ballincollig (Rebel Og Coiste Fe18 Premier 1 Football League)
+Found fixture: 02 Mar 2026 - Mallow vs Ballincollig (Rebel Og Coiste Fe14 Premier 1 Football League)
+Found fixture: 01 Mar 2026 - Aghabullogue vs Ballincollig 2 (Rebel Og Mid Fe18 Division 1 Section 1 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig 2 vs Inniscarra (Rebel Og Mid Fe16 Division 1 Section 2 Football League)
+Found fixture: 01 Mar 2026 - Ballincollig vs Whites Cross (AOS Security Football League Div 4)
+Found fixture: 28 Feb 2026 - Ballincollig vs Canovee (EPH Junior Football League Division 1)
+Found fixture: 28 Feb 2026 - Carrigaline vs Ballincollig (McCarthy Insurance Group Division 2 FL)
+Found fixture: 22 Feb 2026 - Ballincollig vs Ballinora (Rebel Og Coiste Fe16 Premier 1 Football League)
+Found fixture: 21 Feb 2026 - Ballincollig 2 vs Ballinhassig (Rebel Og Mid Fe14 Division 1 Section 2 Football League)
+Processed 236 Ballincollig fixtures
+Camogie: 7 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+WARNING: Could not fetch https://corkcamogie.com/barry-osullivan-league-2026/: 500 Server Error: Internal Server Error for url: https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 5 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 6 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 15 total fixtures across 4 leagues
+Camogie: fetched 15 fixtures
+ALERT: FIXTURE CHANGES DETECTED!
+INFO: Previous: 228 fixtures
+INFO: Current: 251 fixtures
+INFO: Added: 23 fixtures
+INFO: Removed: 0 fixtures
+Running ClubZap sync diff...
+============================================================
+  ClubZap Sync - Fixture Diff Report
+  09/04/2026 17:30
+============================================================
+  Current fixtures (website):  251
+  Baseline (uploaded):         118
+------------------------------------------------------------
+
+  NEW fixtures (bulk import):   165
+  CHANGED fixtures (edit):      28
+  POSTPONED (delete):           0
+  REMOVED fixtures (delete):    32
+  Unchanged:                    58
+
+  -> clubzap_new_fixtures.csv
+     Bulk upload this file to ClubZap
+     Contains 165 new fixtures:
+       09/04/2026 U16 GAA vs Eire Og
+       09/04/2026 U13 GAA vs St Finbarrs 2
+       10/04/2026 U13 GAA vs Blarney 2
+       10/04/2026 Junior B Football vs Inniscarra
+       10/04/2026 U15 GAA vs St Finbarrs
+       ... and 160 more
+
+  -> clubzap_changed_fixtures.csv
+     Manually update these 28 fixtures in ClubZap:
+       10/04/2026 U14 GAA vs Kinsale
+         Referee: 'TBC (Pending)' -> 'Anthony O Regan (Kilb)'
+       11/04/2026 Senior Football vs St Michaels
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor (Pending)'
+       15/04/2026 Minor Hurling GAA vs Carrigtwohill
+         Time: '18:30' -> '20:15'
+       20/04/2026 U16 GAA vs Douglas 2
+         Time: '18:30' -> '20:00'
+       22/04/2026 Minor Football GAA vs Nemo Rangers
+         Time: '18:30' -> '20:00'
+       26/04/2026 Senior Football vs Dohenys
+         Time: '11:30' -> '11:00'
+       26/04/2026 Junior A Football vs St Vincents
+         Referee: 'TBC (Pending)' -> 'Finbarr  O Riordan'
+       27/04/2026 U16 GAA vs Mallow
+         Time: '18:30' -> '20:00'
+       08/04/2026 U16 GAA vs St Michaels
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Niall Hayes Blarney'
+       06/04/2026 Minor Football GAA vs Kilshannig
+         Time: '18:30' -> '11:00'
+         Venue: 'Kilshannig' -> 'Glantane'
+         Referee: 'TBC (Pending)' -> 'Johnny O’Connell'
+       04/04/2026 Junior A Hurling vs Inniscarra
+         Referee: 'TBC (Pending)' -> 'Joe Larkin'
+       03/04/2026 Premier Inter Hurling vs Carrigaline
+         Time: '19:00' -> '18:45'
+         Referee: 'TBC (Pending)' -> 'Patrick O Mahony'
+       03/04/2026 Minor Football GAA vs Clonakilty
+         Time: '18:30' -> '16:00'
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       01/04/2026 U14 GAA vs Glenville
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Roy  Galvin'
+       30/03/2026 U16 GAA vs Bishopstown
+         Time: '18:30' -> '20:00'
+         Referee: 'TBC (Pending)' -> 'Peter Cotter'
+       30/03/2026 Junior B Football vs Blarney
+         Venue: 'Ballincollig' -> 'Blarney'
+         Referee: 'TBC (Pending)' -> 'Brian Harte'
+       29/03/2026 Junior A Football vs Bishopstown
+         Referee: 'TBC (Pending)' -> 'Trevor Lyons'
+       22/03/2026 Minor Football GAA vs Duarigle Gaels
+         Venue: 'Duarigle Gaels' -> 'Cullen'
+         Referee: 'TBC (Pending)' -> 'Adrian O Connor'
+       22/03/2026 Premier Inter Hurling vs Valley Rovers
+         Referee: 'TBC (Pending)' -> 'Ian McCarthy'
+       21/03/2026 Junior A Hurling vs Kilmichael
+         Referee: 'TBC (Pending)' -> 'Joe Larkin (Pending)'
+       17/03/2026 U16 GAA vs Kiltha Og
+         Venue: 'Castlemartyr' -> 'Dungourney'
+         Referee: 'TBC (Pending)' -> 'Arthur Murphy'
+       15/03/2026 Junior B Football vs Ballinora
+         Referee: 'TBC (Pending)' -> 'Tom Manley'
+       14/03/2026 Junior A Football vs Ballingeary
+         Referee: 'TBC (Pending)' -> 'Pat O Leary (Kilmurry) (Pending)'
+       13/03/2026 Senior Football vs Béal Átha'n Ghaorthaidh
+         Referee: 'TBC (Pending)' -> 'Alan O'Connor'
+       08/03/2026 U16 GAA vs St Finbarrs
+         Time: '12:30' -> '16:00'
+       08/03/2026 Premier Inter Hurling vs Ballymartle
+         Referee: 'TBC (Pending)' -> 'Kevin O Sullivan'
+       01/03/2026 Minor Football GAA vs Aghabullogue
+         Time: '12:30' -> '19:30'
+         Venue: 'Coachford' -> 'Ballincollig'
+       28/02/2026 Senior Football vs Carrigaline
+         Referee: 'Alan O'Connor (Pending)' -> 'Alan O'Connor'
+
+  -> clubzap_removed_fixtures.csv
+     Manually delete these 32 fixtures from ClubZap:
+       23/02/2026 U16 GAA vs Inniscarra
+       27/02/2026 Junior A Football vs Brian Dillons
+       08/03/2026 U16 GAA vs Clyda Rovers
+       14/03/2026 U14 GAA vs Killeagh
+       15/03/2026 Minor Hurling GAA vs Carrigaline
+       17/03/2026 U16 GAA vs Fermoy
+       22/03/2026 Junior A Hurling vs Lough Rovers
+       22/03/2026 U14 GAA vs Carrigaline 2
+       22/03/2026 Minor Football GAA vs Douglas
+       22/03/2026 U14 GAA vs St Colmcilles
+       28/03/2026 Junior A Football vs Grenagh
+       29/03/2026 Senior Football vs Castletownbere
+       29/03/2026 Minor Hurling GAA vs Na Piarsaigh
+       30/03/2026 U16 GAA vs Eire Og
+       01/04/2026 U14 GAA vs Nemo Rangers
+       03/04/2026 Minor Football GAA vs Inniscarra
+       06/04/2026 Minor Football GAA vs Bishopstown
+       08/04/2026 U16 GAA vs Eire Og
+       10/04/2026 U14 GAA vs Douglas
+       11/04/2026 Junior A Football vs Aghabullogue
+       12/04/2026 Junior A Football vs Glanmire
+       13/04/2026 U16 GAA vs Glen Rovers
+       13/04/2026 Junior B Football vs Inniscarra
+       20/04/2026 U16 GAA vs Nemo Rangers
+       22/04/2026 Minor Football GAA vs Croke Rovers
+       27/04/2026 U16 GAA vs Ballinora
+       10/05/2026 Senior Football vs Clyda Rovers
+       17/05/2026 Premier Inter Hurling vs Na Piarsaigh
+       24/05/2026 Junior B Football vs Donoughmore
+       25/05/2026 Junior B Football vs Gleann na Laoi
+       30/05/2026 Junior A Hurling vs Aghabullogue
+       31/05/2026 Premier Inter Hurling vs Kanturk
+
+  After making changes in ClubZap, run:
+  py clubzap_sync.py uploaded
+============================================================
+Windows toast notification sent
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u16: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u16 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u13: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u13 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u14: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u14 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u15: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u15 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-u12: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-u12 (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-senior-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-senior-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-football: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-football (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-hurling-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-hurling-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-a-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-a-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-minor-football-gaa: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-minor-football-gaa (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-junior-b-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-junior-b-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-premier-inter-hurling: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-premier-inter-hurling (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-senior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-senior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-junior-squad: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-junior-squad (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+Failed to send ntfy.sh notification to ballincollig-gaa-fixtures-bcc-2026-minor: HTTPSConnectionPool(host='ntfy.sh', port=443): Max retries exceeded with url: /ballincollig-gaa-fixtures-bcc-2026-minor (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1077)')))
+SUCCESS: Changes processed successfully
+Chrome driver initialized successfully
+Starting fixture check...
+Loading page: https://gaacork.ie/clubprofile/1986/?team_id=327535
+Error scraping with Selenium: HTTPConnectionPool(host='localhost', port=63069): Read timed out. (read timeout=120)
+No fixtures found with Selenium
+Camogie: 0 fixtures for Ballincollig from https://corkcamogie.com/premier-intermediate-league-2026/
+Camogie: 0 fixtures for Ballincollig 2 from https://corkcamogie.com/barry-osullivan-league-2026/
+Camogie: 0 fixtures for Ballincollig 3 from https://corkcamogie.com/lily-grant-league-2026/
+Camogie: 0 fixtures for Ballincollig from https://corkcamogie.com/premier-minor-1-league-2026/
+Camogie: 0 total fixtures across 4 leagues
+Camogie: fetched 0 fixtures
+ERROR: No fixtures from any source
+ERROR: Could not retrieve current fixtures

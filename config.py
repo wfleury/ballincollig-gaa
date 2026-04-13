@@ -16,6 +16,7 @@ CLUBZAP_CLUB_ID = os.environ.get("CLUBZAP_CLUB_ID", "4975")
 BASE_URL = "https://gaacork.ie/clubprofile/"
 CLUBZAP_BASE_URL = "https://dashboard.clubzap.com"
 CLUBZAP_FIXTURES_URL = f"{CLUBZAP_BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/fixtures"
+CLUBZAP_RESULTS_URL = f"{CLUBZAP_BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results"
 
 # ---- File paths ----
 OUTPUT_DIR = "output"
@@ -27,6 +28,17 @@ BASELINE_CSV = "clubzap_uploaded_baseline.csv"
 NEW_CSV = "clubzap_new_fixtures.csv"
 CHANGED_CSV = "clubzap_changed_fixtures.csv"
 REMOVED_CSV = "clubzap_removed_fixtures.csv"
+
+# Results sync files
+RESULTS_HASH_FILE = "results_hashes.json"
+CURRENT_RESULTS_JSON = "current_results.json"
+RESULTS_BASELINE_JSON = "clubzap_results_baseline.json"
+NEW_RESULTS_JSON = "new_results_to_sync.json"
+
+# ClubZap result publishing settings
+CLUBZAP_WITHHOLD_SCORES = os.environ.get("CLUBZAP_WITHHOLD_SCORES", "true").lower() == "true"
+CLUBZAP_DISABLE_FACEBOOK = os.environ.get("CLUBZAP_DISABLE_FACEBOOK", "true").lower() == "true"
+CLUBZAP_DISABLE_TWITTER = os.environ.get("CLUBZAP_DISABLE_TWITTER", "true").lower() == "true"
 
 # ---- Notifications ----
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "ballincollig-gaa-fixtures")
