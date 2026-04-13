@@ -193,17 +193,26 @@ class ClubZapAutomation:
                             continue
                         result_id = match.group(1)
 
-                        # Extract cell text (results page has same structure as fixtures)
+                        # Extract cell text
+                        # Results page may have different column structure than fixtures
                         cells = await row.query_selector_all('td')
-                        if len(cells) < 7:
+                        if len(cells) < 5:
                             continue
+                        
+                        # Debug: log first result to understand structure
+                        if rows_on_page == 0 and page_num == 1:
+                            cell_texts = []
+                            for i, cell in enumerate(cells[:10]):
+                                text = (await cell.inner_text()).strip()
+                                cell_texts.append(f"[{i}]='{text}'")
+                            log(f"    DEBUG: First result row cells: {' | '.join(cell_texts)}")
 
                         date_text = (await cells[0].inner_text()).strip()
-                        time_text = (await cells[1].inner_text()).strip()
-                        competition = (await cells[3].inner_text()).strip()
-                        team = (await cells[4].inner_text()).strip()
-                        opponent = (await cells[5].inner_text()).strip()
-                        venue = (await cells[6].inner_text()).strip()
+                        time_text = (await cells[1].inner_text()).strip() if len(cells) > 1 else ""
+                        competition = (await cells[3].inner_text()).strip() if len(cells) > 3 else ""
+                        team = (await cells[4].inner_text()).strip() if len(cells) > 4 else ""
+                        opponent = (await cells[5].inner_text()).strip() if len(cells) > 5 else ""
+                        venue = (await cells[6].inner_text()).strip() if len(cells) > 6 else ""
 
                         # Store with result_id (not fixture_id, but same structure)
                         self.fixture_map[result_id] = {
