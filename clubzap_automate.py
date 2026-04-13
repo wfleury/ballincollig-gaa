@@ -231,6 +231,15 @@ class ClubZapAutomation:
             
             results_count = len(self.fixture_map) - fixtures_count
             log(f"  Found {results_count} past results")
+            
+            # Debug: Log a few recent results to help diagnose matching issues
+            if results_count > 0:
+                log("  Sample of recent results found:")
+                sample_count = 0
+                for fixture_id, info in self.fixture_map.items():
+                    if info.get('is_result') and sample_count < 5:
+                        log(f"    - {info['date']} | {info['team']} vs {info['opponent']}")
+                        sample_count += 1
 
         log(f"  Total: {len(self.fixture_map)} fixtures/results mapped in ClubZap")
 
@@ -524,17 +533,26 @@ class ClubZapAutomation:
         team = result['team']
         opponent = result['opponent']
         
+        log(f"    Searching for: date='{date_str}', team='{team}', opponent='{opponent}'")
+        
         fixture_id = self.find_fixture_id(date_str, team, opponent)
         if fixture_id:
             fixture_info = self.fixture_map.get(fixture_id, {})
             is_existing_result = fixture_info.get('is_result', False)
             if is_existing_result:
-                log(f"    Found existing result ID {fixture_id} for {date_str} {team} vs {opponent}")
+                log(f"    ✓ Found existing result ID {fixture_id}")
             else:
-                log(f"    Found fixture ID {fixture_id} for {date_str} {team} vs {opponent}")
+                log(f"    ✓ Found fixture ID {fixture_id}")
             return fixture_id, is_existing_result
         else:
-            log(f"    WARNING: Could not find fixture/result for {date_str} {team} vs {opponent}")
+            log(f"    ✗ No match found in {len(self.fixture_map)} fixtures/results")
+            # Debug: Show matches by date only
+            date_matches = [f for f, info in self.fixture_map.items() if info['date'] == date_str]
+            if date_matches:
+                log(f"    Found {len(date_matches)} fixtures on {date_str}:")
+                for fid in date_matches[:3]:
+                    info = self.fixture_map[fid]
+                    log(f"      - {info['team']} vs {info['opponent']}")
             return None, False
 
     async def enter_result_for_fixture(self, fixture_id, result):
