@@ -809,11 +809,24 @@ class ClubZapAutomation:
         log(f"      🆕 Creating brand new result")
         log(f"      📊 Result: {result['date']} - {result['team']} {result['our_score']} v {result['opponent_score']} {result['opponent']}")
         
-        # Navigate to the brand new result page
-        brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
-        log(f"      🌐 Navigating to: {brand_new_url}")
-        await self.page.goto(brand_new_url, wait_until='domcontentloaded')
-        await self.page.wait_for_timeout(3000)
+        # Navigate to results page first, then click "Publish Result"
+        results_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results"
+        log(f"      🌐 Navigating to results page: {results_url}")
+        await self.page.goto(results_url, wait_until='domcontentloaded')
+        await self.page.wait_for_timeout(2000)
+        
+        # Click "Publish Result" button/link
+        publish_btn = await self.page.query_selector('a[href*="/results/brand_new"], button:has-text("Publish Result"), a:has-text("Publish Result")')
+        if publish_btn:
+            log(f"      🔘 Clicking 'Publish Result' button...")
+            await publish_btn.click()
+            await self.page.wait_for_timeout(3000)
+        else:
+            # Fallback: navigate directly
+            brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
+            log(f"      🌐 Navigating directly to: {brand_new_url}")
+            await self.page.goto(brand_new_url, wait_until='domcontentloaded')
+            await self.page.wait_for_timeout(3000)
         
         try:
             # Debug: Check what page we're actually on
