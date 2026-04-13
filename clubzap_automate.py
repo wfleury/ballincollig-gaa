@@ -889,6 +889,16 @@ class ClubZapAutomation:
                 await team_field.select_option(label=result['team'])
                 log(f"      ✓ Selected team: {result['team']}")
             
+            # Competition name (text field) - required
+            competition_field = await self.page.query_selector(
+                'input[name="result[event_attributes][competition_name]"]'
+            )
+            if competition_field:
+                # Use competition from result if available, otherwise use a default
+                competition_name = result.get('competition', 'League Match')
+                await competition_field.fill(competition_name)
+                log(f"      ✓ Entered competition: {competition_name}")
+            
             # Opponent field
             opponent_field = await self.page.query_selector(
                 'input[name="result[event_attributes][opponent]"]'
