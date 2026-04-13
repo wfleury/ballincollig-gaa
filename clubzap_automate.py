@@ -26,7 +26,7 @@ from playwright.async_api import async_playwright, TimeoutError as PlaywrightTim
 
 from config import (
     CLUBZAP_BASE_URL as BASE_URL, CLUBZAP_FIXTURES_URL as FIXTURES_URL,
-    CLUBZAP_RESULTS_URL, BASELINE_CSV, NEW_CSV, CHANGED_CSV, REMOVED_CSV,
+    CLUBZAP_RESULTS_URL, CLUBZAP_CLUB_ID, BASELINE_CSV, NEW_CSV, CHANGED_CSV, REMOVED_CSV,
     CLUBZAP_WITHHOLD_SCORES, CLUBZAP_DISABLE_FACEBOOK, CLUBZAP_DISABLE_TWITTER,
 )
 
@@ -810,7 +810,7 @@ class ClubZapAutomation:
         log(f"      📊 Result: {result['date']} - {result['team']} {result['our_score']} v {result['opponent_score']} {result['opponent']}")
         
         # Navigate to the brand new result page
-        brand_new_url = f"{BASE_URL}/results/brand_new"
+        brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
         log(f"      🌐 Navigating to: {brand_new_url}")
         await self.page.goto(brand_new_url, wait_until='domcontentloaded')
         await self.page.wait_for_timeout(3000)
