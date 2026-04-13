@@ -763,8 +763,8 @@ class ClubZapAutomation:
             if 'upload' in actions and os.path.exists(NEW_CSV):
                 results['uploaded'] = await self.upload_new_fixtures()
 
-            if ('edit' in actions or 'delete' in actions):
-                if os.path.exists(CHANGED_CSV) or os.path.exists(REMOVED_CSV):
+            if ('edit' in actions or 'delete' in actions or 'results' in actions or 'test' in actions):
+                if os.path.exists(CHANGED_CSV) or os.path.exists(REMOVED_CSV) or os.path.exists(NEW_RESULTS_JSON):
                     await self.build_fixture_map()
 
             if 'edit' in actions and os.path.exists(CHANGED_CSV):
@@ -773,7 +773,7 @@ class ClubZapAutomation:
             if 'delete' in actions and os.path.exists(REMOVED_CSV):
                 results['deleted'] = await self.delete_removed_fixtures()
 
-            if 'results' in actions and os.path.exists(NEW_RESULTS_JSON):
+            if ('results' in actions or 'test' in actions) and os.path.exists(NEW_RESULTS_JSON):
                 test_mode = 'test' in actions
                 results['results_synced'] = await self.sync_results(test_mode=test_mode)
 
