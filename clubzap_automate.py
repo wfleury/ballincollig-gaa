@@ -815,12 +815,27 @@ class ClubZapAutomation:
         await self.page.goto(results_url, wait_until='domcontentloaded')
         await self.page.wait_for_timeout(2000)
         
-        # Click "Publish Result" button/link
-        publish_btn = await self.page.query_selector('a[href*="/results/brand_new"], button:has-text("Publish Result"), a:has-text("Publish Result")')
-        if publish_btn:
-            log(f"      🔘 Clicking 'Publish Result' button...")
-            await publish_btn.click()
-            await self.page.wait_for_timeout(3000)
+        # Look for "Quick Add" -> "Result" option instead of "Publish Result"
+        # The Publish Result workflow requires an existing fixture
+        quick_add_btn = await self.page.query_selector('a:has-text("Quick Add"), button:has-text("Quick Add")')
+        if quick_add_btn:
+            log(f"      🔘 Clicking 'Quick Add' menu...")
+            await quick_add_btn.click()
+            await self.page.wait_for_timeout(1000)
+            
+            # Click "Result" from dropdown
+            result_link = await self.page.query_selector('a:has-text("Result")')
+            if result_link:
+                log(f"      🔘 Clicking 'Result' option...")
+                await result_link.click()
+                await self.page.wait_for_timeout(3000)
+            else:
+                log(f"      ⚠️  Could not find 'Result' option in Quick Add menu")
+                # Fallback: navigate directly
+                brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
+                log(f"      🌐 Navigating directly to: {brand_new_url}")
+                await self.page.goto(brand_new_url, wait_until='domcontentloaded')
+                await self.page.wait_for_timeout(3000)
         else:
             # Fallback: navigate directly
             brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
