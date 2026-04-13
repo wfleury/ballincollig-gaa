@@ -170,7 +170,12 @@ class ClubZapAutomation:
         # Also scan results page if requested (for past fixtures)
         if include_results:
             log("  Scanning results page for past fixtures...")
+            from datetime import datetime
+            today = datetime.now()
+            
             page_num = 1
+            found_future_date = False
+            
             while True:
                 url = f"{CLUBZAP_RESULTS_URL}?page={page_num}" if page_num > 1 else CLUBZAP_RESULTS_URL
                 await self.page.goto(url, wait_until='domcontentloaded')
@@ -207,6 +212,16 @@ class ClubZapAutomation:
                         date_text = (await cells[6].inner_text()).strip()
                         time_text = (await cells[7].inner_text()).strip() if len(cells) > 7 else ""
                         venue = (await cells[8].inner_text()).strip() if len(cells) > 8 else ""
+                        
+                        # Check if this is a future date (stop scanning if so)
+                        try:
+                            result_date = datetime.strptime(date_text, '%d/%m/%Y')
+                            if result_date > today:
+                                log(f"  Reached future date ({date_text}) - stopping results scan")
+                                found_future_date = True
+                                break
+                        except ValueError:
+                            pass  # Invalid date format, continue anyway
 
                         # Store with result_id (not fixture_id, but same structure)
                         self.fixture_map[result_id] = {
@@ -222,6 +237,10 @@ class ClubZapAutomation:
                     except Exception as e:
                         log(f"    WARNING: Error parsing result row: {e}")
                         continue
+                
+                # Stop if we found a future date
+                if found_future_date:
+                    break
 
                 if rows_on_page == 0:
                     break
@@ -552,10 +571,13 @@ class ClubZapAutomation:
             # Debug: Show matches by date only
             date_matches = [f for f, info in self.fixture_map.items() if info['date'] == date_str]
             if date_matches:
-                log(f"    Found {len(date_matches)} fixtures on {date_str}:")
-                for fid in date_matches[:3]:
+                log(f"    Found {len(date_matches)} fixtures/results on {date_str}:")
+                for fid in date_matches[:5]:
                     info = self.fixture_map[fid]
                     log(f"      - {info['team']} vs {info['opponent']}")
+            else:
+                log(f"    No fixtures/results found on {date_str} in ClubZap")
+                log(f"    This fixture was never added to ClubZap")
             return None, False
 
     async def enter_result_for_fixture(self, fixture_id, result):
@@ -782,6 +804,126 @@ class ClubZapAutomation:
             log(f"      Warning: Error configuring publishing options: {e}")
             # Don't fail the entire result entry if publishing options fail
 
+    async def create_brand_new_result(self, result):
+        """Create a brand new result in ClubZap (without pre-existing fixture)."""
+        log(f"      🆕 Creating brand new result")
+        log(f"      📊 Result: {result['date']} - {result['team']} {result['our_score']} v {result['opponent_score']} {result['opponent']}")
+        
+        # Navigate to the brand new result page
+        brand_new_url = f"{BASE_URL}/results/brand_new"
+        log(f"      🌐 Navigating to: {brand_new_url}")
+        await self.page.goto(brand_new_url, wait_until='domcontentloaded')
+        await self.page.wait_for_timeout(3000)
+        
+        try:
+            # Fill in the result form
+            # Date field (format: DD/MM/YYYY)
+            date_field = await self.page.query_selector(
+                'input[name*="date"], input[id*="date"], input[type="date"]'
+            )
+            if date_field:
+                await date_field.fill(result['date'])
+                log(f"      ✓ Entered date: {result['date']}")
+            
+            # Team selection (dropdown or autocomplete)
+            team_field = await self.page.query_selector(
+                'select[name*="team"], input[name*="team"], select[id*="team"], input[id*="team"]'
+            )
+            if team_field:
+                # Try to select/fill the team
+                tag_name = await team_field.evaluate('el => el.tagName')
+                if tag_name.lower() == 'select':
+                    await team_field.select_option(label=result['team'])
+                else:
+                    await team_field.fill(result['team'])
+                log(f"      ✓ Selected team: {result['team']}")
+            
+            # Opponent field
+            opponent_field = await self.page.query_selector(
+                'input[name*="opponent"], input[id*="opponent"]'
+            )
+            if opponent_field:
+                await opponent_field.fill(result['opponent'])
+                log(f"      ✓ Entered opponent: {result['opponent']}")
+            
+            # Score fields - try to find goals/points fields
+            home_goals = await self.page.query_selector(
+                'input[name*="home"][name*="goal"], input[id*="home"][id*="goal"], '
+                'input[name*="our"][name*="goal"], input[id*="our"][id*="goal"]'
+            )
+            home_points = await self.page.query_selector(
+                'input[name*="home"][name*="point"], input[id*="home"][id*="point"], '
+                'input[name*="our"][name*="point"], input[id*="our"][id*="point"]'
+            )
+            away_goals = await self.page.query_selector(
+                'input[name*="away"][name*="goal"], input[id*="away"][id*="goal"], '
+                'input[name*="opponent"][name*="goal"], input[id*="opponent"][id*="goal"]'
+            )
+            away_points = await self.page.query_selector(
+                'input[name*="away"][name*="point"], input[id*="away"][id*="point"], '
+                'input[name*="opponent"][name*="point"], input[id*="opponent"][id*="point"]'
+            )
+            
+            if home_goals and home_points and away_goals and away_points:
+                # Parse GAA scores (e.g., "1-6" -> 1 goal, 6 points)
+                our_score_parts = result['our_score'].split('-')
+                opp_score_parts = result['opponent_score'].split('-')
+                
+                await home_goals.fill(our_score_parts[0])
+                await home_points.fill(our_score_parts[1])
+                await away_goals.fill(opp_score_parts[0])
+                await away_points.fill(opp_score_parts[1])
+                
+                log(f"      ✓ Entered scores: {result['our_score']} v {result['opponent_score']}")
+            else:
+                log(f"      ⚠️  Could not find all score input fields")
+                return False
+            
+            # Handle result publishing options
+            await self._configure_result_publishing_options()
+            
+            # Submit the result
+            submit_btn = await self.page.query_selector(
+                'input[type="submit"], button[type="submit"], '
+                'input[value*="Save"], button:has-text("Save"), button:has-text("Create")'
+            )
+            
+            if submit_btn:
+                await submit_btn.click()
+                await self.page.wait_for_timeout(3000)
+                
+                # Check for success
+                if '/results/' in self.page.url and '/brand_new' not in self.page.url:
+                    return True
+                
+                # Look for success messages
+                success_indicators = await self.page.query_selector_all(
+                    '.alert-success, .success, .flash-success'
+                )
+                for indicator in success_indicators:
+                    text = await indicator.inner_text()
+                    if 'success' in text.lower() or 'saved' in text.lower() or 'created' in text.lower():
+                        return True
+                
+                # Check for errors
+                error_indicators = await self.page.query_selector_all(
+                    '.alert-error, .error, .flash-error'
+                )
+                if error_indicators:
+                    for error in error_indicators:
+                        error_text = await error.inner_text()
+                        log(f"      ❌ Error: {error_text}")
+                    return False
+                
+                return True
+            else:
+                log(f"      ⚠️  Could not find submit button")
+                return False
+                
+        except Exception as e:
+            log(f"      ❌ Error creating brand new result: {e}")
+            return False
+
     async def sync_results(self, test_mode=False):
         """Sync new results to ClubZap."""
         results_file = "test_single_result.json" if test_mode else NEW_RESULTS_JSON
@@ -822,17 +964,19 @@ class ClubZapAutomation:
             
             # Find corresponding fixture/result
             fixture_id, is_existing_result = await self.find_fixture_for_result(result)
-            if not fixture_id:
-                failed_results.append(result)
-                continue
             
             if is_existing_result:
                 log(f"    ⚠️  Result already exists - skipping (ID: {fixture_id})")
                 synced_count += 1  # Count as synced since it already exists
                 continue
             
-            # Enter the result
-            success = await self.enter_result_for_fixture(fixture_id, result)
+            # Enter the result (either for existing fixture or create brand new)
+            if fixture_id:
+                success = await self.enter_result_for_fixture(fixture_id, result)
+            else:
+                log(f"    No fixture found - creating brand new result")
+                success = await self.create_brand_new_result(result)
+            
             if success:
                 log(f"    ✓ Result entered successfully")
                 synced_count += 1
