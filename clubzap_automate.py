@@ -942,13 +942,23 @@ class ClubZapAutomation:
                 
                 # Check for errors
                 error_indicators = await self.page.query_selector_all(
-                    '.alert-error, .error, .flash-error, .alert-danger'
+                    '.alert-error, .error, .flash-error, .alert-danger, .alert'
                 )
                 if error_indicators:
                     for error in error_indicators:
                         error_text = await error.inner_text()
                         if error_text.strip():
                             log(f"      ❌ Error: {error_text.strip()}")
+                    
+                    # Also check for field-specific errors (often shown near inputs)
+                    field_errors = await self.page.query_selector_all('.field_with_errors, .invalid-feedback, .help-block.error')
+                    if field_errors:
+                        log(f"      Field validation errors:")
+                        for field_error in field_errors[:10]:
+                            error_text = await field_error.inner_text()
+                            if error_text.strip():
+                                log(f"        - {error_text.strip()}")
+                    
                     return False
                 
                 log(f"      ⚠️  No clear success/error indicator - assuming failure")
