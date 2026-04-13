@@ -841,66 +841,52 @@ class ClubZapAutomation:
                 log(f"        [{i}] {tag} name='{name}' id='{id_attr}' type='{type_attr}' placeholder='{placeholder}'")
             
             # Fill in the result form
-            # Date field (format: DD/MM/YYYY)
+            # Date/time field (datetime-local format: YYYY-MM-DDTHH:MM)
+            # Convert DD/MM/YYYY to YYYY-MM-DD
+            from datetime import datetime
+            try:
+                date_obj = datetime.strptime(result['date'], '%d/%m/%Y')
+                datetime_value = date_obj.strftime('%Y-%m-%dT19:30')  # Default to 7:30 PM
+            except ValueError:
+                datetime_value = result['date']  # Fallback to original
+            
             date_field = await self.page.query_selector(
-                'input[name*="date"], input[id*="date"], input[type="date"]'
+                'input[name="result[event_attributes][start]"]'
             )
             if date_field:
-                await date_field.fill(result['date'])
-                log(f"      ✓ Entered date: {result['date']}")
+                await date_field.fill(datetime_value)
+                log(f"      ✓ Entered date: {datetime_value}")
             
-            # Team selection (dropdown or autocomplete)
+            # Team selection (dropdown)
             team_field = await self.page.query_selector(
-                'select[name*="team"], input[name*="team"], select[id*="team"], input[id*="team"]'
+                'select[name="result[event_attributes][team_id]"]'
             )
             if team_field:
-                # Try to select/fill the team
-                tag_name = await team_field.evaluate('el => el.tagName')
-                if tag_name.lower() == 'select':
-                    await team_field.select_option(label=result['team'])
-                else:
-                    await team_field.fill(result['team'])
+                await team_field.select_option(label=result['team'])
                 log(f"      ✓ Selected team: {result['team']}")
             
             # Opponent field
             opponent_field = await self.page.query_selector(
-                'input[name*="opponent"], input[id*="opponent"]'
+                'input[name="result[event_attributes][opponent]"]'
             )
             if opponent_field:
                 await opponent_field.fill(result['opponent'])
                 log(f"      ✓ Entered opponent: {result['opponent']}")
             
-            # Score fields - try to find goals/points fields
-            home_goals = await self.page.query_selector(
-                'input[name*="home"][name*="goal"], input[id*="home"][id*="goal"], '
-                'input[name*="our"][name*="goal"], input[id*="our"][id*="goal"]'
+            # Score fields - ClubZap uses single score fields (e.g., "1-6" format)
+            own_score_field = await self.page.query_selector(
+                'input[name="result[own_score]"]'
             )
-            home_points = await self.page.query_selector(
-                'input[name*="home"][name*="point"], input[id*="home"][id*="point"], '
-                'input[name*="our"][name*="point"], input[id*="our"][id*="point"]'
-            )
-            away_goals = await self.page.query_selector(
-                'input[name*="away"][name*="goal"], input[id*="away"][id*="goal"], '
-                'input[name*="opponent"][name*="goal"], input[id*="opponent"][id*="goal"]'
-            )
-            away_points = await self.page.query_selector(
-                'input[name*="away"][name*="point"], input[id*="away"][id*="point"], '
-                'input[name*="opponent"][name*="point"], input[id*="opponent"][id*="point"]'
+            opponent_score_field = await self.page.query_selector(
+                'input[name="result[opponent_score]"]'
             )
             
-            if home_goals and home_points and away_goals and away_points:
-                # Parse GAA scores (e.g., "1-6" -> 1 goal, 6 points)
-                our_score_parts = result['our_score'].split('-')
-                opp_score_parts = result['opponent_score'].split('-')
-                
-                await home_goals.fill(our_score_parts[0])
-                await home_points.fill(our_score_parts[1])
-                await away_goals.fill(opp_score_parts[0])
-                await away_points.fill(opp_score_parts[1])
-                
+            if own_score_field and opponent_score_field:
+                await own_score_field.fill(result['our_score'])
+                await opponent_score_field.fill(result['opponent_score'])
                 log(f"      ✓ Entered scores: {result['our_score']} v {result['opponent_score']}")
             else:
-                log(f"      ⚠️  Could not find all score input fields")
+                log(f"      ⚠️  Could not find score input fields")
                 return False
             
             # Handle result publishing options
