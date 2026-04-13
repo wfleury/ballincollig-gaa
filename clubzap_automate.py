@@ -936,6 +936,22 @@ class ClubZapAutomation:
             # Handle result publishing options
             await self._configure_result_publishing_options()
             
+            # DEBUG: Verify all fields are filled before submitting
+            log(f"      DEBUG: Verifying form fields before submit...")
+            event_type_value = await event_type_field.evaluate('el => el.value') if event_type_field else None
+            team_value = await team_field.evaluate('el => el.value') if team_field else None
+            competition_value = await competition_field.evaluate('el => el.value') if competition_field else None
+            opponent_value = await opponent_field.evaluate('el => el.value') if opponent_field else None
+            own_score_value = await own_score_field.evaluate('el => el.value') if own_score_field else None
+            opp_score_value = await opponent_score_field.evaluate('el => el.value') if opponent_score_field else None
+            
+            log(f"        Event type: '{event_type_value}'")
+            log(f"        Team: '{team_value}'")
+            log(f"        Competition: '{competition_value}'")
+            log(f"        Opponent: '{opponent_value}'")
+            log(f"        Own score: '{own_score_value}'")
+            log(f"        Opp score: '{opp_score_value}'")
+            
             # Submit the result
             submit_btn = await self.page.query_selector(
                 'input[type="submit"], button[type="submit"], '
