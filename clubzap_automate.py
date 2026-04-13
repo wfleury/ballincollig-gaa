@@ -915,8 +915,19 @@ class ClubZapAutomation:
             )
             
             if own_score_field and opponent_score_field:
+                # Clear fields first
+                await own_score_field.fill('')
+                await opponent_score_field.fill('')
+                
+                # Fill with scores
                 await own_score_field.fill(result['our_score'])
+                await own_score_field.press('Tab')  # Trigger change event
+                await self.page.wait_for_timeout(300)
+                
                 await opponent_score_field.fill(result['opponent_score'])
+                await opponent_score_field.press('Tab')  # Trigger change event
+                await self.page.wait_for_timeout(300)
+                
                 log(f"      ✓ Entered scores: {result['our_score']} v {result['opponent_score']}")
             else:
                 log(f"      ⚠️  Could not find score input fields")
