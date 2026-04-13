@@ -899,33 +899,60 @@ class ClubZapAutomation:
             )
             
             if submit_btn:
+                log(f"      🔘 Clicking submit button...")
                 await submit_btn.click()
                 await self.page.wait_for_timeout(3000)
                 
-                # Check for success
-                if '/results/' in self.page.url and '/brand_new' not in self.page.url:
+                # Debug: Check what happened after submit
+                final_url = self.page.url
+                log(f"      DEBUG: URL after submit: {final_url}")
+                
+                # Check for success - redirect to result detail page
+                if '/results/' in final_url and '/brand_new' not in final_url:
+                    log(f"      ✓ Redirected to result page - success!")
                     return True
+                
+                # Still on brand_new page - check for messages
+                if '/brand_new' in final_url:
+                    log(f"      ⚠️  Still on brand_new page - checking for errors...")
+                    
+                    # Get all visible text to see what's on the page
+                    body_text = await self.page.evaluate('() => document.body.innerText')
+                    
+                    # Check for validation errors
+                    if 'error' in body_text.lower() or 'required' in body_text.lower() or 'invalid' in body_text.lower():
+                        log(f"      ❌ Form validation errors detected:")
+                        # Look for specific error messages
+                        error_elements = await self.page.query_selector_all('.error, .invalid-feedback, .field_with_errors')
+                        for elem in error_elements[:5]:
+                            error_text = await elem.inner_text()
+                            if error_text.strip():
+                                log(f"        - {error_text.strip()}")
+                        return False
                 
                 # Look for success messages
                 success_indicators = await self.page.query_selector_all(
-                    '.alert-success, .success, .flash-success'
+                    '.alert-success, .success, .flash-success, .notice'
                 )
                 for indicator in success_indicators:
                     text = await indicator.inner_text()
-                    if 'success' in text.lower() or 'saved' in text.lower() or 'created' in text.lower():
+                    if text.strip() and ('success' in text.lower() or 'saved' in text.lower() or 'created' in text.lower()):
+                        log(f"      ✓ Success message: {text.strip()}")
                         return True
                 
                 # Check for errors
                 error_indicators = await self.page.query_selector_all(
-                    '.alert-error, .error, .flash-error'
+                    '.alert-error, .error, .flash-error, .alert-danger'
                 )
                 if error_indicators:
                     for error in error_indicators:
                         error_text = await error.inner_text()
-                        log(f"      ❌ Error: {error_text}")
+                        if error_text.strip():
+                            log(f"      ❌ Error: {error_text.strip()}")
                     return False
                 
-                return True
+                log(f"      ⚠️  No clear success/error indicator - assuming failure")
+                return False
             else:
                 log(f"      ⚠️  Could not find submit button")
                 return False
