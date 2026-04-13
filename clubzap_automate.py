@@ -90,10 +90,14 @@ class ClubZapAutomation:
 
         log(f"Logged in successfully as {self.email}")
 
-    async def build_fixture_map(self):
-        """Scrape all pages of fixtures list to map fixture details -> ID.
+    async def build_fixture_map(self, include_results=False):
+        """
+        Build a map of all fixtures currently in ClubZap.
+        Maps fixture_id -> {date, time, competition, team, opponent, venue}
         
         ClubZap table columns: DATE, TIME, TYPE, COMPETITION, TEAM 1, TEAM 2, VENUE, ACTIONS
+        
+        If include_results=True, also scans the Results page to find past fixtures.
         """
         log("Building fixture map from ClubZap...")
         self.fixture_map = {}
@@ -161,7 +165,74 @@ class ClubZapAutomation:
             else:
                 break
 
-        log(f"  Total: {len(self.fixture_map)} fixtures mapped in ClubZap")
+        fixtures_count = len(self.fixture_map)
+        
+        # Also scan results page if requested (for past fixtures)
+        if include_results:
+            log("  Scanning results page for past fixtures...")
+            page_num = 1
+            while True:
+                url = f"{CLUBZAP_RESULTS_URL}?page={page_num}" if page_num > 1 else CLUBZAP_RESULTS_URL
+                await self.page.goto(url, wait_until='domcontentloaded')
+                await self.page.wait_for_timeout(3000)
+
+                rows = await self.page.query_selector_all('table tbody tr')
+                if not rows:
+                    break
+
+                rows_on_page = 0
+                for row in rows:
+                    try:
+                        # Results page has links to /results/{id} instead of /fixtures/{id}
+                        link = await row.query_selector('a[href*="/results/"]')
+                        if not link:
+                            continue
+                        href = await link.get_attribute('href') or ''
+                        match = re.search(r'/results/(\d+)$', href)
+                        if not match:
+                            continue
+                        result_id = match.group(1)
+
+                        # Extract cell text (results page has same structure as fixtures)
+                        cells = await row.query_selector_all('td')
+                        if len(cells) < 7:
+                            continue
+
+                        date_text = (await cells[0].inner_text()).strip()
+                        time_text = (await cells[1].inner_text()).strip()
+                        competition = (await cells[3].inner_text()).strip()
+                        team = (await cells[4].inner_text()).strip()
+                        opponent = (await cells[5].inner_text()).strip()
+                        venue = (await cells[6].inner_text()).strip()
+
+                        # Store with result_id (not fixture_id, but same structure)
+                        self.fixture_map[result_id] = {
+                            'date': date_text,
+                            'time': time_text,
+                            'competition': competition,
+                            'team': team,
+                            'opponent': opponent,
+                            'venue': venue,
+                            'is_result': True  # Mark as existing result
+                        }
+                        rows_on_page += 1
+                    except Exception as e:
+                        log(f"    WARNING: Error parsing result row: {e}")
+                        continue
+
+                if rows_on_page == 0:
+                    break
+
+                next_link = await self.page.query_selector(f'a[href*="page={page_num + 1}"]')
+                if next_link:
+                    page_num += 1
+                else:
+                    break
+            
+            results_count = len(self.fixture_map) - fixtures_count
+            log(f"  Found {results_count} past results")
+
+        log(f"  Total: {len(self.fixture_map)} fixtures/results mapped in ClubZap")
 
     def find_fixture_id(self, date_str, team, opponent):
         """Find a ClubZap fixture ID by matching date, team, and opponent."""
@@ -448,18 +519,23 @@ class ClubZapAutomation:
         return deleted_count
 
     async def find_fixture_for_result(self, result):
-        """Find the ClubZap fixture ID that corresponds to this result."""
+        """Find the ClubZap fixture/result ID that corresponds to this result."""
         date_str = result['date']
         team = result['team']
         opponent = result['opponent']
         
         fixture_id = self.find_fixture_id(date_str, team, opponent)
         if fixture_id:
-            log(f"    Found fixture ID {fixture_id} for {date_str} {team} vs {opponent}")
-            return fixture_id
+            fixture_info = self.fixture_map.get(fixture_id, {})
+            is_existing_result = fixture_info.get('is_result', False)
+            if is_existing_result:
+                log(f"    Found existing result ID {fixture_id} for {date_str} {team} vs {opponent}")
+            else:
+                log(f"    Found fixture ID {fixture_id} for {date_str} {team} vs {opponent}")
+            return fixture_id, is_existing_result
         else:
-            log(f"    WARNING: Could not find fixture for {date_str} {team} vs {opponent}")
-            return None
+            log(f"    WARNING: Could not find fixture/result for {date_str} {team} vs {opponent}")
+            return None, False
 
     async def enter_result_for_fixture(self, fixture_id, result):
         """Enter a result for a specific fixture in ClubZap."""
@@ -708,8 +784,8 @@ class ClubZapAutomation:
         
         log(f"Syncing {len(new_results)} new results to ClubZap...")
         
-        # Build fixture map first
-        await self.build_fixture_map()
+        # Build fixture map including results page (for past fixtures)
+        await self.build_fixture_map(include_results=True)
         
         synced_count = 0
         failed_results = []
@@ -723,10 +799,15 @@ class ClubZapAutomation:
             
             log(f"  Processing: {date} {team} {our_score} v {opponent_score} {opponent}")
             
-            # Find corresponding fixture
-            fixture_id = await self.find_fixture_for_result(result)
+            # Find corresponding fixture/result
+            fixture_id, is_existing_result = await self.find_fixture_for_result(result)
             if not fixture_id:
                 failed_results.append(result)
+                continue
+            
+            if is_existing_result:
+                log(f"    ⚠️  Result already exists - skipping (ID: {fixture_id})")
+                synced_count += 1  # Count as synced since it already exists
                 continue
             
             # Enter the result
