@@ -816,6 +816,17 @@ class ClubZapAutomation:
         await self.page.wait_for_timeout(3000)
         
         try:
+            # Debug: Log all input fields on the page
+            all_inputs = await self.page.query_selector_all('input, select, textarea')
+            log(f"      DEBUG: Found {len(all_inputs)} form fields on brand_new page")
+            for i, inp in enumerate(all_inputs[:15]):  # Log first 15 fields
+                tag = await inp.evaluate('el => el.tagName')
+                name = await inp.get_attribute('name') or ''
+                id_attr = await inp.get_attribute('id') or ''
+                type_attr = await inp.get_attribute('type') or ''
+                placeholder = await inp.get_attribute('placeholder') or ''
+                log(f"        [{i}] {tag} name='{name}' id='{id_attr}' type='{type_attr}' placeholder='{placeholder}'")
+            
             # Fill in the result form
             # Date field (format: DD/MM/YYYY)
             date_field = await self.page.query_selector(
