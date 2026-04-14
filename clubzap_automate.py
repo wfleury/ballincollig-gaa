@@ -29,6 +29,7 @@ from config import (
     CLUBZAP_RESULTS_URL, CLUBZAP_CLUB_ID, BASELINE_CSV, NEW_CSV, CHANGED_CSV, REMOVED_CSV,
     CLUBZAP_WITHHOLD_SCORES, CLUBZAP_DISABLE_FACEBOOK, CLUBZAP_DISABLE_TWITTER,
 )
+from gaa_utils import gaa_total
 
 # Results sync files
 NEW_RESULTS_JSON = "new_results_to_sync.json"
@@ -668,6 +669,27 @@ class ClubZapAutomation:
             if referee_field and result.get('referee'):
                 await referee_field.fill(result['referee'])
             
+            # Select Win/Draw/Loss checkbox
+            home_total = gaa_total(result['home_score'])
+            away_total = gaa_total(result['away_score'])
+            if home_total > away_total:
+                outcome, checkbox_name = 'win', 'result[win]'
+            elif home_total < away_total:
+                outcome, checkbox_name = 'loss', 'result[loss]'
+            else:
+                outcome, checkbox_name = 'draw', 'result[draw]'
+            
+            outcome_checkbox = await self.page.query_selector(
+                f'input[type="checkbox"][name="{checkbox_name}"]'
+            )
+            if outcome_checkbox:
+                is_checked = await outcome_checkbox.is_checked()
+                if not is_checked:
+                    await outcome_checkbox.check()
+                log(f"      ✓ Selected outcome: {outcome.capitalize()}")
+            else:
+                log(f"      ⚠️ Could not find {outcome} checkbox")
+            
             # Handle result publishing options
             await self._configure_result_publishing_options()
             
@@ -1115,6 +1137,27 @@ class ClubZapAutomation:
             if not score_filled:
                 log(f"      ⚠️ Could not find score input fields after event selection")
                 return False
+            
+            # --- Step 8b: Select Win/Draw/Loss checkbox ---
+            our_total = gaa_total(result['our_score'])
+            opp_total = gaa_total(result['opponent_score'])
+            if our_total > opp_total:
+                outcome, checkbox_name = 'win', 'result[win]'
+            elif our_total < opp_total:
+                outcome, checkbox_name = 'loss', 'result[loss]'
+            else:
+                outcome, checkbox_name = 'draw', 'result[draw]'
+            
+            outcome_checkbox = await self.page.query_selector(
+                f'input[type="checkbox"][name="{checkbox_name}"]'
+            )
+            if outcome_checkbox:
+                is_checked = await outcome_checkbox.is_checked()
+                if not is_checked:
+                    await outcome_checkbox.check()
+                log(f"      ✓ Selected outcome: {outcome.capitalize()}")
+            else:
+                log(f"      ⚠️ Could not find {outcome} checkbox")
             
             # --- Step 9: Configure publishing options ---
             await self._configure_result_publishing_options()
