@@ -805,62 +805,122 @@ class ClubZapAutomation:
             # Don't fail the entire result entry if publishing options fail
 
     async def create_brand_new_result(self, result):
-        """Create a brand new result in ClubZap (without pre-existing fixture)."""
+        """Create a brand new result in ClubZap (without pre-existing fixture).
+        
+        The /results/new page shows radio buttons to select an event/team first.
+        After selecting an event, the score form fields appear. We must:
+        1. Navigate to the Add Result page
+        2. Select the correct event radio button matching the team
+        3. Wait for the score form to load
+        4. Fill in opponent, scores, date, etc.
+        5. Submit
+        """
         log(f"      🆕 Creating brand new result")
         log(f"      📊 Result: {result['date']} - {result['team']} {result['our_score']} v {result['opponent_score']} {result['opponent']}")
         
-        # Navigate to results page first, then click "Publish Result"
+        # Navigate to the Add Result page via Quick Add -> Result
         results_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results"
         log(f"      🌐 Navigating to results page: {results_url}")
         await self.page.goto(results_url, wait_until='domcontentloaded')
         await self.page.wait_for_timeout(2000)
         
-        # Look for "Quick Add" -> "Result" option instead of "Publish Result"
-        # The Publish Result workflow requires an existing fixture
         quick_add_btn = await self.page.query_selector('a:has-text("Quick Add"), button:has-text("Quick Add")')
         if quick_add_btn:
             log(f"      🔘 Clicking 'Quick Add' menu...")
             await quick_add_btn.click()
             await self.page.wait_for_timeout(1000)
             
-            # Click "Result" from dropdown
             result_link = await self.page.query_selector('a:has-text("Result")')
             if result_link:
                 log(f"      🔘 Clicking 'Result' option...")
                 await result_link.click()
                 await self.page.wait_for_timeout(3000)
             else:
-                log(f"      ⚠️  Could not find 'Result' option in Quick Add menu")
-                # Fallback: navigate directly
-                brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
-                log(f"      🌐 Navigating directly to: {brand_new_url}")
-                await self.page.goto(brand_new_url, wait_until='domcontentloaded')
+                log(f"      ⚠️ Could not find 'Result' in Quick Add menu")
+                new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/new"
+                await self.page.goto(new_url, wait_until='domcontentloaded')
                 await self.page.wait_for_timeout(3000)
         else:
-            # Fallback: navigate directly
-            brand_new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/brand_new"
-            log(f"      🌐 Navigating directly to: {brand_new_url}")
-            await self.page.goto(brand_new_url, wait_until='domcontentloaded')
+            new_url = f"{BASE_URL}/clubs/{CLUBZAP_CLUB_ID}/results/new"
+            log(f"      🌐 Navigating directly to: {new_url}")
+            await self.page.goto(new_url, wait_until='domcontentloaded')
             await self.page.wait_for_timeout(3000)
         
         try:
-            # Debug: Check what page we're actually on
             current_url = self.page.url
-            log(f"      DEBUG: Current URL after navigation: {current_url}")
+            log(f"      DEBUG: Current URL: {current_url}")
             
-            # Debug: Get page title
-            page_title = await self.page.title()
-            log(f"      DEBUG: Page title: {page_title}")
+            # --- Step 1: Select the event/team radio button ---
+            # The Add Result page requires choosing an event before score fields appear
+            event_radios = await self.page.query_selector_all('input[name="event"][type="radio"]')
             
-            # Debug: Check for error messages or redirects
-            body_text = await self.page.evaluate('() => document.body.innerText')
-            if 'error' in body_text.lower() or 'permission' in body_text.lower() or 'access denied' in body_text.lower():
-                log(f"      DEBUG: Page contains error/permission text: {body_text[:200]}")
+            if event_radios:
+                log(f"      Found {len(event_radios)} event options, matching team: '{result['team']}'")
+                
+                # Collect all radio options with their label text
+                radio_options = []
+                for radio in event_radios:
+                    radio_id = await radio.get_attribute('id') or ''
+                    label_text = ''
+                    
+                    # Try label[for="id"]
+                    if radio_id:
+                        label = await self.page.query_selector(f'label[for="{radio_id}"]')
+                        if label:
+                            label_text = (await label.inner_text()).strip()
+                    
+                    # Fallback: parent element text
+                    if not label_text:
+                        try:
+                            label_text = await radio.evaluate(
+                                'el => (el.parentElement.textContent || "").trim()'
+                            )
+                        except Exception:
+                            pass
+                    
+                    radio_options.append((radio, radio_id, label_text))
+                
+                team_lower = result['team'].lower().strip()
+                selected = False
+                
+                # Try exact match first
+                for radio, radio_id, label_text in radio_options:
+                    if label_text.lower().strip() == team_lower:
+                        log(f"      ✓ Exact match - selecting event: {label_text}")
+                        await radio.click()
+                        await self.page.wait_for_timeout(3000)
+                        selected = True
+                        break
+                
+                # Fall back to substring match
+                if not selected:
+                    for radio, radio_id, label_text in radio_options:
+                        if team_lower in label_text.lower():
+                            log(f"      ✓ Substring match - selecting event: {label_text}")
+                            await radio.click()
+                            await self.page.wait_for_timeout(3000)
+                            selected = True
+                            break
+                
+                if not selected:
+                    log(f"      ⚠️ No matching event for team '{result['team']}'")
+                    log(f"      Available events:")
+                    for _, radio_id, label_text in radio_options[:20]:
+                        log(f"        - [{radio_id}] {label_text}")
+                    return False
             
-            # Debug: Log all input fields on the page
-            all_inputs = await self.page.query_selector_all('input, select, textarea')
-            log(f"      DEBUG: Found {len(all_inputs)} form fields on brand_new page")
-            for i, inp in enumerate(all_inputs[:15]):  # Log first 15 fields
+            # Check if URL changed after event selection (page may redirect)
+            new_url = self.page.url
+            if new_url != current_url:
+                log(f"      DEBUG: URL changed to: {new_url}")
+                await self.page.wait_for_timeout(2000)
+            
+            # --- Step 2: Log available form fields after event selection ---
+            visible_inputs = await self.page.query_selector_all(
+                'input:not([type="radio"]):not([type="hidden"]), select, textarea'
+            )
+            log(f"      DEBUG: Found {len(visible_inputs)} form fields after event selection")
+            for i, inp in enumerate(visible_inputs[:20]):
                 tag = await inp.evaluate('el => el.tagName')
                 name = await inp.get_attribute('name') or ''
                 id_attr = await inp.get_attribute('id') or ''
@@ -868,122 +928,170 @@ class ClubZapAutomation:
                 placeholder = await inp.get_attribute('placeholder') or ''
                 log(f"        [{i}] {tag} name='{name}' id='{id_attr}' type='{type_attr}' placeholder='{placeholder}'")
             
-            # Fill in the result form
-            # Date/time field (datetime-local format: YYYY-MM-DDTHH:MM)
-            # Convert DD/MM/YYYY to YYYY-MM-DD
+            # --- Step 3: Fill in date ---
             from datetime import datetime
             try:
                 date_obj = datetime.strptime(result['date'], '%d/%m/%Y')
-                datetime_value = date_obj.strftime('%Y-%m-%dT19:30')  # Default to 7:30 PM
+                datetime_value = date_obj.strftime('%Y-%m-%dT19:30')
             except ValueError:
-                datetime_value = result['date']  # Fallback to original
+                datetime_value = result['date']
             
             date_field = await self.page.query_selector(
-                'input[name="result[event_attributes][start]"]'
+                'input[name*="[start]"], input[name*="date"], '
+                'input[type="datetime-local"], input[type="date"]'
             )
             if date_field:
                 await date_field.fill(datetime_value)
                 log(f"      ✓ Entered date: {datetime_value}")
             
-            # Event type selection (dropdown) - required field
-            # Options: League, Championship / Cup, Friendly
-            event_type_field = await self.page.query_selector(
-                'select[name="result[event_attributes][event_type]"]'
-            )
-            if event_type_field:
-                # Default to "League" for most matches
-                try:
-                    await event_type_field.select_option(label='League')
-                    await self.page.wait_for_timeout(500)  # Wait for selection to register
-                    log(f"      ✓ Selected event type: League")
-                except Exception as e:
-                    log(f"      ⚠️  Could not select 'League' event type: {e}")
-                    # Try selecting by index (1 = League, 2 = Championship/Cup, 3 = Friendly)
-                    try:
-                        await event_type_field.select_option(index=1)
-                        await self.page.wait_for_timeout(500)
-                        log(f"      ✓ Selected event type by index")
-                    except:
-                        log(f"      ❌ Failed to select event type")
-            
-            # Team selection (dropdown)
-            team_field = await self.page.query_selector(
-                'select[name="result[event_attributes][team_id]"]'
-            )
-            if team_field:
-                await team_field.select_option(label=result['team'])
-                await self.page.wait_for_timeout(500)  # Wait for selection to register
-                log(f"      ✓ Selected team: {result['team']}")
-            
-            # Competition name (text field) - required
-            competition_field = await self.page.query_selector(
-                'input[name="result[event_attributes][competition_name]"]'
-            )
-            if competition_field:
-                # Use competition from result if available, otherwise use a default
-                competition_name = result.get('competition', 'League Match')
-                await competition_field.fill(competition_name)
-                await self.page.wait_for_timeout(500)  # Wait for input to register
-                log(f"      ✓ Entered competition: {competition_name}")
-            
-            # Opponent field
+            # --- Step 4: Fill in opponent ---
             opponent_field = await self.page.query_selector(
-                'input[name="result[event_attributes][opponent]"]'
+                'input[name*="opponent"], input[name*="opposition"], '
+                'input[placeholder*="Opponent" i], input[placeholder*="Opposition" i]'
             )
             if opponent_field:
                 await opponent_field.fill(result['opponent'])
                 log(f"      ✓ Entered opponent: {result['opponent']}")
             
-            # Score fields - ClubZap uses single score fields (e.g., "1-6" format)
-            own_score_field = await self.page.query_selector(
-                'input[name="result[own_score]"]'
+            # --- Step 5: Fill in competition ---
+            competition_field = await self.page.query_selector(
+                'input[name*="competition"], input[name*="league"]'
             )
-            opponent_score_field = await self.page.query_selector(
-                'input[name="result[opponent_score]"]'
+            if competition_field:
+                competition_name = result.get('competition', '')
+                if competition_name:
+                    await competition_field.fill(competition_name)
+                    log(f"      ✓ Entered competition: {competition_name}")
+            
+            # --- Step 6: Fill in venue ---
+            venue_field = await self.page.query_selector(
+                'input[name*="venue"], input[placeholder*="Venue" i]'
+            )
+            if venue_field and result.get('venue'):
+                await venue_field.fill(result['venue'])
+                log(f"      ✓ Entered venue: {result['venue']}")
+            
+            # --- Step 7: Select event type if available ---
+            event_type_field = await self.page.query_selector(
+                'select[name*="event_type"]'
+            )
+            if event_type_field:
+                event_type = result.get('event_type', 'League')
+                try:
+                    await event_type_field.select_option(label=event_type)
+                    log(f"      ✓ Selected event type: {event_type}")
+                except Exception:
+                    try:
+                        await event_type_field.select_option(index=1)
+                        log(f"      ✓ Selected event type by index")
+                    except Exception:
+                        log(f"      ⚠️ Could not select event type")
+            
+            # --- Step 8: Fill in scores ---
+            score_filled = False
+            
+            # Pattern A: Separate goals/points fields (own/opponent)
+            own_goals = await self.page.query_selector(
+                'input[name*="own"][name*="goal"], input[id*="own"][id*="goal"]'
+            )
+            own_points = await self.page.query_selector(
+                'input[name*="own"][name*="point"], input[id*="own"][id*="point"]'
+            )
+            opp_goals = await self.page.query_selector(
+                'input[name*="opponent"][name*="goal"], input[name*="opposition"][name*="goal"], '
+                'input[id*="opponent"][id*="goal"]'
+            )
+            opp_points = await self.page.query_selector(
+                'input[name*="opponent"][name*="point"], input[name*="opposition"][name*="point"], '
+                'input[id*="opponent"][id*="point"]'
             )
             
-            if own_score_field and opponent_score_field:
-                # Clear fields first
-                await own_score_field.fill('')
-                await opponent_score_field.fill('')
+            if own_goals and own_points and opp_goals and opp_points:
+                our_g, our_p = result['our_score'].split('-', 1)
+                opp_g, opp_p = result['opponent_score'].split('-', 1)
+                await own_goals.fill(our_g)
+                await own_points.fill(our_p)
+                await opp_goals.fill(opp_g)
+                await opp_points.fill(opp_p)
+                log(f"      ✓ Entered scores (own/opp goals+points): {result['our_score']} v {result['opponent_score']}")
+                score_filled = True
+            
+            # Pattern B: Separate goals/points fields (home/away)
+            if not score_filled:
+                home_goals = await self.page.query_selector(
+                    'input[name*="home"][name*="goal"], input[id*="home_goal"], input[id*="home-goal"]'
+                )
+                home_points = await self.page.query_selector(
+                    'input[name*="home"][name*="point"], input[id*="home_point"], input[id*="home-point"]'
+                )
+                away_goals = await self.page.query_selector(
+                    'input[name*="away"][name*="goal"], input[id*="away_goal"], input[id*="away-goal"]'
+                )
+                away_points = await self.page.query_selector(
+                    'input[name*="away"][name*="point"], input[id*="away_point"], input[id*="away-point"]'
+                )
                 
-                # Fill with scores
-                await own_score_field.fill(result['our_score'])
-                await own_score_field.press('Tab')  # Trigger change event
-                await self.page.wait_for_timeout(300)
+                if home_goals and home_points and away_goals and away_points:
+                    our_g, our_p = result['our_score'].split('-', 1)
+                    opp_g, opp_p = result['opponent_score'].split('-', 1)
+                    await home_goals.fill(our_g)
+                    await home_points.fill(our_p)
+                    await away_goals.fill(opp_g)
+                    await away_points.fill(opp_p)
+                    log(f"      ✓ Entered scores (home/away goals+points): {result['our_score']} v {result['opponent_score']}")
+                    score_filled = True
+            
+            # Pattern C: Single composite score fields ("1-6" format)
+            if not score_filled:
+                own_score_field = await self.page.query_selector(
+                    'input[name*="own_score"], input[name*="own"][name*="score"], '
+                    'input[name="result[own_score]"]'
+                )
+                opp_score_field = await self.page.query_selector(
+                    'input[name*="opponent_score"], input[name*="opposition_score"], '
+                    'input[name="result[opponent_score]"]'
+                )
                 
-                await opponent_score_field.fill(result['opponent_score'])
-                await opponent_score_field.press('Tab')  # Trigger change event
-                await self.page.wait_for_timeout(300)
-                
-                log(f"      ✓ Entered scores: {result['our_score']} v {result['opponent_score']}")
-            else:
-                log(f"      ⚠️  Could not find score input fields")
+                if own_score_field and opp_score_field:
+                    await own_score_field.fill(result['our_score'])
+                    await own_score_field.press('Tab')
+                    await self.page.wait_for_timeout(300)
+                    await opp_score_field.fill(result['opponent_score'])
+                    await opp_score_field.press('Tab')
+                    await self.page.wait_for_timeout(300)
+                    log(f"      ✓ Entered scores (composite): {result['our_score']} v {result['opponent_score']}")
+                    score_filled = True
+            
+            # Pattern D: Positional number inputs (likely goals, points, goals, points)
+            if not score_filled:
+                number_inputs = await self.page.query_selector_all('input[type="number"]')
+                if len(number_inputs) >= 4:
+                    our_g, our_p = result['our_score'].split('-', 1)
+                    opp_g, opp_p = result['opponent_score'].split('-', 1)
+                    await number_inputs[0].fill(our_g)
+                    await number_inputs[1].fill(our_p)
+                    await number_inputs[2].fill(opp_g)
+                    await number_inputs[3].fill(opp_p)
+                    log(f"      ✓ Entered scores (positional number inputs): {result['our_score']} v {result['opponent_score']}")
+                    score_filled = True
+                elif len(number_inputs) == 2:
+                    await number_inputs[0].fill(result['our_score'])
+                    await number_inputs[1].fill(result['opponent_score'])
+                    log(f"      ✓ Entered scores (2 number inputs): {result['our_score']} v {result['opponent_score']}")
+                    score_filled = True
+            
+            if not score_filled:
+                log(f"      ⚠️ Could not find score input fields after event selection")
                 return False
             
-            # Handle result publishing options
+            # --- Step 9: Configure publishing options ---
             await self._configure_result_publishing_options()
             
-            # DEBUG: Verify all fields are filled before submitting
-            log(f"      DEBUG: Verifying form fields before submit...")
-            event_type_value = await event_type_field.evaluate('el => el.value') if event_type_field else None
-            team_value = await team_field.evaluate('el => el.value') if team_field else None
-            competition_value = await competition_field.evaluate('el => el.value') if competition_field else None
-            opponent_value = await opponent_field.evaluate('el => el.value') if opponent_field else None
-            own_score_value = await own_score_field.evaluate('el => el.value') if own_score_field else None
-            opp_score_value = await opponent_score_field.evaluate('el => el.value') if opponent_score_field else None
-            
-            log(f"        Event type: '{event_type_value}'")
-            log(f"        Team: '{team_value}'")
-            log(f"        Competition: '{competition_value}'")
-            log(f"        Opponent: '{opponent_value}'")
-            log(f"        Own score: '{own_score_value}'")
-            log(f"        Opp score: '{opp_score_value}'")
-            
-            # Submit the result
+            # --- Step 10: Submit ---
             submit_btn = await self.page.query_selector(
                 'input[type="submit"], button[type="submit"], '
-                'input[value*="Save"], button:has-text("Save"), button:has-text("Create")'
+                'input[value*="Save"], button:has-text("Save"), '
+                'button:has-text("Create"), button:has-text("Publish")'
             )
             
             if submit_btn:
@@ -991,78 +1099,41 @@ class ClubZapAutomation:
                 await submit_btn.click()
                 await self.page.wait_for_timeout(3000)
                 
-                # Debug: Check what happened after submit
                 final_url = self.page.url
                 log(f"      DEBUG: URL after submit: {final_url}")
                 
-                # Check for success - redirect to result detail page
-                if '/results/' in final_url and '/brand_new' not in final_url:
+                # Success: redirected to a result detail page
+                if '/results/' in final_url and '/new' not in final_url and '/brand_new' not in final_url:
                     log(f"      ✓ Redirected to result page - success!")
                     return True
                 
-                # Still on brand_new page - check for messages
-                if '/brand_new' in final_url:
-                    log(f"      ⚠️  Still on brand_new page - checking for errors...")
-                    
-                    # Get all visible text to see what's on the page
-                    body_text = await self.page.evaluate('() => document.body.innerText')
-                    
-                    # Check for validation errors
-                    if 'error' in body_text.lower() or 'required' in body_text.lower() or 'invalid' in body_text.lower():
-                        log(f"      ❌ Form validation errors detected:")
-                        # Look for specific error messages
-                        error_elements = await self.page.query_selector_all('.error, .invalid-feedback, .field_with_errors')
-                        for elem in error_elements[:5]:
-                            error_text = await elem.inner_text()
-                            if error_text.strip():
-                                log(f"        - {error_text.strip()}")
-                        return False
-                
-                # Look for success messages
-                success_indicators = await self.page.query_selector_all(
+                # Check for success messages
+                success_elements = await self.page.query_selector_all(
                     '.alert-success, .success, .flash-success, .notice'
                 )
-                for indicator in success_indicators:
-                    text = await indicator.inner_text()
-                    if text.strip() and ('success' in text.lower() or 'saved' in text.lower() or 'created' in text.lower()):
-                        log(f"      ✓ Success message: {text.strip()}")
+                for elem in success_elements:
+                    text = (await elem.inner_text()).strip()
+                    if text and any(w in text.lower() for w in ('success', 'saved', 'created', 'published')):
+                        log(f"      ✓ Success: {text}")
                         return True
                 
                 # Check for errors
-                error_indicators = await self.page.query_selector_all(
-                    '.alert-error, .error, .flash-error, .alert-danger, .alert'
+                error_elements = await self.page.query_selector_all(
+                    '.alert-error, .error, .flash-error, .alert-danger, '
+                    '.field_with_errors, .invalid-feedback'
                 )
-                if error_indicators:
-                    for error in error_indicators:
-                        error_text = await error.inner_text()
-                        if error_text.strip():
-                            log(f"      ❌ Error: {error_text.strip()}")
-                    
-                    # Get the entire page text to see all validation messages
-                    log(f"      DEBUG: Searching for validation errors in page content...")
-                    page_content = await self.page.content()
-                    
-                    # Look for common error patterns in the HTML
-                    if 'Event type' in page_content and ('required' in page_content or "can't be blank" in page_content):
-                        log(f"        - Event type is required")
-                    if 'Competition' in page_content and ('required' in page_content or "can't be blank" in page_content):
-                        log(f"        - Competition is required")
-                    
-                    # Also check for field-specific errors (often shown near inputs)
-                    field_errors = await self.page.query_selector_all('.field_with_errors, .invalid-feedback, .help-block.error, .text-danger, li')
-                    if field_errors:
-                        log(f"      Field validation errors found:")
-                        for field_error in field_errors[:10]:
-                            error_text = await field_error.inner_text()
-                            if error_text.strip() and len(error_text.strip()) < 100:  # Avoid huge blocks
-                                log(f"        - {error_text.strip()}")
-                    
+                for elem in error_elements[:5]:
+                    text = (await elem.inner_text()).strip()
+                    if text and len(text) < 200:
+                        log(f"      ❌ Error: {text}")
+                
+                if error_elements:
                     return False
                 
-                log(f"      ⚠️  No clear success/error indicator - assuming failure")
+                log(f"      ⚠️ No clear success/error indicator - assuming failure")
                 return False
             else:
-                log(f"      ⚠️  Could not find submit button")
+                log(f"      ⚠️ Could not find submit button")
                 return False
                 
         except Exception as e:
