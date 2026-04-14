@@ -926,7 +926,22 @@ class ClubZapAutomation:
                         log(f"        - [{radio_id}] value='{radio_value}' {row_cells}")
                     return False
             
-            # Check if URL changed after event selection (page may redirect)
+            # After selecting the radio, we may need to click a "Next" / "Continue" /
+            # "Add Result" button to proceed to the score entry form.
+            next_btn = await self.page.query_selector(
+                'input[type="submit"], button[type="submit"], '
+                'a:has-text("Next"), button:has-text("Next"), '
+                'a:has-text("Continue"), button:has-text("Continue"), '
+                'a:has-text("Add Result"), button:has-text("Add Result"), '
+                'input[value*="Next"], input[value*="Continue"], input[value*="Add"]'
+            )
+            if next_btn:
+                btn_text = await next_btn.evaluate('el => el.value || el.innerText || ""')
+                log(f"      🔘 Clicking next/submit button: '{btn_text.strip()}'")
+                await next_btn.click()
+                await self.page.wait_for_timeout(3000)
+            
+            # Check if URL changed (page may redirect to result entry form)
             new_url = self.page.url
             if new_url != current_url:
                 log(f"      DEBUG: URL changed to: {new_url}")
