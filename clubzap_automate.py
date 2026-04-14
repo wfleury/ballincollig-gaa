@@ -851,110 +851,69 @@ class ClubZapAutomation:
             log(f"      DEBUG: Current URL: {current_url}")
             
             # --- Step 1: Select the event/team radio button ---
-            # The Add Result page requires choosing an event before score fields appear
+            # The Add Result page shows a TABLE of events with radio buttons.
+            # The team name is in the "Team 1" column (same row as the radio).
+            # We find the parent <tr> for each radio and read the cell texts.
             event_radios = await self.page.query_selector_all('input[name="event"][type="radio"]')
             
             if event_radios:
                 log(f"      Found {len(event_radios)} event options, matching team: '{result['team']}'")
                 
-                # Debug: dump the HTML structure around the first radio to understand the DOM
-                if event_radios:
-                    try:
-                        sample_html = await event_radios[0].evaluate(
-                            'el => el.closest("li, div, tr, label, .event, .radio")?.outerHTML?.substring(0, 500) || el.parentElement.parentElement.outerHTML.substring(0, 500)'
-                        )
-                        log(f"      DEBUG: Radio button DOM structure: {sample_html}")
-                    except Exception as e:
-                        log(f"      DEBUG: Could not get radio DOM: {e}")
-                
-                # Collect all radio options with their label text
+                # Collect all radio options with their row cell texts
                 radio_options = []
                 for radio in event_radios:
                     radio_id = await radio.get_attribute('id') or ''
                     radio_value = await radio.get_attribute('value') or ''
-                    label_text = ''
                     
-                    # Strategy 1: label[for="id"]
-                    if radio_id:
-                        label = await self.page.query_selector(f'label[for="{radio_id}"]')
-                        if label:
-                            label_text = (await label.inner_text()).strip()
+                    # Read all cell texts from the parent <tr>
+                    row_cells = await radio.evaluate('''el => {
+                        let tr = el.closest("tr");
+                        if (!tr) return [];
+                        return Array.from(tr.querySelectorAll("td, th")).map(c => c.textContent.trim());
+                    }''')
                     
-                    # Strategy 2: parent element text (label wrapping input)
-                    if not label_text:
-                        try:
-                            label_text = await radio.evaluate(
-                                'el => (el.parentElement.textContent || "").trim()'
-                            )
-                        except Exception:
-                            pass
-                    
-                    # Strategy 3: closest label ancestor
-                    if not label_text:
-                        try:
-                            label_text = await radio.evaluate(
-                                'el => (el.closest("label")?.textContent || "").trim()'
-                            )
-                        except Exception:
-                            pass
-                    
-                    # Strategy 4: look further up - grandparent, great-grandparent
-                    if not label_text:
-                        try:
-                            label_text = await radio.evaluate('''el => {
-                                let node = el.parentElement;
-                                for (let i = 0; i < 3; i++) {
-                                    if (!node) break;
-                                    let text = node.textContent.trim();
-                                    if (text.length > 0 && text.length < 200) return text;
-                                    node = node.parentElement;
-                                }
-                                return "";
-                            }''')
-                        except Exception:
-                            pass
-                    
-                    # Strategy 5: next sibling text
-                    if not label_text:
-                        try:
-                            label_text = await radio.evaluate(
-                                'el => (el.nextElementSibling?.textContent || el.nextSibling?.textContent || "").trim()'
-                            )
-                        except Exception:
-                            pass
-                    
-                    radio_options.append((radio, radio_id, radio_value, label_text))
+                    radio_options.append((radio, radio_id, radio_value, row_cells))
+                
+                # Debug: log first few rows to see column layout
+                for i, (_, radio_id, radio_value, row_cells) in enumerate(radio_options[:3]):
+                    log(f"      DEBUG: Row {i} [{radio_id}] value='{radio_value}' cells={row_cells}")
                 
                 team_lower = result['team'].lower().strip()
                 selected = False
                 
-                # Try exact match on label text
-                for radio, radio_id, radio_value, label_text in radio_options:
-                    if label_text and label_text.lower().strip() == team_lower:
-                        log(f"      ✓ Exact match - selecting event: {label_text}")
-                        await radio.click()
-                        await self.page.wait_for_timeout(3000)
-                        selected = True
-                        break
-                
-                # Try substring match on label text
-                if not selected:
-                    for radio, radio_id, radio_value, label_text in radio_options:
-                        if label_text and team_lower in label_text.lower():
-                            log(f"      ✓ Substring match - selecting event: {label_text}")
+                # Match team name against any cell in the row
+                for radio, radio_id, radio_value, row_cells in radio_options:
+                    for cell in row_cells:
+                        if cell.lower().strip() == team_lower:
+                            log(f"      ✓ Row match - selecting event: {row_cells}")
                             await radio.click()
                             await self.page.wait_for_timeout(3000)
                             selected = True
                             break
+                    if selected:
+                        break
                 
-                # Try matching the CLUBZAP_TEAM_IDS value against radio value
+                # Fallback: substring match on any cell
+                if not selected:
+                    for radio, radio_id, radio_value, row_cells in radio_options:
+                        for cell in row_cells:
+                            if team_lower in cell.lower():
+                                log(f"      ✓ Substring row match - selecting event: {row_cells}")
+                                await radio.click()
+                                await self.page.wait_for_timeout(3000)
+                                selected = True
+                                break
+                        if selected:
+                            break
+                
+                # Fallback: match CLUBZAP_TEAM_IDS value against radio value
                 if not selected:
                     from config import CLUBZAP_TEAM_IDS
                     team_id = CLUBZAP_TEAM_IDS.get(result['team'], '')
                     if team_id:
-                        for radio, radio_id, radio_value, label_text in radio_options:
+                        for radio, radio_id, radio_value, row_cells in radio_options:
                             if radio_value == team_id:
-                                log(f"      ✓ Team ID match - selecting event: value={radio_value} [{radio_id}]")
+                                log(f"      ✓ Team ID match - selecting event: value={radio_value} {row_cells}")
                                 await radio.click()
                                 await self.page.wait_for_timeout(3000)
                                 selected = True
@@ -962,9 +921,9 @@ class ClubZapAutomation:
                 
                 if not selected:
                     log(f"      ⚠️ No matching event for team '{result['team']}'")
-                    log(f"      Available events:")
-                    for _, radio_id, radio_value, label_text in radio_options[:20]:
-                        log(f"        - [{radio_id}] value='{radio_value}' label='{label_text}'")
+                    log(f"      Available events (first 20):")
+                    for _, radio_id, radio_value, row_cells in radio_options[:20]:
+                        log(f"        - [{radio_id}] value='{radio_value}' {row_cells}")
                     return False
             
             # Check if URL changed after event selection (page may redirect)
