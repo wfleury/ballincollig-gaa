@@ -857,19 +857,30 @@ class ClubZapAutomation:
             if event_radios:
                 log(f"      Found {len(event_radios)} event options, matching team: '{result['team']}'")
                 
+                # Debug: dump the HTML structure around the first radio to understand the DOM
+                if event_radios:
+                    try:
+                        sample_html = await event_radios[0].evaluate(
+                            'el => el.closest("li, div, tr, label, .event, .radio")?.outerHTML?.substring(0, 500) || el.parentElement.parentElement.outerHTML.substring(0, 500)'
+                        )
+                        log(f"      DEBUG: Radio button DOM structure: {sample_html}")
+                    except Exception as e:
+                        log(f"      DEBUG: Could not get radio DOM: {e}")
+                
                 # Collect all radio options with their label text
                 radio_options = []
                 for radio in event_radios:
                     radio_id = await radio.get_attribute('id') or ''
+                    radio_value = await radio.get_attribute('value') or ''
                     label_text = ''
                     
-                    # Try label[for="id"]
+                    # Strategy 1: label[for="id"]
                     if radio_id:
                         label = await self.page.query_selector(f'label[for="{radio_id}"]')
                         if label:
                             label_text = (await label.inner_text()).strip()
                     
-                    # Fallback: parent element text
+                    # Strategy 2: parent element text (label wrapping input)
                     if not label_text:
                         try:
                             label_text = await radio.evaluate(
@@ -878,35 +889,82 @@ class ClubZapAutomation:
                         except Exception:
                             pass
                     
-                    radio_options.append((radio, radio_id, label_text))
+                    # Strategy 3: closest label ancestor
+                    if not label_text:
+                        try:
+                            label_text = await radio.evaluate(
+                                'el => (el.closest("label")?.textContent || "").trim()'
+                            )
+                        except Exception:
+                            pass
+                    
+                    # Strategy 4: look further up - grandparent, great-grandparent
+                    if not label_text:
+                        try:
+                            label_text = await radio.evaluate('''el => {
+                                let node = el.parentElement;
+                                for (let i = 0; i < 3; i++) {
+                                    if (!node) break;
+                                    let text = node.textContent.trim();
+                                    if (text.length > 0 && text.length < 200) return text;
+                                    node = node.parentElement;
+                                }
+                                return "";
+                            }''')
+                        except Exception:
+                            pass
+                    
+                    # Strategy 5: next sibling text
+                    if not label_text:
+                        try:
+                            label_text = await radio.evaluate(
+                                'el => (el.nextElementSibling?.textContent || el.nextSibling?.textContent || "").trim()'
+                            )
+                        except Exception:
+                            pass
+                    
+                    radio_options.append((radio, radio_id, radio_value, label_text))
                 
                 team_lower = result['team'].lower().strip()
                 selected = False
                 
-                # Try exact match first
-                for radio, radio_id, label_text in radio_options:
-                    if label_text.lower().strip() == team_lower:
+                # Try exact match on label text
+                for radio, radio_id, radio_value, label_text in radio_options:
+                    if label_text and label_text.lower().strip() == team_lower:
                         log(f"      ✓ Exact match - selecting event: {label_text}")
                         await radio.click()
                         await self.page.wait_for_timeout(3000)
                         selected = True
                         break
                 
-                # Fall back to substring match
+                # Try substring match on label text
                 if not selected:
-                    for radio, radio_id, label_text in radio_options:
-                        if team_lower in label_text.lower():
+                    for radio, radio_id, radio_value, label_text in radio_options:
+                        if label_text and team_lower in label_text.lower():
                             log(f"      ✓ Substring match - selecting event: {label_text}")
                             await radio.click()
                             await self.page.wait_for_timeout(3000)
                             selected = True
                             break
                 
+                # Try matching the CLUBZAP_TEAM_IDS value against radio value
+                if not selected:
+                    from config import CLUBZAP_TEAM_IDS
+                    team_id = CLUBZAP_TEAM_IDS.get(result['team'], '')
+                    if team_id:
+                        for radio, radio_id, radio_value, label_text in radio_options:
+                            if radio_value == team_id:
+                                log(f"      ✓ Team ID match - selecting event: value={radio_value} [{radio_id}]")
+                                await radio.click()
+                                await self.page.wait_for_timeout(3000)
+                                selected = True
+                                break
+                
                 if not selected:
                     log(f"      ⚠️ No matching event for team '{result['team']}'")
                     log(f"      Available events:")
-                    for _, radio_id, label_text in radio_options[:20]:
-                        log(f"        - [{radio_id}] {label_text}")
+                    for _, radio_id, radio_value, label_text in radio_options[:20]:
+                        log(f"        - [{radio_id}] value='{radio_value}' label='{label_text}'")
                     return False
             
             # Check if URL changed after event selection (page may redirect)
