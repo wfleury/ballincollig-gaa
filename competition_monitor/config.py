@@ -179,6 +179,32 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u16-hurling-2",
         "age_group": "u16",
     },
+    # --- 1st team championship ---
+    "Fe16 Premier 1 S2 Football Championship": {
+        "competition_id": 214963,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football",
+        "age_group": "u16",
+    },
+    "Fe16 Premier 1 S2 Hurling Championship": {
+        "competition_id": 214967,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-hurling",
+        "age_group": "u16",
+    },
+    # --- 2nd team championship ---
+    "Fe16 Div 1 S1 Football Championship (2nd team)": {
+        "competition_id": 215007,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-2",
+        "age_group": "u16",
+    },
+    "Fe16 Div 1 Hurling Championship (2nd team)": {
+        "competition_id": 215011,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-hurling-2",
+        "age_group": "u16",
+    },
 
     # ===== Minor (Fe18) =====
     # --- 1st team ---
