@@ -77,6 +77,28 @@ a { color: var(--primary); }
   .fixture-row { grid-template-columns: 70px 1fr 50px; }
   .hide-mobile { display: none; }
 }
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+.back-to-top:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
 </style>
 </head>
 <body>
@@ -84,7 +106,7 @@ a { color: var(--primary); }
   <a href="../"><img src="../img/crest.gif" alt="Ballincollig crest"></a>
   <h1><a href="../" style="text-decoration:none">Ballincollig GAA</a></h1>
 </div>
-<p class="subtitle">U16 Dashboard &mdash; updated 15 Apr 2026 13:57</p>
+<p class="subtitle">U16 Dashboard &mdash; updated 15 Apr 2026 14:23</p>
 <nav class="section-nav"><a href="#league">League</a><a href="#championship">Championship</a></nav>
 <h2 id="league">League</h2><h3><a href="https://rebelog.ie/league/213023/" target="_blank">Fe16 Premier 1 Football</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">09 Apr 2026</div><div class="fixture-teams">Eire Og vs Ballincollig</div><div class="fixture-time">18:30</div></div>
 <div class="fixture-row"><div class="fixture-date">19 Apr 2026</div><div class="fixture-teams">Ballincollig vs Nemo Rangers</div><div class="fixture-time">18:30</div></div>
@@ -111,6 +133,17 @@ a { color: var(--primary); }
 <div class="fixture-row"><div class="fixture-date">24 Jul 2026</div><div class="fixture-teams">Inniscarra vs Ballincollig 2</div><div class="fixture-time">19:00</div></div>
 <div class="fixture-row"><div class="fixture-date">17 Aug 2026</div><div class="fixture-teams">Ballincollig 2 vs Passage</div><div class="fixture-time">19:00</div></div>
 <div class="fixture-row"><div class="fixture-date">31 Aug 2026</div><div class="fixture-teams">Bishopstown vs Ballincollig 2</div><div class="fixture-time">19:00</div></div></div><h3>Results</h3><p class="empty">No results yet.</p><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th class="hide-mobile">W</th><th class="hide-mobile">D</th><th class="hide-mobile">L</th><th>PD</th><th>Pts</th><th>Form</th></tr></thead><tbody><tr class="ours"><td>1</td><td>Ballincollig 2</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>2</td><td>Aghabullogue</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>3</td><td>Passage</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>4</td><td>Inniscarra</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>5</td><td>Bishopstown</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr></tbody></table></div>
+<button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+<script>
+window.addEventListener('scroll', function() {
+  const btn = document.querySelector('.back-to-top');
+  if (window.scrollY > 200) {
+    btn.style.display = 'flex';
+  } else {
+    btn.style.display = 'none';
+  }
+});
+</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
