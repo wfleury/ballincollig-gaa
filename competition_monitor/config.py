@@ -179,19 +179,6 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u16-hurling-2",
         "age_group": "u16",
     },
-    # --- 3rd team ---
-    "Fe16 Div D Grp 1 Football (3rd team)": {
-        "competition_id": 213604,
-        "base_url": REBELOG_BASE_URL,
-        "ntfy_topic": "ballincollig-u16-football-3",
-        "age_group": "u16",
-    },
-    "Fe16 Div D Grp 2 Football (3rd team)": {
-        "competition_id": 213605,
-        "base_url": REBELOG_BASE_URL,
-        "ntfy_topic": "ballincollig-u16-football-3",
-        "age_group": "u16",
-    },
 
     # ===== Minor (Fe18) =====
     # --- 1st team ---
