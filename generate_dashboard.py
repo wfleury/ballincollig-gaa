@@ -139,6 +139,28 @@ a { color: var(--primary); }
   .fixture-row { grid-template-columns: 70px 1fr 50px; }
   .hide-mobile { display: none; }
 }
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+.back-to-top:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
 """
 
 
@@ -312,6 +334,28 @@ h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
 }
 .age-link:hover { background: var(--primary-light);
   box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+.back-to-top:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+}
 """
 
 
@@ -343,6 +387,17 @@ def _generate_landing_page(age_groups_with_data, now):
 <div class="age-grid">
 {links}
 </div>
+<button class="back-to-top" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑</button>
+<script>
+window.addEventListener('scroll', function() {{
+  const btn = document.querySelector('.back-to-top');
+  if (window.scrollY > 200) {{
+    btn.style.display = 'flex';
+  }} else {{
+    btn.style.display = 'none';
+  }}
+}});
+</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
@@ -418,6 +473,17 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
 {content_html}
+<button class="back-to-top" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑</button>
+<script>
+window.addEventListener('scroll', function() {{
+  const btn = document.querySelector('.back-to-top');
+  if (window.scrollY > 200) {{
+    btn.style.display = 'flex';
+  }} else {{
+    btn.style.display = 'none';
+  }}
+}});
+</script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
