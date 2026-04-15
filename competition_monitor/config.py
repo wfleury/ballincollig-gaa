@@ -123,6 +123,13 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u14-hurling-2",
         "age_group": "u14",
     },
+    # --- 2nd team championship ---
+    "Fe14 Div 1 S-A S2 Football Championship (2nd team)": {
+        "competition_id": 214897,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-football-2",
+        "age_group": "u14",
+    },
     # --- 3rd team ---
     "Fe14 Div 4D Football (3rd team)": {
         "competition_id": 213624,
@@ -146,6 +153,7 @@ COMPETITIONS = {
     },
 
     # ===== U16 (Fe16) =====
+    # --- 1st team ---
     "Fe16 Premier 1 Football": {
         "competition_id": 213023,
         "base_url": REBELOG_BASE_URL,
@@ -156,6 +164,32 @@ COMPETITIONS = {
         "competition_id": 213154,
         "base_url": REBELOG_BASE_URL,
         "ntfy_topic": "ballincollig-u16-hurling",
+        "age_group": "u16",
+    },
+    # --- 2nd team ---
+    "Fe16 Div 1 S2 Football (2nd team)": {
+        "competition_id": 213064,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-2",
+        "age_group": "u16",
+    },
+    "Fe16 Div 1 S2 Hurling (2nd team)": {
+        "competition_id": 213165,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-hurling-2",
+        "age_group": "u16",
+    },
+    # --- 3rd team ---
+    "Fe16 Div D Grp 1 Football (3rd team)": {
+        "competition_id": 213604,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-3",
+        "age_group": "u16",
+    },
+    "Fe16 Div D Grp 2 Football (3rd team)": {
+        "competition_id": 213605,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-3",
         "age_group": "u16",
     },
 
