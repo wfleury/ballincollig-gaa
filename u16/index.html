@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ballincollig GAA – U16</title>
+<style>:root {
+  --primary: #1a5632;
+  --primary-light: #e8f5e9;
+  --accent: #ffc107;
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #212121;
+  --muted: #757575;
+  --border: #e0e0e0;
+  --highlight: #fff8e1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.5;
+  max-width: 960px; margin: 0 auto; padding: 16px;
+}
+.header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.header img { height: 56px; width: auto; }
+h1 { color: var(--primary); font-size: 1.6em; }
+.subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 20px; }
+h2 { color: var(--primary); margin: 24px 0 12px; font-size: 1.25em;
+     border-bottom: 2px solid var(--primary); padding-bottom: 4px; }
+h3 { color: var(--primary); margin: 16px 0 8px; font-size: 1.05em; }
+.card { background: var(--card); border-radius: 8px; padding: 16px;
+        margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
+th { background: var(--primary); color: white; text-align: left;
+     padding: 8px 10px; font-weight: 600; }
+td { padding: 6px 10px; border-bottom: 1px solid var(--border); }
+tr.ours { background: var(--highlight); font-weight: 600; }
+tr:hover { background: var(--primary-light); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 12px;
+         font-size: 0.75em; font-weight: 600; }
+.badge-win { background: #c8e6c9; color: #2e7d32; }
+.badge-loss { background: #ffcdd2; color: #c62828; }
+.badge-draw { background: #fff9c4; color: #f57f17; }
+.badge-postponed { background: #e0e0e0; color: #616161; }
+.badge-upcoming { background: #bbdefb; color: #1565c0; }
+a { color: var(--primary); }
+.fixture-grid { display: grid; gap: 8px; }
+.fixture-row { display: grid; grid-template-columns: 90px 1fr 60px;
+               gap: 8px; align-items: center; padding: 6px 0;
+               border-bottom: 1px solid var(--border); }
+.fixture-date { font-weight: 600; font-size: 0.85em; }
+.fixture-teams { }
+.fixture-time { text-align: right; font-size: 0.85em; color: var(--muted); }
+.empty { color: var(--muted); font-style: italic; padding: 12px 0; }
+.muted { color: var(--muted); }
+.form-cell { white-space: nowrap; }
+.form-btn { border: none; cursor: pointer;
+  font-family: inherit; line-height: inherit; }
+.form-tip { display: none; }
+.form-btn:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.form-btn:focus .form-tip { display: block; position: fixed;
+  left: 16px; right: 16px; bottom: 16px;
+  background: var(--text); color: white; padding: 8px 14px;
+  border-radius: 8px; font-size: 0.85em; font-weight: 400;
+  white-space: normal; z-index: 100; text-align: center; }
+.section-nav { display: flex; gap: 8px; margin-bottom: 16px; }
+.section-nav a {
+  padding: 6px 16px; border-radius: 6px; font-weight: 600;
+  font-size: 0.9em; text-decoration: none;
+  background: var(--primary); color: white;
+}
+.section-nav a:hover { opacity: 0.85; }
+a { color: var(--primary); }
+@media (max-width: 600px) {
+  body { padding: 10px; }
+  .fixture-row { grid-template-columns: 70px 1fr 50px; }
+  .hide-mobile { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="../"><img src="../img/crest.gif" alt="Ballincollig crest"></a>
+  <h1><a href="../" style="text-decoration:none">Ballincollig GAA</a></h1>
+</div>
+<p class="subtitle">U16 Dashboard &mdash; updated 15 Apr 2026 11:15</p>
+
+<h2 id="league">League</h2><h3><a href="https://rebelog.ie/league/213023/" target="_blank">Fe16 Premier 1 Football</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">09 Apr 2026</div><div class="fixture-teams">Eire Og vs Ballincollig</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">19 Apr 2026</div><div class="fixture-teams">Ballincollig vs Nemo Rangers</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">06 May 2026</div><div class="fixture-teams">Ballincollig vs Douglas</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">18 May 2026</div><div class="fixture-teams">Ballincollig vs Macroom</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">17 Jun 2026</div><div class="fixture-teams">Bishopstown vs Ballincollig</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">08 Mar 2026</div><div class="fixture-teams">St Finbarrs 2-6 - 5-6 Ballincollig</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div>
+<div class="fixture-row"><div class="fixture-date">22 Feb 2026</div><div class="fixture-teams">Ballincollig 3-12 - 2-9 Ballinora</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th class="hide-mobile">W</th><th class="hide-mobile">D</th><th class="hide-mobile">L</th><th>PD</th><th>Pts</th><th>Form</th></tr></thead><tbody><tr><td>1</td><td>Eire Og</td><td>2</td><td class="hide-mobile">2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>19</td><td>4</td><td class="form-cell"><button class="form-btn badge badge-win" title="22 Feb 2026: 3-14 vs Bishopstown 1-4">W<span class="form-tip">22 Feb 2026: 3-14 vs Bishopstown 1-4</span></button> <button class="form-btn badge badge-win" title="08 Mar 2026: 4-20 vs Ballinora 5-14">W<span class="form-tip">08 Mar 2026: 4-20 vs Ballinora 5-14</span></button></td></tr><tr class="ours"><td>2</td><td>Ballincollig</td><td>2</td><td class="hide-mobile">2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>15</td><td>4</td><td class="form-cell"><button class="form-btn badge badge-win" title="22 Feb 2026: 3-12 vs Ballinora 2-9">W<span class="form-tip">22 Feb 2026: 3-12 vs Ballinora 2-9</span></button> <button class="form-btn badge badge-win" title="08 Mar 2026: 5-6 vs St Finbarrs 2-6">W<span class="form-tip">08 Mar 2026: 5-6 vs St Finbarrs 2-6</span></button></td></tr><tr><td>3</td><td>Douglas</td><td>2</td><td class="hide-mobile">2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>9</td><td>4</td><td class="form-cell"><button class="form-btn badge badge-win" title="08 Mar 2026: 2-6 vs Macroom 0-9">W<span class="form-tip">08 Mar 2026: 2-6 vs Macroom 0-9</span></button> <button class="form-btn badge badge-win" title="22 Mar 2026: 4-9 vs St Finbarrs 3-6">W<span class="form-tip">22 Mar 2026: 4-9 vs St Finbarrs 3-6</span></button></td></tr><tr><td>4</td><td>Nemo Rangers</td><td>1</td><td class="hide-mobile">1</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>4</td><td>2</td><td class="form-cell"><button class="form-btn badge badge-win" title="08 Mar 2026: 3-14 vs Bishopstown 3-10">W<span class="form-tip">08 Mar 2026: 3-14 vs Bishopstown 3-10</span></button></td></tr><tr><td>5</td><td>Bishopstown</td><td>3</td><td class="hide-mobile">1</td><td class="hide-mobile">0</td><td class="hide-mobile">2</td><td>-17</td><td>2</td><td class="form-cell"><button class="form-btn badge badge-loss" title="22 Feb 2026: 1-4 vs Eire Og 3-14">L<span class="form-tip">22 Feb 2026: 1-4 vs Eire Og 3-14</span></button> <button class="form-btn badge badge-loss" title="08 Mar 2026: 3-10 vs Nemo Rangers 3-14">L<span class="form-tip">08 Mar 2026: 3-10 vs Nemo Rangers 3-14</span></button> <button class="form-btn badge badge-win" title="08 Apr 2026: 2-12 vs Ballinora 2-9">W<span class="form-tip">08 Apr 2026: 2-12 vs Ballinora 2-9</span></button></td></tr><tr><td>6</td><td>Macroom</td><td>2</td><td class="hide-mobile">1</td><td class="hide-mobile">0</td><td class="hide-mobile">1</td><td>6</td><td>2</td><td class="form-cell"><button class="form-btn badge badge-loss" title="08 Mar 2026: 0-9 vs Douglas 2-6">L<span class="form-tip">08 Mar 2026: 0-9 vs Douglas 2-6</span></button> <button class="form-btn badge badge-win" title="08 Apr 2026: 0-14 vs St Finbarrs 0-5">W<span class="form-tip">08 Apr 2026: 0-14 vs St Finbarrs 0-5</span></button></td></tr><tr><td>7</td><td>Ballinora</td><td>3</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">3</td><td>-12</td><td>0</td><td class="form-cell"><button class="form-btn badge badge-loss" title="22 Feb 2026: 2-9 vs Ballincollig 3-12">L<span class="form-tip">22 Feb 2026: 2-9 vs Ballincollig 3-12</span></button> <button class="form-btn badge badge-loss" title="08 Mar 2026: 5-14 vs Eire Og 4-20">L<span class="form-tip">08 Mar 2026: 5-14 vs Eire Og 4-20</span></button> <button class="form-btn badge badge-loss" title="08 Apr 2026: 2-9 vs Bishopstown 2-12">L<span class="form-tip">08 Apr 2026: 2-9 vs Bishopstown 2-12</span></button></td></tr><tr><td>8</td><td>St Finbarrs</td><td>3</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">3</td><td>-24</td><td>0</td><td class="form-cell"><button class="form-btn badge badge-loss" title="08 Mar 2026: 2-6 vs Ballincollig 5-6">L<span class="form-tip">08 Mar 2026: 2-6 vs Ballincollig 5-6</span></button> <button class="form-btn badge badge-loss" title="22 Mar 2026: 3-6 vs Douglas 4-9">L<span class="form-tip">22 Mar 2026: 3-6 vs Douglas 4-9</span></button> <button class="form-btn badge badge-loss" title="08 Apr 2026: 0-5 vs Macroom 0-14">L<span class="form-tip">08 Apr 2026: 0-5 vs Macroom 0-14</span></button></td></tr></tbody></table></div><h3><a href="https://rebelog.ie/league/213154/" target="_blank">Fe16 Premier 1 Hurling</a></h3><div class="card"><h3>Upcoming</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">12 Apr 2026</div><div class="fixture-teams">Glen Rovers vs Ballincollig</div><div class="fixture-time">16:00</div></div>
+<div class="fixture-row"><div class="fixture-date">26 Apr 2026</div><div class="fixture-teams">Ballincollig vs Ballinora</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">11 May 2026</div><div class="fixture-teams">Ballincollig vs Ballyhea Milford</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">25 May 2026</div><div class="fixture-teams">Blarney vs Ballincollig</div><div class="fixture-time">18:30</div></div>
+<div class="fixture-row"><div class="fixture-date">22 Jun 2026</div><div class="fixture-teams">Ballincollig vs Midleton</div><div class="fixture-time">18:30</div></div></div><h3>Results</h3><div class="fixture-grid"><div class="fixture-row"><div class="fixture-date">31 Mar 2026</div><div class="fixture-teams">Ballincollig 1-18 - 1-14 Eire Og</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div>
+<div class="fixture-row"><div class="fixture-date">17 Mar 2026</div><div class="fixture-teams">Kiltha Og 1-7 - 0-14 Ballincollig</div><div class="fixture-time"><span class="badge badge-win">W</span></div></div></div><h3>Table</h3><table><thead><tr><th>#</th><th>Team</th><th>Pld</th><th class="hide-mobile">W</th><th class="hide-mobile">D</th><th class="hide-mobile">L</th><th>PD</th><th>Pts</th><th>Form</th></tr></thead><tbody><tr><td>1</td><td>Ballyhea Milford</td><td>2</td><td class="hide-mobile">2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>19</td><td>4</td><td class="form-cell"><button class="form-btn badge badge-win" title="17 Mar 2026: 1-24 vs Midleton 2-16">W<span class="form-tip">17 Mar 2026: 1-24 vs Midleton 2-16</span></button> <button class="form-btn badge badge-win" title="30 Mar 2026: 5-16 vs Kiltha Og 1-14">W<span class="form-tip">30 Mar 2026: 5-16 vs Kiltha Og 1-14</span></button></td></tr><tr class="ours"><td>2</td><td>Ballincollig</td><td>2</td><td class="hide-mobile">2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>8</td><td>4</td><td class="form-cell"><button class="form-btn badge badge-win" title="17 Mar 2026: 0-14 vs Kiltha Og 1-7">W<span class="form-tip">17 Mar 2026: 0-14 vs Kiltha Og 1-7</span></button> <button class="form-btn badge badge-win" title="31 Mar 2026: 1-18 vs Eire Og 1-14">W<span class="form-tip">31 Mar 2026: 1-18 vs Eire Og 1-14</span></button></td></tr><tr><td>3</td><td>Blarney</td><td>1</td><td class="hide-mobile">0</td><td class="hide-mobile">1</td><td class="hide-mobile">0</td><td>0</td><td>1</td><td class="form-cell"><button class="form-btn badge badge-draw" title="22 Mar 2026: 2-17 vs Ballinora 2-17">D<span class="form-tip">22 Mar 2026: 2-17 vs Ballinora 2-17</span></button></td></tr><tr><td>4</td><td>Ballinora</td><td>1</td><td class="hide-mobile">0</td><td class="hide-mobile">1</td><td class="hide-mobile">0</td><td>0</td><td>1</td><td class="form-cell"><button class="form-btn badge badge-draw" title="22 Mar 2026: 2-17 vs Blarney 2-17">D<span class="form-tip">22 Mar 2026: 2-17 vs Blarney 2-17</span></button></td></tr><tr><td>5</td><td>Glen Rovers</td><td>0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td>0</td><td>0</td><td class="form-cell"><span class="muted">-</span></td></tr><tr><td>6</td><td>Eire Og</td><td>1</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">1</td><td>-4</td><td>0</td><td class="form-cell"><button class="form-btn badge badge-loss" title="31 Mar 2026: 1-14 vs Ballincollig 1-18">L<span class="form-tip">31 Mar 2026: 1-14 vs Ballincollig 1-18</span></button></td></tr><tr><td>7</td><td>Midleton</td><td>1</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">1</td><td>-5</td><td>0</td><td class="form-cell"><button class="form-btn badge badge-loss" title="17 Mar 2026: 2-16 vs Ballyhea Milford 1-24">L<span class="form-tip">17 Mar 2026: 2-16 vs Ballyhea Milford 1-24</span></button></td></tr><tr><td>8</td><td>Kiltha Og</td><td>2</td><td class="hide-mobile">0</td><td class="hide-mobile">0</td><td class="hide-mobile">2</td><td>-18</td><td>0</td><td class="form-cell"><button class="form-btn badge badge-loss" title="17 Mar 2026: 1-7 vs Ballincollig 0-14">L<span class="form-tip">17 Mar 2026: 1-7 vs Ballincollig 0-14</span></button> <button class="form-btn badge badge-loss" title="30 Mar 2026: 1-14 vs Ballyhea Milford 5-16">L<span class="form-tip">30 Mar 2026: 1-14 vs Ballyhea Milford 5-16</span></button></td></tr></tbody></table></div>
+<script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
