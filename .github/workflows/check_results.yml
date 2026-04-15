@@ -50,13 +50,13 @@ jobs:
         env:
           DISPLAY: ':99'
           COMP_NTFY_QUIET: '1'
-          COMP_AGE_GROUPS: 'u14'
+          COMP_AGE_GROUPS: 'u14,u16'
 
       - name: Generate dashboard
         if: always()
         run: python generate_dashboard.py
         env:
-          COMP_AGE_GROUPS: 'u14'
+          COMP_AGE_GROUPS: 'u14,u16'
 
       - name: Upload baselines as artifact
         if: always()
