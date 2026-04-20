@@ -5,15 +5,24 @@ Extracts all fixtures, results (with scores), and the league table
 for every team in a competition — not just Ballincollig.
 """
 
+import os
 import re
 import time
 
 from selenium import webdriver
+from selenium.common.exceptions import (
+    TimeoutException, WebDriverException,
+)
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 
 SCORE_RE = re.compile(r'(\d+-\d+)\s*v\s*(\d+-\d+)', re.IGNORECASE)
+
+# Retry tuning — override via env vars in CI if needed.
+MAX_RETRIES = int(os.environ.get("COMP_SCRAPE_RETRIES", "3"))
+RETRY_BACKOFF_BASE = float(os.environ.get("COMP_SCRAPE_BACKOFF", "2.0"))
+PAGE_LOAD_TIMEOUT = int(os.environ.get("COMP_PAGE_TIMEOUT", "30"))
 
 
 class CompetitionScraper:
@@ -36,6 +45,10 @@ class CompetitionScraper:
         opts.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
         try:
             self.driver = webdriver.Chrome(options=opts)
+            try:
+                self.driver.set_page_load_timeout(PAGE_LOAD_TIMEOUT)
+            except Exception:
+                pass
             print("Competition scraper: Chrome driver ready")
         except Exception as e:
             print(f"Competition scraper: failed to init Chrome – {e}")
@@ -50,6 +63,47 @@ class CompetitionScraper:
         return m.group(1) if m else None
 
     def scrape(self, competition_url):
+        """Scrape with retry and exponential backoff.
+
+        Retries transient failures (timeouts, connection resets, empty
+        scrapes). Returns the best result or None after MAX_RETRIES.
+        """
+        last_data = None
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                data = self._scrape_once(competition_url)
+            except (TimeoutException, WebDriverException) as e:
+                data = None
+                print(f"[attempt {attempt}/{MAX_RETRIES}] scrape error: {e}")
+            except Exception as e:
+                data = None
+                print(f"[attempt {attempt}/{MAX_RETRIES}] unexpected: {e}")
+
+            # A scrape is "good" if it returned *something* — empty
+            # list is legit for out-of-season comps. We only retry on
+            # total failure (None) or a completely empty payload
+            # (no fixtures, no results, no table), which usually
+            # indicates a failed page load.
+            if data and (
+                data.get("fixtures") or data.get("results") or data.get("table")
+            ):
+                return data
+
+            last_data = data or last_data
+
+            if attempt < MAX_RETRIES:
+                wait = RETRY_BACKOFF_BASE ** attempt
+                print(f"  retrying in {wait:.1f}s...")
+                time.sleep(wait)
+
+        if last_data is None:
+            print(f"All {MAX_RETRIES} attempts failed for {competition_url}")
+        else:
+            print(f"Returning empty payload for {competition_url} after "
+                  f"{MAX_RETRIES} attempts")
+        return last_data
+
+    def _scrape_once(self, competition_url):
         """Scrape a competition page and return structured data.
 
         SportLomo pages embed all fixtures, results, and the league

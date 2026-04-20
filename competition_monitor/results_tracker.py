@@ -9,9 +9,83 @@ new results, fixture changes, and table movements.
 import hashlib
 import json
 import os
+import shutil
 from datetime import datetime
 
 from competition_monitor.config import BASELINE_DIR, CLUB_NAME
+
+
+# ------------------------------------------------------------------
+# Schema validation
+# ------------------------------------------------------------------
+
+# Required top-level keys for a saved baseline.
+_REQUIRED_BASELINE_KEYS = {
+    "last_run", "results", "fixtures", "table", "table_hash",
+}
+
+# Required keys for a match (fixture or result).
+_REQUIRED_MATCH_KEYS = {"home", "away", "date"}
+
+
+class BaselineValidationError(ValueError):
+    """Raised when a baseline fails schema validation."""
+
+
+def _validate_match(m, kind):
+    """Validate a single match dict. Returns list of error strings."""
+    errors = []
+    if not isinstance(m, dict):
+        return [f"{kind}: not a dict ({type(m).__name__})"]
+    for key in _REQUIRED_MATCH_KEYS:
+        if not m.get(key):
+            errors.append(f"{kind} missing '{key}'")
+    if kind == "result":
+        # Results must have scores in the GAA format "X-Y".
+        for k in ("home_score", "away_score"):
+            v = m.get(k, "")
+            if not isinstance(v, str) or "-" not in v:
+                errors.append(f"result bad {k}: {v!r}")
+    return errors
+
+
+def _validate_table(table):
+    errors = []
+    if not isinstance(table, list):
+        return [f"table: not a list ({type(table).__name__})"]
+    for row in table:
+        if not isinstance(row, dict):
+            errors.append("table row not a dict")
+            continue
+        if "team" not in row:
+            errors.append("table row missing 'team'")
+    return errors
+
+
+def validate_baseline(baseline):
+    """Validate a baseline dict and return a list of error strings.
+
+    An empty list means the baseline is valid.
+    """
+    errors = []
+    if not isinstance(baseline, dict):
+        return [f"baseline not a dict ({type(baseline).__name__})"]
+
+    for key in _REQUIRED_BASELINE_KEYS:
+        if key not in baseline:
+            errors.append(f"missing top-level key '{key}'")
+
+    for key in ("results", "fixtures"):
+        section = baseline.get(key, {})
+        if not isinstance(section, dict):
+            errors.append(f"{key}: not a dict")
+            continue
+        for mkey, m in section.items():
+            errors.extend(_validate_match(
+                m, "result" if key == "results" else "fixture"))
+
+    errors.extend(_validate_table(baseline.get("table", [])))
+    return errors
 
 
 def _match_key(m):
@@ -61,8 +135,21 @@ def load_baseline(comp_name):
         return None
 
 
-def save_baseline(comp_name, data):
-    """Persist the current scrape as the new baseline."""
+def save_baseline(comp_name, data, strict=False):
+    """Persist the current scrape as the new baseline.
+
+    Before overwriting, the existing baseline (if any) is backed up to
+    ``<name>.prev.json`` so a corrupt scrape can be rolled back.
+
+    Args:
+        comp_name: competition name.
+        data: scraped payload with keys results/fixtures/table.
+        strict: if True, raise BaselineValidationError when the new
+            baseline fails validation; otherwise log & skip save.
+
+    Returns:
+        True if saved, False if skipped due to validation failure.
+    """
     path = _baseline_path(comp_name)
     baseline = {
         "last_run": datetime.now().isoformat(),
@@ -72,8 +159,61 @@ def save_baseline(comp_name, data):
         "table_hash": _table_hash(data.get("table", [])),
         "competition_name": data.get("competition_name", ""),
     }
+
+    errors = validate_baseline(baseline)
+    if errors:
+        msg = f"Baseline validation failed for {comp_name}: {'; '.join(errors[:5])}"
+        if strict:
+            raise BaselineValidationError(msg)
+        print(f"WARN: {msg} — skipping save")
+        return False
+
+    # Safety: refuse to wipe a healthy baseline with a drastically
+    # smaller one (likely a scrape failure). A 50% drop in results
+    # or table rows triggers the guard.
+    prev = load_baseline(comp_name)
+    if prev and _looks_like_regression(prev, baseline):
+        print(f"WARN: {comp_name} new baseline looks like regression — "
+              f"keeping previous. "
+              f"prev results={len(prev.get('results', {}))} "
+              f"new={len(baseline['results'])}, "
+              f"prev table={len(prev.get('table', []))} "
+              f"new={len(baseline['table'])}")
+        return False
+
+    # Rollback copy of the current baseline before overwriting.
+    if os.path.exists(path):
+        try:
+            shutil.copy2(path, path + ".prev")
+        except OSError:
+            pass
+
     with open(path, "w") as f:
         json.dump(baseline, f, indent=2)
+    return True
+
+
+def _looks_like_regression(prev, new):
+    """Detect a scrape regression that would wipe out data."""
+    prev_res = len(prev.get("results", {}))
+    new_res = len(new.get("results", {}))
+    if prev_res >= 4 and new_res < prev_res // 2:
+        return True
+    prev_tbl = len(prev.get("table", []))
+    new_tbl = len(new.get("table", []))
+    if prev_tbl >= 4 and new_tbl < prev_tbl // 2:
+        return True
+    return False
+
+
+def rollback_baseline(comp_name):
+    """Restore the previous baseline from <name>.prev if available."""
+    path = _baseline_path(comp_name)
+    prev_path = path + ".prev"
+    if not os.path.exists(prev_path):
+        return False
+    shutil.copy2(prev_path, path)
+    return True
 
 
 # ------------------------------------------------------------------

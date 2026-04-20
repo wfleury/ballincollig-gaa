@@ -76,7 +76,21 @@ _CSS = """\
   --muted: #757575;
   --border: #e0e0e0;
   --highlight: #fff8e1;
+  --input-bg: #ffffff;
 }
+html[data-theme="dark"] {
+  --primary: #4caf82;
+  --primary-light: #1f3a2a;
+  --accent: #ffc107;
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #9e9e9e;
+  --border: #333;
+  --highlight: #3a2f10;
+  --input-bg: #2a2a2a;
+}
+html { color-scheme: light dark; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -161,7 +175,229 @@ a { color: var(--primary); }
   background: var(--primary-light);
   color: var(--primary);
 }
+/* Theme toggle button */
+.theme-toggle {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); padding: 6px 10px; border-radius: 6px;
+  cursor: pointer; font-size: 0.85em;
+}
+.theme-toggle:hover { background: var(--primary-light); }
+.header-actions { display: flex; align-items: center; gap: 8px;
+  margin-left: auto; }
+/* Filter bar */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  padding: 10px; background: var(--card); border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.filter-bar input[type="search"] {
+  flex: 1 1 200px; min-width: 0; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 0.9em; font-family: inherit;
+}
+.filter-bar input[type="search"]:focus {
+  outline: 2px solid var(--primary); outline-offset: 1px;
+}
+.filter-bar select {
+  padding: 8px 10px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--input-bg); color: var(--text);
+  font-size: 0.9em; font-family: inherit;
+}
+.filter-clear {
+  background: var(--border); border: none; color: var(--text);
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  font-size: 0.85em;
+}
+.filter-clear:hover { background: var(--primary-light); }
+.filter-empty { display: none; color: var(--muted); font-style: italic;
+  padding: 20px; text-align: center; }
+.filter-empty.show { display: block; }
+/* Collapsible competition */
+.comp { margin-bottom: 16px; }
+.comp-header {
+  background: var(--card); border-radius: 8px;
+  padding: 12px 16px; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: none; width: 100%; text-align: left;
+  font-family: inherit; color: var(--text);
+}
+.comp-header:hover { background: var(--primary-light); }
+.comp-header h3 { margin: 0; color: var(--primary); font-size: 1.05em; }
+.comp-header .chev { transition: transform 0.2s; color: var(--muted);
+  font-size: 1.2em; margin-left: 8px; }
+.comp.open .comp-header .chev { transform: rotate(180deg); }
+.comp-body { display: none; margin-top: 4px; }
+.comp.open .comp-body { display: block; }
+/* Desktop: default-open unless explicitly closed */
+@media (min-width: 601px) {
+  .comp:not(.user-closed) .comp-body { display: block; }
+  .comp:not(.user-closed) .comp-header .chev { transform: rotate(180deg); }
+}
+/* Mobile: default-closed unless explicitly opened */
+@media (max-width: 600px) {
+  .comp .comp-body { display: none; }
+  .comp.open .comp-body { display: block; }
+}
+.row-hidden { display: none !important; }
 """
+
+
+def _pwa_head(relative_prefix=""):
+    """HTML head tags for PWA manifest + apple-touch icon."""
+    return (
+        f'<link rel="manifest" href="{relative_prefix}manifest.webmanifest">\n'
+        f'<meta name="theme-color" content="#1a5632" '
+        f'media="(prefers-color-scheme: light)">\n'
+        f'<meta name="theme-color" content="#121212" '
+        f'media="(prefers-color-scheme: dark)">\n'
+        f'<meta name="apple-mobile-web-app-capable" content="yes">\n'
+        f'<meta name="apple-mobile-web-app-title" content="{CLUB_NAME} GAA">\n'
+        f'<link rel="apple-touch-icon" href="{relative_prefix}img/crest.gif">\n'
+        f'<link rel="icon" href="{relative_prefix}img/crest.gif">'
+    )
+
+
+def _og_head(title, desc, image_url):
+    return (
+        f'<meta property="og:title" content="{escape(title)}">\n'
+        f'<meta property="og:description" content="{escape(desc)}">\n'
+        f'<meta property="og:type" content="website">\n'
+        f'<meta property="og:image" content="{escape(image_url)}">\n'
+        f'<meta name="twitter:card" content="summary">'
+    )
+
+
+_THEME_INIT = """\
+<script>
+(function() {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>"""
+
+
+_THEME_TOGGLE_SCRIPT = """\
+<script>
+(function() {
+  var btn = document.querySelector('.theme-toggle');
+  if (!btn) return;
+  function update() {
+    var t = document.documentElement.getAttribute('data-theme') || 'light';
+    btn.textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label',
+      'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
+  }
+  update();
+  btn.addEventListener('click', function() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    update();
+  });
+})();
+</script>"""
+
+
+_COLLAPSE_SCRIPT = """\
+<script>
+(function() {
+  var isMobile = window.matchMedia('(max-width: 600px)').matches;
+  document.querySelectorAll('.comp').forEach(function(comp) {
+    var header = comp.querySelector('.comp-header');
+    if (!header) return;
+    if (isMobile) comp.classList.remove('open');
+    header.addEventListener('click', function() {
+      comp.classList.toggle('open');
+      comp.classList.toggle('user-closed', !comp.classList.contains('open'));
+    });
+  });
+})();
+</script>"""
+
+
+_FILTER_SCRIPT = """\
+<script>
+(function() {
+  var search = document.getElementById('filter-search');
+  var type = document.getElementById('filter-type');
+  var clear = document.getElementById('filter-clear');
+  var empty = document.getElementById('filter-empty');
+  if (!search) return;
+
+  function apply() {
+    var q = (search.value || '').trim().toLowerCase();
+    var t = type ? type.value : 'all';
+    var anyVisible = false;
+    var filtering = q !== '' || t !== 'all';
+
+    document.querySelectorAll('.comp').forEach(function(comp) {
+      var compName = (comp.getAttribute('data-comp') || '').toLowerCase();
+      var compMatchesText = !q || compName.indexOf(q) !== -1;
+      var anyRowVisible = false;
+
+      comp.querySelectorAll('[data-filter-row]').forEach(function(row) {
+        var kind = row.getAttribute('data-filter-row');
+        var teams = (row.getAttribute('data-teams') || '').toLowerCase();
+        var outcome = row.getAttribute('data-outcome') || '';
+        var typeOk = (t === 'all' ||
+          (t === 'fixtures' && kind === 'fixture') ||
+          (t === 'results' && kind === 'result') ||
+          (t === outcome));
+        var textOk = !q || compMatchesText || teams.indexOf(q) !== -1;
+        var visible = typeOk && textOk;
+        row.classList.toggle('row-hidden', !visible);
+        if (visible) anyRowVisible = true;
+      });
+
+      comp.querySelectorAll('[data-section]').forEach(function(sec) {
+        var rows = sec.querySelectorAll('[data-filter-row]');
+        if (rows.length === 0) return;
+        var shown = Array.prototype.some.call(rows, function(r) {
+          return !r.classList.contains('row-hidden');
+        });
+        sec.style.display = shown ? '' : 'none';
+      });
+
+      var show;
+      if (!filtering) {
+        show = true;
+      } else {
+        show = compMatchesText || anyRowVisible;
+      }
+      comp.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+
+    if (empty) empty.classList.toggle('show', !anyVisible);
+  }
+
+  search.addEventListener('input', apply);
+  if (type) type.addEventListener('change', apply);
+  if (clear) clear.addEventListener('click', function() {
+    search.value = '';
+    if (type) type.value = 'all';
+    apply();
+  });
+})();
+</script>"""
+
+
+_SW_REGISTER = """\
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('{sw_path}').catch(function(){});
+  });
+}
+</script>"""
 
 
 def _compute_form(results, max_recent=5):
@@ -228,9 +464,13 @@ def _render_fixtures(fixtures):
     rows = []
     for f in our:
         postponed = f.get("postponed")
-        time_str = '<span class="badge badge-postponed">Postponed</span>' if postponed else escape(f.get("time", ""))
+        time_str = ('<span class="badge badge-postponed">Postponed</span>'
+                    if postponed else escape(f.get("time", "")))
+        teams = f'{f.get("home", "")} {f.get("away", "")}'
+        outcome = "postponed" if postponed else "upcoming"
         rows.append(
-            f'<div class="fixture-row">'
+            f'<div class="fixture-row" data-filter-row="fixture" '
+            f'data-teams="{escape(teams)}" data-outcome="{outcome}">'
             f'<div class="fixture-date">{escape(f.get("date", ""))}</div>'
             f'<div class="fixture-teams">{escape(f["home"])} vs {escape(f["away"])}</div>'
             f'<div class="fixture-time">{time_str}</div>'
@@ -247,9 +487,17 @@ def _render_results(results):
         return '<p class="empty">No results yet.</p>'
     rows = []
     for r in our:
+        hs = gaa_total(r.get("home_score", "0-0"))
+        aws = gaa_total(r.get("away_score", "0-0"))
+        is_home = CLUB_NAME.lower() in r.get("home", "").lower()
+        ours = hs if is_home else aws
+        theirs = aws if is_home else hs
+        outcome = "win" if ours > theirs else "loss" if ours < theirs else "draw"
         badge = _result_badge(r)
+        teams = f'{r.get("home", "")} {r.get("away", "")}'
         rows.append(
-            f'<div class="fixture-row">'
+            f'<div class="fixture-row" data-filter-row="result" '
+            f'data-teams="{escape(teams)}" data-outcome="{outcome}">'
             f'<div class="fixture-date">{escape(r.get("date", ""))}</div>'
             f'<div class="fixture-teams">'
             f'{escape(r["home"])} {escape(r.get("home_score",""))} - '
@@ -314,6 +562,16 @@ _LANDING_CSS = """\
   --muted: #757575;
   --border: #e0e0e0;
 }
+html[data-theme="dark"] {
+  --primary: #4caf82;
+  --primary-light: #1f3a2a;
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #9e9e9e;
+  --border: #333;
+}
+html { color-scheme: light dark; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -321,6 +579,13 @@ body {
   max-width: 600px; margin: 0 auto; padding: 32px 16px;
   text-align: center;
 }
+.theme-toggle {
+  position: absolute; top: 16px; right: 16px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); padding: 6px 10px; border-radius: 6px;
+  cursor: pointer; font-size: 0.85em;
+}
+.theme-toggle:hover { background: var(--primary-light); }
 .crest { height: 80px; width: auto; margin-bottom: 12px; }
 h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
 .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 32px; }
@@ -371,6 +636,13 @@ def _generate_landing_page(age_groups_with_data, now):
         label = age_labels.get(ag_key, ag_key.upper())
         links += f'<a class="age-link" href="{ag_key}/">{label}</a>\n'
 
+    pwa_head = _pwa_head("")
+    og_head = _og_head(
+        f"{CLUB_NAME} GAA",
+        f"Live fixtures, results and league tables for {CLUB_NAME} GAA.",
+        "img/crest.gif",
+    )
+
     html = f"""\
 <!DOCTYPE html>
 <html lang="en">
@@ -378,9 +650,13 @@ def _generate_landing_page(age_groups_with_data, now):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{CLUB_NAME} GAA</title>
+{_THEME_INIT}
+{pwa_head}
+{og_head}
 <style>{_LANDING_CSS}</style>
 </head>
 <body>
+<button class="theme-toggle" type="button" aria-label="Toggle theme">Dark</button>
 <img src="img/crest.gif" alt="{CLUB_NAME} crest" class="crest">
 <h1>{CLUB_NAME} GAA</h1>
 <p class="subtitle">Competition Dashboards &mdash; updated {now}</p>
@@ -398,6 +674,8 @@ window.addEventListener('scroll', function() {{
   }}
 }});
 </script>
+{_THEME_TOGGLE_SCRIPT}
+{_SW_REGISTER.replace("{sw_path}", "sw.js")}
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
@@ -430,6 +708,22 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
             '</nav>'
         )
 
+    filter_bar = """
+<div class="filter-bar">
+  <input id="filter-search" type="search" placeholder="Filter by team or competition…" aria-label="Filter">
+  <select id="filter-type" aria-label="Filter type">
+    <option value="all">All</option>
+    <option value="fixtures">Fixtures only</option>
+    <option value="results">Results only</option>
+    <option value="win">Wins</option>
+    <option value="loss">Losses</option>
+    <option value="draw">Draws</option>
+  </select>
+  <button id="filter-clear" class="filter-clear" type="button">Clear</button>
+</div>
+<p id="filter-empty" class="filter-empty">No matches for your filter.</p>
+"""
+
     content_html = ""
     for section_label, section_comps in [("League", league_comps), ("Championship", champ_comps)]:
         if not section_comps:
@@ -439,22 +733,48 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
         for comp_name, comp_config in section_comps:
             baseline = baselines.get(comp_name)
             url = competition_url(comp_config)
-            content_html += f'<h3><a href="{url}" target="_blank">{escape(comp_name)}</a></h3>'
-            content_html += '<div class="card">'
+            # .open so desktop (non-user-closed) shows everything; mobile
+            # script removes .open on small screens at load.
+            content_html += (
+                f'<div class="comp open" data-comp="{escape(comp_name)}">'
+            )
+            content_html += (
+                f'<button class="comp-header" type="button" '
+                f'aria-expanded="true">'
+                f'<h3>{escape(comp_name)}</h3>'
+                f'<span class="chev" aria-hidden="true">▾</span>'
+                f'</button>'
+            )
+            content_html += '<div class="comp-body"><div class="card">'
+            content_html += (
+                f'<p class="muted" style="margin-bottom:8px">'
+                f'<a href="{url}" target="_blank" rel="noopener">'
+                f'View on rebelog.ie ↗</a></p>'
+            )
             if baseline:
                 fixtures = list(baseline.get("fixtures", {}).values())
                 results = list(baseline.get("results", {}).values())
                 table = baseline.get("table", [])
 
-                content_html += '<h3>Upcoming</h3>'
+                content_html += '<div data-section="upcoming"><h3>Upcoming</h3>'
                 content_html += _render_fixtures(fixtures)
-                content_html += '<h3>Results</h3>'
+                content_html += '</div>'
+                content_html += '<div data-section="results"><h3>Results</h3>'
                 content_html += _render_results(results)
-                content_html += '<h3>Table</h3>'
+                content_html += '</div>'
+                content_html += '<div data-section="table"><h3>Table</h3>'
                 content_html += _render_table(table, _compute_form(results))
+                content_html += '</div>'
             else:
                 content_html += '<p class="empty">No data yet — waiting for first monitor run.</p>'
-            content_html += '</div>'
+            content_html += '</div></div></div>'
+
+    pwa_head = _pwa_head("../")
+    og_head = _og_head(
+        f"{CLUB_NAME} GAA – {label}",
+        f"{label} fixtures, results and league tables for {CLUB_NAME} GAA.",
+        "../img/crest.gif",
+    )
 
     html = f"""\
 <!DOCTYPE html>
@@ -463,15 +783,22 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{CLUB_NAME} GAA – {label}</title>
+{_THEME_INIT}
+{pwa_head}
+{og_head}
 <style>{_CSS}</style>
 </head>
 <body>
 <div class="header">
   <a href="../"><img src="../img/crest.gif" alt="{CLUB_NAME} crest"></a>
   <h1><a href="../" style="text-decoration:none">{CLUB_NAME} GAA</a></h1>
+  <div class="header-actions">
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">Dark</button>
+  </div>
 </div>
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
+{filter_bar}
 {content_html}
 <button class="back-to-top" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑</button>
 <script>
@@ -484,6 +811,10 @@ window.addEventListener('scroll', function() {{
   }}
 }});
 </script>
+{_THEME_TOGGLE_SCRIPT}
+{_COLLAPSE_SCRIPT}
+{_FILTER_SCRIPT}
+{_SW_REGISTER.replace("{sw_path}", "../sw.js")}
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
@@ -497,7 +828,122 @@ window.addEventListener('scroll', function() {{
     print(f"{label} dashboard written to {path}")
 
 
-def generate():
+# ------------------------------------------------------------------
+# Diff-only rebuild helpers
+# ------------------------------------------------------------------
+
+def _baseline_mtime(comp_name):
+    """Return mtime of baseline JSON, or 0 if missing."""
+    safe = comp_name.lower().replace(" ", "_").replace("/", "_")
+    path = os.path.join(BASELINE_DIR, f"{safe}.json")
+    try:
+        return os.path.getmtime(path)
+    except OSError:
+        return 0
+
+
+def _latest_baseline_mtime(comps):
+    """Return the max baseline mtime across a list of comp names."""
+    mtimes = [_baseline_mtime(n) for n in comps]
+    return max(mtimes) if mtimes else 0
+
+
+def _output_mtime(path):
+    try:
+        return os.path.getmtime(path)
+    except OSError:
+        return 0
+
+
+# ------------------------------------------------------------------
+# PWA assets
+# ------------------------------------------------------------------
+
+def _write_manifest():
+    """Write a PWA manifest referencing the club crest."""
+    manifest = {
+        "name": f"{CLUB_NAME} GAA",
+        "short_name": f"{CLUB_NAME}",
+        "description": (
+            f"Fixtures, results and league tables for {CLUB_NAME} GAA."
+        ),
+        "start_url": "./",
+        "scope": "./",
+        "display": "standalone",
+        "background_color": "#f5f5f5",
+        "theme_color": "#1a5632",
+        "icons": [
+            {
+                "src": "img/crest.gif",
+                "sizes": "128x128",
+                "type": "image/gif",
+                "purpose": "any",
+            }
+        ],
+    }
+    path = os.path.join(DASHBOARD_DIR, "manifest.webmanifest")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2)
+    print(f"Manifest written to {path}")
+
+
+def _write_service_worker(version):
+    """Write a minimal cache-first service worker.
+
+    *version* is used as the cache name so a new build invalidates
+    stale caches.
+    """
+    sw = f"""\
+// Service worker for {CLUB_NAME} GAA dashboard
+const CACHE = 'gaa-dash-{version}';
+const CORE = ['./', './index.html', './img/crest.gif', './manifest.webmanifest'];
+
+self.addEventListener('install', (e) => {{
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())
+  );
+}});
+
+self.addEventListener('activate', (e) => {{
+  e.waitUntil(
+    caches.keys().then((keys) => Promise.all(
+      keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))
+    )).then(() => self.clients.claim())
+  );
+}});
+
+self.addEventListener('fetch', (e) => {{
+  if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+  e.respondWith(
+    caches.match(e.request).then((cached) => {{
+      const network = fetch(e.request).then((res) => {{
+        if (res && res.status === 200) {{
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, copy));
+        }}
+        return res;
+      }}).catch(() => cached);
+      return cached || network;
+    }})
+  );
+}});
+"""
+    path = os.path.join(DASHBOARD_DIR, "sw.js")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(sw)
+    print(f"Service worker written to {path}")
+
+
+def generate(force=False):
+    """Generate dashboard pages.
+
+    By default, only regenerates pages whose baselines have changed
+    since the last build (diff-only rebuild). Pass ``force=True`` or
+    set env ``DASHBOARD_FORCE=1`` to always rebuild everything.
+    """
+    force = force or bool(os.environ.get("DASHBOARD_FORCE"))
     competitions = get_active_competitions()
     baselines = _load_baselines(competitions)
     if not baselines:
@@ -512,17 +958,31 @@ def generate():
         ag = comp_config.get("age_group", "other")
         by_age.setdefault(ag, []).append((comp_name, comp_config))
 
-    # Generate a page per age group
+    rebuilt = []
+    # Generate a page per age group (diff-only)
     for ag_key in ["u13", "u14", "u15", "u16", "minor"]:
         comps = by_age.get(ag_key, [])
         if not comps:
             continue
+        page_path = os.path.join(DASHBOARD_DIR, ag_key, "index.html")
+        latest = _latest_baseline_mtime([n for n, _ in comps])
+        out_mtime = _output_mtime(page_path)
+        if not force and out_mtime > 0 and (latest == 0 or out_mtime >= latest):
+            print(f"Skipping {ag_key}: up to date")
+            continue
         _generate_age_group_page(ag_key, comps, baselines, now)
+        rebuilt.append(ag_key)
 
-    # Generate landing page
-    _generate_landing_page(set(by_age.keys()), now)
+    # Landing page: regenerate if any age group page was rebuilt or
+    # landing doesn't exist yet.
+    landing_path = os.path.join(DASHBOARD_DIR, "index.html")
+    if force or rebuilt or not os.path.exists(landing_path):
+        _generate_landing_page(set(by_age.keys()), now)
+    else:
+        print("Skipping landing page: no age-group changes")
 
-    # Copy static assets (crest image etc.)
+    # Copy static assets (crest image etc.) — cheap, always do it so
+    # manifest/sw.js referenced images exist.
     static_dir = os.path.join(os.path.dirname(__file__), "static")
     if os.path.isdir(static_dir):
         for item in os.listdir(static_dir):
@@ -534,6 +994,18 @@ def generate():
                 shutil.copy2(src, dst)
         print("Static assets copied to dashboard/")
 
+    # PWA: always write manifest + service worker. sw.js cache version
+    # is the largest baseline mtime so new data invalidates caches.
+    _write_manifest()
+    version = int(_latest_baseline_mtime(list(competitions.keys()))) or int(
+        datetime.now().timestamp())
+    _write_service_worker(version)
+
 
 if __name__ == "__main__":
-    generate()
+    import argparse
+    ap = argparse.ArgumentParser(description="Generate dashboard HTML")
+    ap.add_argument("--force", action="store_true",
+                    help="Regenerate all pages even if baselines unchanged")
+    args = ap.parse_args()
+    generate(force=args.force)

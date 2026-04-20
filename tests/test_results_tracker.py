@@ -453,3 +453,153 @@ class TestHasChanges:
             "table_changed": False,
         }
         assert has_changes(diff) is False
+
+
+# ---------------------------------------------------------------------------
+# Schema validation & rollback (save_baseline safety features)
+# ---------------------------------------------------------------------------
+
+from competition_monitor.results_tracker import (
+    validate_baseline,
+    BaselineValidationError,
+    rollback_baseline,
+)
+
+
+class TestValidateBaseline:
+    def test_valid_baseline_has_no_errors(self):
+        bl = {
+            "last_run": "2026-04-20T12:00:00",
+            "results": {"k": _result(home_score="2-10", away_score="1-8")},
+            "fixtures": {"k": _fixture()},
+            "table": [_table_row()],
+            "table_hash": "abc",
+        }
+        assert validate_baseline(bl) == []
+
+    def test_missing_top_level_key(self):
+        bl = {
+            "last_run": "2026-04-20T12:00:00",
+            "fixtures": {},
+            "table": [],
+            "table_hash": "",
+        }
+        errors = validate_baseline(bl)
+        assert any("results" in e for e in errors)
+
+    def test_result_without_score_fails(self):
+        bad_result = {"home": "A", "away": "B", "date": "01/01/2026"}
+        bl = {
+            "last_run": "x", "results": {"k": bad_result},
+            "fixtures": {}, "table": [], "table_hash": "",
+        }
+        errors = validate_baseline(bl)
+        assert any("home_score" in e or "away_score" in e for e in errors)
+
+    def test_fixture_without_teams_fails(self):
+        bad_fix = {"date": "01/01/2026"}
+        bl = {
+            "last_run": "x", "results": {},
+            "fixtures": {"k": bad_fix}, "table": [], "table_hash": "",
+        }
+        errors = validate_baseline(bl)
+        assert any("home" in e or "away" in e for e in errors)
+
+
+class TestSaveBaselineSafety:
+    @pytest.fixture(autouse=True)
+    def _setup(self, tmp_path, monkeypatch):
+        import competition_monitor.results_tracker as rt
+        monkeypatch.setattr(rt, "BASELINE_DIR", str(tmp_path))
+        self.tmp = tmp_path
+
+    def test_save_creates_prev_backup(self):
+        data = {
+            "competition_name": "X",
+            "fixtures": [_fixture()],
+            "results": [_result()],
+            "table": [_table_row()],
+        }
+        assert save_baseline("X", data) is True
+        # Second save should create .prev
+        data2 = {
+            "competition_name": "X",
+            "fixtures": [_fixture(date="19/04/2026")],
+            "results": [_result()],
+            "table": [_table_row()],
+        }
+        save_baseline("X", data2)
+        prev = self.tmp / "x.json.prev"
+        assert prev.exists()
+
+    def test_rollback_restores_prev(self):
+        data = {
+            "competition_name": "X",
+            "fixtures": [_fixture()],
+            "results": [_result(home_score="2-10", away_score="0-5")],
+            "table": [_table_row()],
+        }
+        save_baseline("X", data)
+        # Second save — creates a .prev of the first one
+        data2 = {
+            "competition_name": "X",
+            "fixtures": [],
+            "results": [_result(home_score="3-3", away_score="1-1")],
+            "table": [_table_row()],
+        }
+        save_baseline("X", data2)
+        # Now rollback — should restore the first baseline
+        assert rollback_baseline("X") is True
+        loaded = load_baseline("X")
+        # The first baseline had one fixture; data2 had none
+        assert len(loaded["fixtures"]) == 1
+
+    def test_rollback_without_prev_returns_false(self):
+        assert rollback_baseline("Never Saved") is False
+
+    def test_regression_guard_blocks_huge_drop(self):
+        # Establish a healthy baseline with many results/table rows
+        many_results = [
+            _result(home=f"Team{i}", away=f"Opp{i}", date=f"{i:02d}/01/2026",
+                    home_score="2-5", away_score="1-4")
+            for i in range(10)
+        ]
+        many_table = [_table_row(team=f"Team{i}", position=i + 1)
+                      for i in range(10)]
+        save_baseline("X", {
+            "competition_name": "X",
+            "fixtures": [],
+            "results": many_results,
+            "table": many_table,
+        })
+        # Now try to save a near-empty scrape (regression)
+        saved = save_baseline("X", {
+            "competition_name": "X",
+            "fixtures": [],
+            "results": [],
+            "table": [],
+        })
+        assert saved is False
+        # Previous data should still be intact
+        loaded = load_baseline("X")
+        assert len(loaded["results"]) == 10
+
+    def test_invalid_baseline_skipped_not_strict(self):
+        bad = {
+            "competition_name": "X",
+            "fixtures": [],
+            # Result missing scores will fail validation
+            "results": [{"home": "A", "away": "B", "date": "01/01/26"}],
+            "table": [],
+        }
+        assert save_baseline("X", bad) is False
+
+    def test_invalid_baseline_raises_strict(self):
+        bad = {
+            "competition_name": "X",
+            "fixtures": [],
+            "results": [{"home": "A", "away": "B", "date": "01/01/26"}],
+            "table": [],
+        }
+        with pytest.raises(BaselineValidationError):
+            save_baseline("X", bad, strict=True)
