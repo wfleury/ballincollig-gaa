@@ -408,6 +408,25 @@ def _compute_form(results, max_recent=5):
     """
     by_team = {}
     for r in results:
+        # Handle conceded matches
+        if r.get("conceded"):
+            conceded_by = r.get("conceded_by", "unknown")
+            dt = _parse_date(r.get("date", ""))
+            home = r.get("home", "")
+            away = r.get("away", "")
+            date_str = r.get("date", "")
+            for team, is_home in [(home, True), (away, False)]:
+                if not team:
+                    continue
+                if (conceded_by == "home" and is_home) or (conceded_by == "away" and not is_home):
+                    outcome = "L"
+                else:
+                    outcome = "W"
+                opp = away if is_home else home
+                summary = f"{date_str}: Conceded vs {opp}"
+                by_team.setdefault(team, []).append((dt, outcome, summary))
+            continue
+
         hs = gaa_total(r.get("home_score", "0-0"))
         aws = gaa_total(r.get("away_score", "0-0"))
         dt = _parse_date(r.get("date", ""))
@@ -443,6 +462,14 @@ def _compute_form(results, max_recent=5):
 
 
 def _result_badge(match):
+    # Handle conceded matches
+    if match.get("conceded"):
+        conceded_by = match.get("conceded_by", "unknown")
+        is_home = CLUB_NAME.lower() in match.get("home", "").lower()
+        if (conceded_by == "home" and is_home) or (conceded_by == "away" and not is_home):
+            return '<span class="badge badge-loss">Conceded</span>'
+        else:
+            return '<span class="badge badge-win">Won (Conceded)</span>'
     hs = gaa_total(match.get("home_score", "0-0"))
     aws = gaa_total(match.get("away_score", "0-0"))
     is_home = CLUB_NAME.lower() in match.get("home", "").lower()
@@ -487,6 +514,28 @@ def _render_results(results):
         return '<p class="empty">No results yet.</p>'
     rows = []
     for r in our:
+        # Handle conceded matches
+        if r.get("conceded"):
+            conceded_by = r.get("conceded_by", "unknown")
+            is_home = CLUB_NAME.lower() in r.get("home", "").lower()
+            if (conceded_by == "home" and is_home) or (conceded_by == "away" and not is_home):
+                outcome = "loss"
+            else:
+                outcome = "win"
+            badge = _result_badge(r)
+            teams = f'{r.get("home", "")} {r.get("away", "")}'
+            rows.append(
+                f'<div class="fixture-row" data-filter-row="result" '
+                f'data-teams="{escape(teams)}" data-outcome="{outcome}">'
+                f'<div class="fixture-date">{escape(r.get("date", ""))}</div>'
+                f'<div class="fixture-teams">'
+                f'{escape(r["home"])} v {escape(r["away"])} (Conceded by {escape(r.get("home") if conceded_by == "home" else r.get("away"))})'
+                f'</div>'
+                f'<div class="fixture-time">{badge}</div>'
+                f'</div>'
+            )
+            continue
+
         hs = gaa_total(r.get("home_score", "0-0"))
         aws = gaa_total(r.get("away_score", "0-0"))
         is_home = CLUB_NAME.lower() in r.get("home", "").lower()

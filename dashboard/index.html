@@ -4,6 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ballincollig GAA</title>
+<script>
+(function() {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1a5632" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ballincollig GAA">
+<link rel="apple-touch-icon" href="img/crest.gif">
+<link rel="icon" href="img/crest.gif">
+<meta property="og:title" content="Ballincollig GAA">
+<meta property="og:description" content="Live fixtures, results and league tables for Ballincollig GAA.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/crest.gif">
+<meta name="twitter:card" content="summary">
 <style>:root {
   --primary: #1a5632;
   --primary-light: #e8f5e9;
@@ -13,6 +36,16 @@
   --muted: #757575;
   --border: #e0e0e0;
 }
+html[data-theme="dark"] {
+  --primary: #4caf82;
+  --primary-light: #1f3a2a;
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #9e9e9e;
+  --border: #333;
+}
+html { color-scheme: light dark; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -20,6 +53,13 @@ body {
   max-width: 600px; margin: 0 auto; padding: 32px 16px;
   text-align: center;
 }
+.theme-toggle {
+  position: absolute; top: 16px; right: 16px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); padding: 6px 10px; border-radius: 6px;
+  cursor: pointer; font-size: 0.85em;
+}
+.theme-toggle:hover { background: var(--primary-light); }
 .crest { height: 80px; width: auto; margin-bottom: 12px; }
 h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
 .subtitle { color: var(--muted); font-size: 0.9em; margin-bottom: 32px; }
@@ -58,9 +98,10 @@ h1 { color: var(--primary); margin-bottom: 4px; font-size: 1.8em; }
 </style>
 </head>
 <body>
+<button class="theme-toggle" type="button" aria-label="Toggle theme">Dark</button>
 <img src="img/crest.gif" alt="Ballincollig crest" class="crest">
 <h1>Ballincollig GAA</h1>
-<p class="subtitle">Competition Dashboards &mdash; updated 15 Apr 2026 15:16</p>
+<p class="subtitle">Competition Dashboards &mdash; updated 20 Apr 2026 16:49</p>
 <div class="age-grid">
 <a class="age-link" href="u13/">U13</a>
 <a class="age-link" href="u14/">U14</a>
@@ -79,6 +120,33 @@ window.addEventListener('scroll', function() {
     btn.style.display = 'none';
   }
 });
+</script>
+<script>
+(function() {
+  var btn = document.querySelector('.theme-toggle');
+  if (!btn) return;
+  function update() {
+    var t = document.documentElement.getAttribute('data-theme') || 'light';
+    btn.textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label',
+      'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
+  }
+  update();
+  btn.addEventListener('click', function() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    update();
+  });
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 </script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

@@ -41,11 +41,13 @@ def _validate_match(m, kind):
         if not m.get(key):
             errors.append(f"{kind} missing '{key}'")
     if kind == "result":
-        # Results must have scores in the GAA format "X-Y".
-        for k in ("home_score", "away_score"):
-            v = m.get(k, "")
-            if not isinstance(v, str) or "-" not in v:
-                errors.append(f"result bad {k}: {v!r}")
+        # Results must have scores in the GAA format "X-Y" OR be conceded
+        is_conceded = m.get("conceded", False)
+        if not is_conceded:
+            for k in ("home_score", "away_score"):
+                v = m.get(k, "")
+                if not isinstance(v, str) or "-" not in v:
+                    errors.append(f"result bad {k}: {v!r}")
     return errors
 
 

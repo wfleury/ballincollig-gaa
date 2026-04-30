@@ -219,10 +219,12 @@ class CompetitionScraper:
                     if score_match:
                         match["home_score"] = score_match.group(1)
                         match["away_score"] = score_match.group(2)
-                if match.get("home_score"):
+                # Include if has score OR is conceded (conceded matches are results)
+                if match.get("home_score") or match.get("conceded"):
                     data["results"].append(match)
             else:
-                if not match.get("home_score"):
+                # Fixtures: only include if not postponed and not conceded
+                if not match.get("home_score") and not match.get("postponed") and not match.get("conceded"):
                     data["fixtures"].append(match)
 
     def _parse_match_element(self, el):
@@ -265,6 +267,35 @@ class CompetitionScraper:
             match["away_score"] = score_match.group(2)
         elif time_str in ('0:00', '00:00'):
             match["postponed"] = True
+
+        # Check for conceded matches
+        text_lower = text.lower()
+        if 'conceded' in text_lower:
+            match["conceded"] = True
+            # Determine which team conceded
+            # Text typically says "Conceded by [Team Name]"
+            if 'conceded by' in text_lower:
+                # Find which team is mentioned after "Conceded by"
+                conceded_pattern = re.search(r'conceded by\s+(\w+(?:\s+\w+)*)', text_lower)
+                if conceded_pattern:
+                    conceded_team = conceded_pattern.group(1).strip()
+                    # Normalize for comparison
+                    if conceded_team.lower() == home.lower():
+                        match["conceded_by"] = "home"
+                    elif conceded_team.lower() == away.lower():
+                        match["conceded_by"] = "away"
+                    else:
+                        # Fallback: try partial match
+                        if conceded_team.lower() in home.lower():
+                            match["conceded_by"] = "home"
+                        elif conceded_team.lower() in away.lower():
+                            match["conceded_by"] = "away"
+            else:
+                # If no "by" specified, assume it's mentioned in text
+                if home.lower() in text_lower and away.lower() not in text_lower:
+                    match["conceded_by"] = "home"
+                elif away.lower() in text_lower and home.lower() not in text_lower:
+                    match["conceded_by"] = "away"
 
         return match
 

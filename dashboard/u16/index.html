@@ -4,6 +4,29 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ballincollig GAA – U16</title>
+<script>
+(function() {
+  try {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {}
+})();
+</script>
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#1a5632" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ballincollig GAA">
+<link rel="apple-touch-icon" href="../img/crest.gif">
+<link rel="icon" href="../img/crest.gif">
+<meta property="og:title" content="Ballincollig GAA – U16">
+<meta property="og:description" content="U16 fixtures, results and league tables for Ballincollig GAA.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="../img/crest.gif">
+<meta name="twitter:card" content="summary">
 <style>:root {
   --primary: #1a5632;
   --primary-light: #e8f5e9;
@@ -14,7 +37,21 @@
   --muted: #757575;
   --border: #e0e0e0;
   --highlight: #fff8e1;
+  --input-bg: #ffffff;
 }
+html[data-theme="dark"] {
+  --primary: #4caf82;
+  --primary-light: #1f3a2a;
+  --accent: #ffc107;
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #e8e8e8;
+  --muted: #9e9e9e;
+  --border: #333;
+  --highlight: #3a2f10;
+  --input-bg: #2a2a2a;
+}
+html { color-scheme: light dark; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -99,16 +136,100 @@ a { color: var(--primary); }
   background: var(--primary-light);
   color: var(--primary);
 }
+/* Theme toggle button */
+.theme-toggle {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); padding: 6px 10px; border-radius: 6px;
+  cursor: pointer; font-size: 0.85em;
+}
+.theme-toggle:hover { background: var(--primary-light); }
+.header-actions { display: flex; align-items: center; gap: 8px;
+  margin-left: auto; }
+/* Filter bar */
+.filter-bar {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  padding: 10px; background: var(--card); border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.filter-bar input[type="search"] {
+  flex: 1 1 200px; min-width: 0; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--input-bg); color: var(--text);
+  font-size: 0.9em; font-family: inherit;
+}
+.filter-bar input[type="search"]:focus {
+  outline: 2px solid var(--primary); outline-offset: 1px;
+}
+.filter-bar select {
+  padding: 8px 10px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--input-bg); color: var(--text);
+  font-size: 0.9em; font-family: inherit;
+}
+.filter-clear {
+  background: var(--border); border: none; color: var(--text);
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  font-size: 0.85em;
+}
+.filter-clear:hover { background: var(--primary-light); }
+.filter-empty { display: none; color: var(--muted); font-style: italic;
+  padding: 20px; text-align: center; }
+.filter-empty.show { display: block; }
+/* Collapsible competition */
+.comp { margin-bottom: 16px; }
+.comp-header {
+  background: var(--card); border-radius: 8px;
+  padding: 12px 16px; cursor: pointer; user-select: none;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  border: none; width: 100%; text-align: left;
+  font-family: inherit; color: var(--text);
+}
+.comp-header:hover { background: var(--primary-light); }
+.comp-header h3 { margin: 0; color: var(--primary); font-size: 1.05em; }
+.comp-header .chev { transition: transform 0.2s; color: var(--muted);
+  font-size: 1.2em; margin-left: 8px; }
+.comp.open .comp-header .chev { transform: rotate(180deg); }
+.comp-body { display: none; margin-top: 4px; }
+.comp.open .comp-body { display: block; }
+/* Desktop: default-open unless explicitly closed */
+@media (min-width: 601px) {
+  .comp:not(.user-closed) .comp-body { display: block; }
+  .comp:not(.user-closed) .comp-header .chev { transform: rotate(180deg); }
+}
+/* Mobile: default-closed unless explicitly opened */
+@media (max-width: 600px) {
+  .comp .comp-body { display: none; }
+  .comp.open .comp-body { display: block; }
+}
+.row-hidden { display: none !important; }
 </style>
 </head>
 <body>
 <div class="header">
   <a href="../"><img src="../img/crest.gif" alt="Ballincollig crest"></a>
   <h1><a href="../" style="text-decoration:none">Ballincollig GAA</a></h1>
+  <div class="header-actions">
+    <button class="theme-toggle" type="button" aria-label="Toggle theme">Dark</button>
+  </div>
 </div>
-<p class="subtitle">U16 Dashboard &mdash; updated 15 Apr 2026 15:16</p>
+<p class="subtitle">U16 Dashboard &mdash; updated 20 Apr 2026 16:49</p>
 <nav class="section-nav"><a href="#league">League</a><a href="#championship">Championship</a></nav>
-<h2 id="league">League</h2><h3><a href="https://rebelog.ie/league/213023/" target="_blank">Fe16 Premier 1 Football</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/213154/" target="_blank">Fe16 Premier 1 Hurling</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/213064/" target="_blank">Fe16 Div 1 S2 Football (2nd team)</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/213165/" target="_blank">Fe16 Div 1 S2 Hurling (2nd team)</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h2 id="championship">Championship</h2><h3><a href="https://rebelog.ie/league/214963/" target="_blank">Fe16 Premier 1 S2 Football Championship</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/214967/" target="_blank">Fe16 Premier 1 S2 Hurling Championship</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/215007/" target="_blank">Fe16 Div 1 S1 Football Championship (2nd team)</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div><h3><a href="https://rebelog.ie/league/215011/" target="_blank">Fe16 Div 1 Hurling Championship (2nd team)</a></h3><div class="card"><p class="empty">No data yet — waiting for first monitor run.</p></div>
+
+<div class="filter-bar">
+  <input id="filter-search" type="search" placeholder="Filter by team or competition…" aria-label="Filter">
+  <select id="filter-type" aria-label="Filter type">
+    <option value="all">All</option>
+    <option value="fixtures">Fixtures only</option>
+    <option value="results">Results only</option>
+    <option value="win">Wins</option>
+    <option value="loss">Losses</option>
+    <option value="draw">Draws</option>
+  </select>
+  <button id="filter-clear" class="filter-clear" type="button">Clear</button>
+</div>
+<p id="filter-empty" class="filter-empty">No matches for your filter.</p>
+
+<h2 id="league">League</h2><div class="comp open" data-comp="Fe16 Premier 1 Football"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Premier 1 Football</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/213023/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Premier 1 Hurling"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Premier 1 Hurling</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/213154/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Div 1 S2 Football (2nd team)"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Div 1 S2 Football (2nd team)</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/213064/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Div 1 S2 Hurling (2nd team)"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Div 1 S2 Hurling (2nd team)</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/213165/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><h2 id="championship">Championship</h2><div class="comp open" data-comp="Fe16 Premier 1 S2 Football Championship"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Premier 1 S2 Football Championship</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/214963/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Premier 1 S2 Hurling Championship"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Premier 1 S2 Hurling Championship</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/214967/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Div 1 S1 Football Championship (2nd team)"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Div 1 S1 Football Championship (2nd team)</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/215007/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div><div class="comp open" data-comp="Fe16 Div 1 Hurling Championship (2nd team)"><button class="comp-header" type="button" aria-expanded="true"><h3>Fe16 Div 1 Hurling Championship (2nd team)</h3><span class="chev" aria-hidden="true">▾</span></button><div class="comp-body"><div class="card"><p class="muted" style="margin-bottom:8px"><a href="https://rebelog.ie/league/215011/" target="_blank" rel="noopener">View on rebelog.ie ↗</a></p><p class="empty">No data yet — waiting for first monitor run.</p></div></div></div>
 <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
 <script>
 window.addEventListener('scroll', function() {
@@ -119,6 +240,111 @@ window.addEventListener('scroll', function() {
     btn.style.display = 'none';
   }
 });
+</script>
+<script>
+(function() {
+  var btn = document.querySelector('.theme-toggle');
+  if (!btn) return;
+  function update() {
+    var t = document.documentElement.getAttribute('data-theme') || 'light';
+    btn.textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label',
+      'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme');
+  }
+  update();
+  btn.addEventListener('click', function() {
+    var cur = document.documentElement.getAttribute('data-theme') || 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    update();
+  });
+})();
+</script>
+<script>
+(function() {
+  var isMobile = window.matchMedia('(max-width: 600px)').matches;
+  document.querySelectorAll('.comp').forEach(function(comp) {
+    var header = comp.querySelector('.comp-header');
+    if (!header) return;
+    if (isMobile) comp.classList.remove('open');
+    header.addEventListener('click', function() {
+      comp.classList.toggle('open');
+      comp.classList.toggle('user-closed', !comp.classList.contains('open'));
+    });
+  });
+})();
+</script>
+<script>
+(function() {
+  var search = document.getElementById('filter-search');
+  var type = document.getElementById('filter-type');
+  var clear = document.getElementById('filter-clear');
+  var empty = document.getElementById('filter-empty');
+  if (!search) return;
+
+  function apply() {
+    var q = (search.value || '').trim().toLowerCase();
+    var t = type ? type.value : 'all';
+    var anyVisible = false;
+    var filtering = q !== '' || t !== 'all';
+
+    document.querySelectorAll('.comp').forEach(function(comp) {
+      var compName = (comp.getAttribute('data-comp') || '').toLowerCase();
+      var compMatchesText = !q || compName.indexOf(q) !== -1;
+      var anyRowVisible = false;
+
+      comp.querySelectorAll('[data-filter-row]').forEach(function(row) {
+        var kind = row.getAttribute('data-filter-row');
+        var teams = (row.getAttribute('data-teams') || '').toLowerCase();
+        var outcome = row.getAttribute('data-outcome') || '';
+        var typeOk = (t === 'all' ||
+          (t === 'fixtures' && kind === 'fixture') ||
+          (t === 'results' && kind === 'result') ||
+          (t === outcome));
+        var textOk = !q || compMatchesText || teams.indexOf(q) !== -1;
+        var visible = typeOk && textOk;
+        row.classList.toggle('row-hidden', !visible);
+        if (visible) anyRowVisible = true;
+      });
+
+      comp.querySelectorAll('[data-section]').forEach(function(sec) {
+        var rows = sec.querySelectorAll('[data-filter-row]');
+        if (rows.length === 0) return;
+        var shown = Array.prototype.some.call(rows, function(r) {
+          return !r.classList.contains('row-hidden');
+        });
+        sec.style.display = shown ? '' : 'none';
+      });
+
+      var show;
+      if (!filtering) {
+        show = true;
+      } else {
+        show = compMatchesText || anyRowVisible;
+      }
+      comp.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+
+    if (empty) empty.classList.toggle('show', !anyVisible);
+  }
+
+  search.addEventListener('input', apply);
+  if (type) type.addEventListener('change', apply);
+  if (clear) clear.addEventListener('click', function() {
+    search.value = '';
+    if (type) type.value = 'all';
+    apply();
+  });
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('../sw.js').catch(function(){});
+  });
+}
 </script>
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>

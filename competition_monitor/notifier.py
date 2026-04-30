@@ -68,13 +68,39 @@ def _format_score(result):
     Input:  {"home": "Ballincollig", "away": "Mallow",
              "home_score": "1-6", "away_score": "5-8", "date": "..."}
     Output: "Ballincollig 1-6  v  Mallow 5-8"
+
+    For conceded matches:
+    Input:  {"home": "Glen Rovers", "away": "Mallow", "conceded": True, "conceded_by": "home"}
+    Output: "Glen Rovers v Mallow (Conceded by Glen Rovers)"
     """
+    if result.get("conceded"):
+        conceded_by = result.get("conceded_by", "unknown")
+        if conceded_by == "home":
+            team = result["home"]
+        elif conceded_by == "away":
+            team = result["away"]
+        else:
+            team = "Unknown"
+        return f"{result['home']} v {result['away']} (Conceded by {team})"
     return (f"{result['home']} {result['home_score']}  v  "
             f"{result['away_score']} {result['away']}")
 
 
 def _our_result_line(result):
     """Describe a Ballincollig result in plain English."""
+    # Handle conceded matches
+    if result.get("conceded"):
+        conceded_by = result.get("conceded_by", "unknown")
+        is_home = CLUB_NAME.lower() in result["home"].lower()
+        opponent = result["away"] if is_home else result["home"]
+        if conceded_by == "home" and is_home:
+            return f"{CLUB_NAME} conceded to {opponent}"
+        elif conceded_by == "away" and not is_home:
+            return f"{CLUB_NAME} conceded to {opponent}"
+        else:
+            # Ballincollig won by concession
+            return f"{CLUB_NAME} v {opponent} (Conceded)"
+
     home_total = gaa_total(result["home_score"])
     away_total = gaa_total(result["away_score"])
 
