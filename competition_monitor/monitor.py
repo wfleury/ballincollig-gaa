@@ -102,16 +102,28 @@ def _report_changes(diff, comp_name):
     if diff["our_new_results"]:
         print(f"  {CLUB_NAME} results: {len(diff['our_new_results'])}")
         for r in diff["our_new_results"]:
-            print(f"    {r['home']} {r['home_score']} v "
-                  f"{r['away_score']} {r['away']}")
+            # Handle conceded matches
+            if r.get("conceded"):
+                conceded_by = r.get("conceded_by", "unknown")
+                conceded_team = r.get("home") if conceded_by == "home" else r.get("away")
+                print(f"    {r['home']} v {r['away']} (Conceded by {conceded_team})")
+            else:
+                print(f"    {r['home']} {r['home_score']} v "
+                      f"{r['away_score']} {r['away']}")
 
     others = [r for r in diff["new_results"]
               if r not in diff["our_new_results"]]
     if others:
         print(f"  Other results: {len(others)}")
         for r in others:
-            print(f"    {r['home']} {r['home_score']} v "
-                  f"{r['away_score']} {r['away']}")
+            # Handle conceded matches
+            if r.get("conceded"):
+                conceded_by = r.get("conceded_by", "unknown")
+                conceded_team = r.get("home") if conceded_by == "home" else r.get("away")
+                print(f"    {r['home']} v {r['away']} (Conceded by {conceded_team})")
+            else:
+                print(f"    {r['home']} {r['home_score']} v "
+                      f"{r['away_score']} {r['away']}")
 
     if diff["fixture_changes"]:
         print(f"  Fixture changes: {len(diff['fixture_changes'])}")
