@@ -418,7 +418,10 @@ def _compute_form(results, max_recent=5):
             for team, is_home in [(home, True), (away, False)]:
                 if not team:
                     continue
-                if (conceded_by == "home" and is_home) or (conceded_by == "away" and not is_home):
+                # Team loses if they conceded
+                if conceded_by == "home" and is_home:
+                    outcome = "L"
+                elif conceded_by == "away" and not is_home:
                     outcome = "L"
                 else:
                     outcome = "W"
