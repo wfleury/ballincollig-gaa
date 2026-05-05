@@ -50,8 +50,22 @@ jobs:
           DISPLAY: ':99'
           NTFY_QUIET: '1'
 
+      - name: Bootstrap fixtures baseline if missing
+        run: |
+          if [ ! -f clubzap_uploaded_baseline.csv ]; then
+            echo "No fixtures baseline found - bootstrapping from current fixtures"
+            python clubzap_sync.py uploaded
+          fi
+
       - name: Run ClubZap fixture sync diff
         run: python clubzap_sync.py diff
+
+      - name: Bootstrap results baseline if missing
+        run: |
+          if [ ! -f clubzap_results_baseline.json ]; then
+            echo "No results baseline found - bootstrapping from current results"
+            python results_sync.py synced
+          fi
 
       - name: Run ClubZap results sync diff  
         run: python results_sync.py diff
