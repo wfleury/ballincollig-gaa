@@ -4,7 +4,12 @@ on:
   schedule:
     # Runs daily at 06:00 UTC (off-peak for reliability)
     - cron: '0 6 * * *'
-  workflow_dispatch:  # Allows manual trigger from GitHub
+  workflow_dispatch:
+    inputs:
+      baseline_cutoff_date:
+        description: 'Reset results baseline to this date (DD/MM/YYYY). Results after this date will be re-synced. Leave blank for normal run.'
+        required: false
+        default: ''
 
 jobs:
   check-fixtures-and-results:
@@ -59,6 +64,32 @@ jobs:
 
       - name: Run ClubZap fixture sync diff
         run: python clubzap_sync.py diff
+
+      - name: Reset results baseline to cutoff date
+        if: ${{ github.event.inputs.baseline_cutoff_date != '' }}
+        run: |
+          echo "Resetting results baseline to cutoff: ${{ github.event.inputs.baseline_cutoff_date }}"
+          python - <<'EOF'
+          import json, os
+          from datetime import datetime
+          
+          cutoff = datetime.strptime("${{ github.event.inputs.baseline_cutoff_date }}", "%d/%m/%Y")
+          
+          with open("current_results.json", "r") as f:
+              data = json.load(f)
+          
+          filtered = [r for r in data["results"] if datetime.strptime(r["date"], "%d/%m/%Y") <= cutoff]
+          data["results"] = filtered
+          data["count"] = len(filtered)
+          
+          with open("current_results.json", "w") as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+          
+          if os.path.exists("clubzap_results_baseline.json"):
+              os.remove("clubzap_results_baseline.json")
+          
+          print(f"Filtered to {len(filtered)} results on or before ${{ github.event.inputs.baseline_cutoff_date }}")
+          EOF
 
       - name: Bootstrap results baseline if missing
         run: |
