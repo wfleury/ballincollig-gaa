@@ -75,7 +75,7 @@ class SeleniumScraper:
                 
                 # Method 2: Try JavaScript finder
                 js_fixtures = self.execute_javascript_fixture_finder()
-                if js_fixtures:
+                if js_fixtures and (js_fixtures[0] or js_fixtures[1]):
                     return js_fixtures
                 
                 # Scroll page to trigger any lazy loading

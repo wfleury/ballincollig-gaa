@@ -1,10 +1,14 @@
 # Generated/temporary files
 fixture_hashes.json
+results_hashes.json
 monitoring_log.txt
 clubzap_uploaded_baseline.csv
+clubzap_results_baseline.json
 clubzap_new_fixtures.csv
 clubzap_changed_fixtures.csv
 clubzap_removed_fixtures.csv
+new_results_to_sync.json
+current_results.json
 Ballincollig_Fixtures_Final.csv
 competitions_2026.txt
 

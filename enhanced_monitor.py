@@ -47,6 +47,9 @@ class EnhancedFixtureAndResultsMonitor:
         """Get current fixtures and results data using Selenium (GAA Cork) + HTTP (Camogie)."""
         fixtures, results = self.selenium_scraper.scrape_club_profile(club_id=CLUB_ID, team_id=TEAM_ID)
 
+        gaa_fixture_count = len(fixtures) if fixtures else 0
+        gaa_result_count = len(results) if results else 0
+
         if not fixtures:
             self.log_message("No fixtures found with Selenium")
             fixtures = []
@@ -66,6 +69,21 @@ class EnhancedFixtureAndResultsMonitor:
         if not fixtures and not results:
             self.log_message("ERROR: No fixtures or results from any source")
             return None, None
+
+        # Safety guard: if GAA Cork returned nothing, check if previous data existed
+        # This prevents treating a scraper failure as "everything was removed"
+        if gaa_fixture_count == 0 and gaa_result_count == 0:
+            prev_fixtures = self.load_previous_data()
+            prev_results = self.load_previous_results_data()
+            prev_fix_count = prev_fixtures.get('count', 0) if prev_fixtures else 0
+            prev_res_count = prev_results.get('count', 0) if prev_results else 0
+            if prev_fix_count > 20 or prev_res_count > 20:
+                self.log_message(
+                    f"SAFETY: GAA Cork scraper returned 0 fixtures and 0 results, "
+                    f"but previous run had {prev_fix_count} fixtures and {prev_res_count} results. "
+                    f"Treating as scraper failure — aborting to prevent false removals."
+                )
+                return None, None
 
         # Process fixtures into CSV format
         fixtures_output = io.StringIO()

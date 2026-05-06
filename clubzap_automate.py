@@ -527,6 +527,12 @@ class ClubZapAutomation:
             log("No removed fixtures to delete")
             return 0
 
+        # Safety guard: refuse mass deletions (likely scraper failure)
+        if len(removed) > 20:
+            log(f"SAFETY: Refusing to delete {len(removed)} fixtures — too many deletions, likely scraper failure")
+            log(f"  If these deletions are genuine, split into smaller batches or delete manually")
+            return 0
+
         log(f"Deleting {len(removed)} removed/postponed fixtures...")
         deleted_count = 0
 

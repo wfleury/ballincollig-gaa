@@ -254,6 +254,32 @@ class TestDiffFixtures:
 
         assert os.path.exists(self.changed_csv)
 
+    def test_safety_guard_blocks_mass_removal(self):
+        """If >50% of baseline is removed and count >20, refuse to generate removed CSV."""
+        # Create a baseline with 30 fixtures
+        baseline_rows = [_make_row(Opponent=f"Team {i}") for i in range(30)]
+        # Current has only 5 fixtures (25 removed = 83%)
+        current_rows = [_make_row(Opponent=f"Team {i}") for i in range(5)]
+        _write_csv_file(self.baseline_csv, baseline_rows)
+        _write_csv_file(self.full_csv, current_rows)
+
+        diff_fixtures()
+
+        # Safety guard should prevent removed CSV from being generated
+        assert not os.path.exists(self.removed_csv)
+
+    def test_safety_guard_allows_small_removal(self):
+        """Normal small removals (<=20) should still produce removed CSV."""
+        baseline_rows = [_make_row(), _make_row(Opponent="Carbery Rangers")]
+        current_rows = [_make_row()]
+        _write_csv_file(self.baseline_csv, baseline_rows)
+        _write_csv_file(self.full_csv, current_rows)
+
+        diff_fixtures()
+
+        # 1 removal out of 2 baseline is >50% but count <=20, so allowed
+        assert os.path.exists(self.removed_csv)
+
     def test_postponed_fixture_not_in_new(self):
         """Postponed fixtures should not appear in new_fixtures.csv."""
         current_rows = [_make_row(Time="Postponed")]

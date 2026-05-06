@@ -101,6 +101,15 @@ def diff_fixtures():
         if key not in current:
             removed_fixtures.append(row)
     
+    # Safety guard: if >50% of baseline fixtures appear "removed", likely a scraper failure
+    if baseline and removed_fixtures:
+        removal_pct = len(removed_fixtures) / len(baseline) * 100
+        if removal_pct > 50 and len(removed_fixtures) > 20:
+            print(f"\n  SAFETY: {len(removed_fixtures)} fixtures ({removal_pct:.0f}%) appear removed — likely scraper failure.")
+            print(f"  Refusing to generate {REMOVED_CSV} to prevent mass deletions.")
+            print(f"  If these removals are genuine, delete the baseline and re-run.")
+            removed_fixtures = []
+    
     # Write diff files
     if new_fixtures:
         write_csv(NEW_CSV, new_fixtures)
