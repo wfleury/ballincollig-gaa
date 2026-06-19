@@ -241,6 +241,31 @@ a { color: var(--primary); }
   .comp.open .comp-body { display: block; }
 }
 .row-hidden { display: none !important; }
+.next-match {
+  background: linear-gradient(135deg, var(--primary), #2e7d32);
+  color: white; border-radius: 10px; padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+html[data-theme="dark"] .next-match {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+}
+.next-match h2 {
+  color: white; border: none; margin: 0 0 10px; padding: 0;
+  font-size: 1.1em; opacity: 0.9;
+}
+.next-match-card {
+  background: rgba(255,255,255,0.15); border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 8px;
+}
+.next-match-card:last-child { margin-bottom: 0; }
+.next-match-date { font-size: 0.85em; opacity: 0.85; margin-bottom: 2px; }
+.next-match-teams { font-size: 1.15em; font-weight: 700; }
+.next-match-meta {
+  font-size: 0.85em; opacity: 0.85; margin-top: 4px;
+  display: flex; flex-wrap: wrap; gap: 12px;
+}
+.next-match-meta span::before { margin-right: 4px; }
 """
 
 
@@ -398,6 +423,61 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>"""
+
+
+def _find_next_matches(comps, baselines):
+    """Find the soonest upcoming Ballincollig fixture(s) across all competitions.
+
+    Returns a list of (fixture, comp_name) tuples for all matches on the
+    earliest upcoming date.  Returns an empty list if none found.
+    """
+    now = datetime.now()
+    candidates = []
+    for comp_name, comp_config in comps:
+        baseline = baselines.get(comp_name)
+        if not baseline:
+            continue
+        for f in baseline.get("fixtures", {}).values():
+            if not _is_ours(f):
+                continue
+            if f.get("postponed"):
+                continue
+            dt = _parse_date(f.get("date", ""))
+            if dt >= now or dt.date() == now.date():
+                candidates.append((dt, f, comp_name))
+    if not candidates:
+        return []
+    candidates.sort(key=lambda x: x[0])
+    earliest_date = candidates[0][0].date()
+    return [(f, cn) for dt, f, cn in candidates if dt.date() == earliest_date]
+
+
+def _render_next_match(comps, baselines):
+    """Render a 'Next Match' hero section showing the soonest fixture(s)."""
+    matches = _find_next_matches(comps, baselines)
+    if not matches:
+        return ""
+    cards = ""
+    for fixture, comp_name in matches:
+        home = escape(fixture.get("home", ""))
+        away = escape(fixture.get("away", ""))
+        date_str = escape(fixture.get("date", ""))
+        time_str = escape(fixture.get("time", ""))
+        venue = fixture.get("venue", "").strip()
+        venue_html = (f'<span>📍 {escape(venue)}</span>' if venue else "")
+        cards += (
+            f'<div class="next-match-card">'
+            f'<div class="next-match-date">{date_str}</div>'
+            f'<div class="next-match-teams">{home} vs {away}</div>'
+            f'<div class="next-match-meta">'
+            f'<span>🕐 {time_str}</span>'
+            f'{venue_html}'
+            f'<span>🏆 {escape(comp_name)}</span>'
+            f'</div>'
+            f'</div>'
+        )
+    title = "Next Match" if len(matches) == 1 else "Next Matches"
+    return f'<div class="next-match"><h2>{title}</h2>{cards}</div>'
 
 
 def _compute_form(results, max_recent=5):
@@ -776,6 +856,9 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <p id="filter-empty" class="filter-empty">No matches for your filter.</p>
 """
 
+    next_match_html = _render_next_match(
+        league_comps + champ_comps, baselines)
+
     content_html = ""
     for section_label, section_comps in [("League", league_comps), ("Championship", champ_comps)]:
         if not section_comps:
@@ -850,6 +933,7 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 </div>
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
+{next_match_html}
 {filter_bar}
 {content_html}
 <button class="back-to-top" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑</button>
