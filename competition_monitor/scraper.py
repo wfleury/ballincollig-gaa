@@ -275,27 +275,13 @@ class CompetitionScraper:
             # Determine which team conceded
             # Text typically says "Conceded by [Team Name]"
             if 'conceded by' in text_lower:
-                # Extract everything after "Conceded by" until end of line or common delimiters
-                conceded_pattern = re.search(r'conceded by\s+([^.]+)', text_lower)
-                if conceded_pattern:
-                    conceded_team = conceded_pattern.group(1).strip()
-                    # Normalize for comparison - try exact match first
-                    if conceded_team.lower() == home.lower():
-                        match["conceded_by"] = "home"
-                    elif conceded_team.lower() == away.lower():
-                        match["conceded_by"] = "away"
-                    else:
-                        # Fallback: try partial match (team name appears in extracted text)
-                        if home.lower() in conceded_team.lower():
-                            match["conceded_by"] = "home"
-                        elif away.lower() in conceded_team.lower():
-                            match["conceded_by"] = "away"
-                        else:
-                            # Last resort: check which team name appears in the full text
-                            if home.lower() in text_lower and away.lower() not in text_lower:
-                                match["conceded_by"] = "home"
-                            elif away.lower() in text_lower and home.lower() not in text_lower:
-                                match["conceded_by"] = "away"
+                # Check which team name directly follows "conceded by"
+                home_lower = home.lower()
+                away_lower = away.lower()
+                if f'conceded by {away_lower}' in text_lower:
+                    match["conceded_by"] = "away"
+                elif f'conceded by {home_lower}' in text_lower:
+                    match["conceded_by"] = "home"
             else:
                 # If no "by" specified, assume it's mentioned in text
                 if home.lower() in text_lower and away.lower() not in text_lower:
