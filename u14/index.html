@@ -202,6 +202,31 @@ a { color: var(--primary); }
   .comp.open .comp-body { display: block; }
 }
 .row-hidden { display: none !important; }
+.next-match {
+  background: linear-gradient(135deg, var(--primary), #2e7d32);
+  color: white; border-radius: 10px; padding: 18px 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+html[data-theme="dark"] .next-match {
+  background: linear-gradient(135deg, #1b5e20, #2e7d32);
+}
+.next-match h2 {
+  color: white; border: none; margin: 0 0 10px; padding: 0;
+  font-size: 1.1em; opacity: 0.9;
+}
+.next-match-card {
+  background: rgba(255,255,255,0.15); border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 8px;
+}
+.next-match-card:last-child { margin-bottom: 0; }
+.next-match-date { font-size: 0.85em; opacity: 0.85; margin-bottom: 2px; }
+.next-match-teams { font-size: 1.15em; font-weight: 700; }
+.next-match-meta {
+  font-size: 0.85em; opacity: 0.85; margin-top: 4px;
+  display: flex; flex-wrap: wrap; gap: 12px;
+}
+.next-match-meta span::before { margin-right: 4px; }
 </style>
 </head>
 <body>
@@ -212,8 +237,9 @@ a { color: var(--primary); }
     <button class="theme-toggle" type="button" aria-label="Toggle theme">Dark</button>
   </div>
 </div>
-<p class="subtitle">U14 Dashboard &mdash; updated 19 Jun 2026 11:40</p>
+<p class="subtitle">U14 Dashboard &mdash; updated 19 Jun 2026 12:07</p>
 <nav class="section-nav"><a href="#league">League</a><a href="#championship">Championship</a></nav>
+<div class="next-match"><h2>Next Matches</h2><div class="next-match-card"><div class="next-match-date">03 Jul 2026</div><div class="next-match-teams">Ballincollig vs Glanmire</div><div class="next-match-meta"><span>🕐 18:30</span><span>📍 Ballincollig</span><span>🏆 Fe14 Premier 1 Football</span></div></div><div class="next-match-card"><div class="next-match-date">03 Jul 2026</div><div class="next-match-teams">Ballincollig 2 vs Courcey Rovers</div><div class="next-match-meta"><span>🕐 18:30</span><span>📍 Ballincollig</span><span>🏆 Fe14 Div 1 Football (2nd team)</span></div></div></div>
 
 <div class="filter-bar">
   <input id="filter-search" type="search" placeholder="Filter by team or competition…" aria-label="Filter">
