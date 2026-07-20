@@ -26,11 +26,13 @@ class SeleniumScraper:
         chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--window-size=1920,1080')
-        chrome_options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36')
+        chrome_options.add_argument('--user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36')
         # Ignore SSL errors
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--allow-running-insecure-content')
         chrome_options.add_argument('--disable-ssl-errors')
+        # Enable browser logging to capture JS errors
+        chrome_options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
         
         try:
             self.driver = webdriver.Chrome(options=chrome_options)
@@ -106,18 +108,67 @@ class SeleniumScraper:
             print("Checking page source after JavaScript execution...")
             page_source = self.driver.page_source
 
-            # DEBUG: Print first 2000 chars of page source
-            print("=== PAGE SOURCE SAMPLE ===")
-            print(page_source[:2000])
-            print("=== END SAMPLE ===")
+            # Diagnostics: page size, iframes, SportLomo, console errors
+            print(f"=== PAGE SOURCE LENGTH: {len(page_source)} chars ===")
 
-            # DEBUG: Look for any data attributes
+            # Check for iframes
+            try:
+                iframes = self.driver.find_elements(By.TAG_NAME, 'iframe')
+                print(f"=== Found {len(iframes)} iframes ===")
+                for i, iframe in enumerate(iframes[:10]):
+                    src = iframe.get_attribute('src') or '(no src)'
+                    print(f"  iframe[{i}]: {src[:200]}")
+            except Exception as e:
+                print(f"  iframe check error: {e}")
+
+            # Check for SportLomo / fixture widget scripts
+            try:
+                sportlomo_hits = self.driver.execute_script("""
+                    var scripts = document.querySelectorAll('script[src]');
+                    var hits = [];
+                    for (var s of scripts) {
+                        var src = s.getAttribute('src') || '';
+                        if (src.match(/sportlomo|fixture|widget|club.*profile/i))
+                            hits.push(src);
+                    }
+                    return hits;
+                """)
+                print(f"=== SportLomo-related scripts: {len(sportlomo_hits)} ===")
+                for h in sportlomo_hits:
+                    print(f"  {h}")
+            except Exception as e:
+                print(f"  script check error: {e}")
+
+            # Check for data-date anywhere in full page source
             import re
-            data_attrs = re.findall(r'data-[^=]+="[^"]*"', page_source[:5000])
-            print(f"=== Found {len(data_attrs)} data attributes in first 5000 chars ===")
-            for attr in data_attrs[:20]:
-                print(f"  {attr}")
-            print("=== END DATA ATTRIBUTES ===")
+            data_date_count = len(re.findall(r'data-date', page_source))
+            data_hometeam_count = len(re.findall(r'data-hometeam', page_source))
+            print(f"=== data-date occurrences in full source: {data_date_count} ===")
+            print(f"=== data-hometeam occurrences in full source: {data_hometeam_count} ===")
+
+            # Check for any fixture-related container
+            try:
+                containers = self.driver.execute_script("""
+                    var results = [];
+                    var all = document.querySelectorAll('[id*="fixture"], [id*="result"], [class*="fixture"], [class*="result"], [id*="sportlomo"], [class*="sportlomo"]');
+                    for (var el of all) results.push(el.tagName + '#' + el.id + '.' + el.className.substring(0, 80));
+                    return results.slice(0, 20);
+                """)
+                print(f"=== Fixture/result containers: {len(containers)} ===")
+                for c in containers:
+                    print(f"  {c}")
+            except Exception as e:
+                print(f"  container check error: {e}")
+
+            # Dump browser console logs (JS errors, network failures)
+            try:
+                logs = self.driver.get_log('browser')
+                errors = [l for l in logs if l.get('level') in ('SEVERE', 'WARNING')]
+                print(f"=== Browser console: {len(logs)} entries, {len(errors)} errors/warnings ===")
+                for entry in errors[:30]:
+                    print(f"  [{entry['level']}] {entry['message'][:300]}")
+            except Exception as e:
+                print(f"  console log error: {e}")
 
             # Look for club name in the page source
             if CLUB_NAME in page_source:
