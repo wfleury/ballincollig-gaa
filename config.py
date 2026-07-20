@@ -104,6 +104,12 @@ KEY_COLS = ["Date", "Team", "Opponent", "Competition Name"]
 # Columns where changes matter for updates
 CHANGE_COLS = ["Time", "Venue", "Ground", "Referee"]
 
+# ---- Proxy (Cloudflare Worker) ----
+# CloudFront WAF blocks admin-ajax.php from CI datacenter IPs.
+# Set PROXY_URL to a Cloudflare Worker that proxies the request.
+PROXY_URL = os.environ.get("PROXY_URL", "")
+PROXY_KEY = os.environ.get("PROXY_KEY", "")
+
 # ---- Request settings ----
 REQUEST_DELAY = 1  # seconds between requests
 TIMEOUT = 10  # seconds

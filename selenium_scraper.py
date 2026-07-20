@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-from config import CLUB_NAME, CLUB_ID, TEAM_ID, RUGBY_INDICATORS
+from config import CLUB_NAME, CLUB_ID, TEAM_ID, RUGBY_INDICATORS, PROXY_URL, PROXY_KEY
 
 class SeleniumScraper:
     def __init__(self):
@@ -92,12 +92,23 @@ class SeleniumScraper:
             if js_fixtures and (js_fixtures[0] or js_fixtures[1]):
                 return js_fixtures
 
-            # Method 3: In-page fetch — call admin-ajax.php from within the
-            # page context.  CloudFront WAF blocks direct/external calls to
-            # this endpoint from datacenter IPs (403), but same-origin fetch
-            # with browser credentials succeeds because the browser carries
-            # valid session cookies and Sec-Fetch-* headers.
-            print("DOM rendering failed — trying in-page fetch...")
+            # Method 3: Cloudflare Worker proxy — bypasses CloudFront WAF
+            # by routing the admin-ajax.php request through Cloudflare's
+            # edge network (different IP range from GitHub Actions).
+            if PROXY_URL:
+                print("DOM rendering failed — trying proxy...")
+                try:
+                    result = self._fetch_via_proxy(club_id, team_id)
+                    if result and (result[0] or result[1]):
+                        return result
+                except Exception as e:
+                    print(f"  Proxy error: {e}")
+            else:
+                print("DOM rendering failed — no PROXY_URL configured")
+
+            # Method 4: In-page fetch — call admin-ajax.php from within the
+            # page context (works when browser has valid WAF token).
+            print("Trying in-page fetch...")
             ajax_url = (
                 f"/wp-admin/admin-ajax.php?action=fixtures"
                 f"&club_id={club_id}&competition_id="
@@ -126,7 +137,7 @@ class SeleniumScraper:
                     print(f"  In-page fetch attempt {fetch_attempt+1} error: {e}")
                 time.sleep(5 * (fetch_attempt + 1))
 
-            # Method 4: Direct HTTP fallback using Selenium's cookies
+            # Method 5: Direct HTTP fallback using Selenium's cookies
             print("Trying direct HTTP fallback...")
             try:
                 result = self._fetch_fixtures_http(club_id, team_id)
@@ -340,6 +351,31 @@ class SeleniumScraper:
         print(f"Extracted {len(results)} results from page source")
         return fixtures, results
     
+    def _fetch_via_proxy(self, club_id, team_id):
+        """Fetch fixtures via Cloudflare Worker proxy.
+
+        CloudFront WAF blocks admin-ajax.php from GitHub Actions IPs.
+        The Worker proxies the request from Cloudflare's edge network.
+        """
+        params = {
+            'action': 'fixtures',
+            'club_id': str(club_id),
+            'competition_id': '',
+            'team_id': str(team_id),
+            'is_corkpps': '0',
+            'displayResults': '',
+        }
+        if PROXY_KEY:
+            params['key'] = PROXY_KEY
+
+        resp = requests.get(PROXY_URL, params=params, timeout=30)
+        print(f"  Proxy: status={resp.status_code}, length={len(resp.text)}")
+        if resp.status_code != 200:
+            print(f"  Proxy: non-200 response")
+            return [], []
+
+        return self._parse_ajax_html(resp.text)
+
     def _fetch_fixtures_http(self, club_id, team_id):
         """Fetch fixtures via direct HTTP using Selenium's CloudFront cookies.
 

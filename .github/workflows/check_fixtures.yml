@@ -54,6 +54,8 @@ jobs:
         env:
           DISPLAY: ':99'
           NTFY_QUIET: '1'
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          PROXY_KEY: ${{ secrets.PROXY_KEY }}
 
       - name: Bootstrap fixtures baseline if missing
         run: |
