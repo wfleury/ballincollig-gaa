@@ -11,6 +11,11 @@ from selenium.common.exceptions import TimeoutException
 import json
 import re
 import time
+import requests
+import urllib3
+from bs4 import BeautifulSoup
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 from config import CLUB_NAME, CLUB_ID, TEAM_ID, RUGBY_INDICATORS
 
@@ -36,6 +41,18 @@ class SeleniumScraper:
         
         try:
             self.driver = webdriver.Chrome(options=chrome_options)
+            # Override headless detection properties before any page loads.
+            # CloudFront WAF bot-detection checks navigator.webdriver; if it
+            # finds True the session never gets an aws-waf-token cookie and
+            # subsequent admin-ajax.php calls return 403.
+            self.driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+                'source': '''
+                    Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                    window.navigator.chrome = {runtime: {}, loadTimes: function(){}, csi: function(){}};
+                    Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
+                    Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+                '''
+            })
             print("Chrome driver initialized successfully")
         except Exception as e:
             print(f"Failed to initialize Chrome driver: {e}")
@@ -60,122 +77,81 @@ class SeleniumScraper:
             # Wait for JavaScript to execute and load fixtures
             print("Waiting for JavaScript to load fixtures...")
             
-            # Retry with increasing waits (cloud environments are slower)
-            for attempt in range(3):
-                wait_time = 15 + (attempt * 10)  # 15s, 25s, 35s
-                print(f"Attempt {attempt + 1}/3 (waiting up to {wait_time}s)...")
-                
-                # Method 1: Wait for fixture elements with data-date
+            # Method 1: Wait for the page's own JS to render fixtures
+            try:
+                fixture_elements = WebDriverWait(self.driver, 20).until(
+                    EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul[data-date]'))
+                )
+                print(f"Found {len(fixture_elements)} fixture elements via CSS selector")
+                return self.process_fixture_elements(fixture_elements)
+            except TimeoutException:
+                print("No ul[data-date] elements after 20s")
+
+            # Method 2: Try JavaScript finder on existing DOM
+            js_fixtures = self.execute_javascript_fixture_finder()
+            if js_fixtures and (js_fixtures[0] or js_fixtures[1]):
+                return js_fixtures
+
+            # Method 3: In-page fetch — call admin-ajax.php from within the
+            # page context.  CloudFront WAF blocks direct/external calls to
+            # this endpoint from datacenter IPs (403), but same-origin fetch
+            # with browser credentials succeeds because the browser carries
+            # valid session cookies and Sec-Fetch-* headers.
+            print("DOM rendering failed — trying in-page fetch...")
+            ajax_url = (
+                f"/wp-admin/admin-ajax.php?action=fixtures"
+                f"&club_id={club_id}&competition_id="
+                f"&team_id={team_id}&is_corkpps=0&displayResults="
+            )
+            for fetch_attempt in range(3):
                 try:
-                    fixture_elements = WebDriverWait(self.driver, wait_time).until(
-                        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul[data-date]'))
-                    )
-                    print(f"Found {len(fixture_elements)} fixture elements via CSS selector")
-                    return self.process_fixture_elements(fixture_elements)
-                except TimeoutException:
-                    print(f"No fixture elements found on attempt {attempt + 1}")
-                
-                # Method 2: Try JavaScript finder
-                js_fixtures = self.execute_javascript_fixture_finder()
-                if js_fixtures and (js_fixtures[0] or js_fixtures[1]):
-                    return js_fixtures
-                
-                # Scroll page to trigger any lazy loading
-                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(2)
-                self.driver.execute_script("window.scrollTo(0, 0);")
-                time.sleep(2)
-            
-            # Method 3: Look for elements with 'fixtures' in class
-            try:
-                fixture_elements = self.driver.find_elements(By.CSS_SELECTOR, 'ul[class*="fixtures"]')
-                if fixture_elements:
-                    print(f"Found {len(fixture_elements)} fixture elements via class name")
-                    return self.process_fixture_elements(fixture_elements)
-            except Exception:
-                print("No fixture elements found with 'fixtures' in class")
+                    fetch_result = self.driver.execute_async_script(f"""
+                        var cb = arguments[arguments.length - 1];
+                        fetch('{ajax_url}', {{credentials: 'include'}})
+                            .then(function(r) {{
+                                return r.text().then(function(t) {{
+                                    cb({{status: r.status, html: t}});
+                                }});
+                            }})
+                            .catch(function(e) {{ cb({{error: e.toString()}}); }});
+                    """)
+                    status = fetch_result.get('status') if fetch_result else None
+                    length = len(fetch_result.get('html', '')) if fetch_result else 0
+                    print(f"  In-page fetch attempt {fetch_attempt+1}/3: status={status}, length={length}")
+                    if status == 200 and length > 1000:
+                        result = self._parse_ajax_html(fetch_result['html'])
+                        if result and (result[0] or result[1]):
+                            return result
+                except Exception as e:
+                    print(f"  In-page fetch attempt {fetch_attempt+1} error: {e}")
+                time.sleep(5 * (fetch_attempt + 1))
 
-            # Method 4: Look for any table-like structures
+            # Method 4: Direct HTTP fallback using Selenium's cookies
+            print("Trying direct HTTP fallback...")
             try:
-                fixture_elements = self.driver.find_elements(By.CSS_SELECTOR, 'ul.table-body')
-                if fixture_elements:
-                    print(f"Found {len(fixture_elements)} table-body elements")
-                    return self.process_fixture_elements(fixture_elements)
-            except Exception:
-                print("No table-body elements found")
-            
-            # Method 5: Check page source after JavaScript execution
-            print("Checking page source after JavaScript execution...")
-            page_source = self.driver.page_source
-
-            # Diagnostics: page size, iframes, SportLomo, console errors
-            print(f"=== PAGE SOURCE LENGTH: {len(page_source)} chars ===")
-
-            # Check for iframes
-            try:
-                iframes = self.driver.find_elements(By.TAG_NAME, 'iframe')
-                print(f"=== Found {len(iframes)} iframes ===")
-                for i, iframe in enumerate(iframes[:10]):
-                    src = iframe.get_attribute('src') or '(no src)'
-                    print(f"  iframe[{i}]: {src[:200]}")
+                result = self._fetch_fixtures_http(club_id, team_id)
+                if result and (result[0] or result[1]):
+                    return result
             except Exception as e:
-                print(f"  iframe check error: {e}")
+                print(f"  HTTP fallback error: {e}")
 
-            # Check for SportLomo / fixture widget scripts
-            try:
-                sportlomo_hits = self.driver.execute_script("""
-                    var scripts = document.querySelectorAll('script[src]');
-                    var hits = [];
-                    for (var s of scripts) {
-                        var src = s.getAttribute('src') || '';
-                        if (src.match(/sportlomo|fixture|widget|club.*profile/i))
-                            hits.push(src);
-                    }
-                    return hits;
-                """)
-                print(f"=== SportLomo-related scripts: {len(sportlomo_hits)} ===")
-                for h in sportlomo_hits:
-                    print(f"  {h}")
-            except Exception as e:
-                print(f"  script check error: {e}")
-
-            # Check for data-date anywhere in full page source
-            import re
-            data_date_count = len(re.findall(r'data-date', page_source))
-            data_hometeam_count = len(re.findall(r'data-hometeam', page_source))
-            print(f"=== data-date occurrences in full source: {data_date_count} ===")
-            print(f"=== data-hometeam occurrences in full source: {data_hometeam_count} ===")
-
-            # Check for any fixture-related container
-            try:
-                containers = self.driver.execute_script("""
-                    var results = [];
-                    var all = document.querySelectorAll('[id*="fixture"], [id*="result"], [class*="fixture"], [class*="result"], [id*="sportlomo"], [class*="sportlomo"]');
-                    for (var el of all) results.push(el.tagName + '#' + el.id + '.' + el.className.substring(0, 80));
-                    return results.slice(0, 20);
-                """)
-                print(f"=== Fixture/result containers: {len(containers)} ===")
-                for c in containers:
-                    print(f"  {c}")
-            except Exception as e:
-                print(f"  container check error: {e}")
-
-            # Dump browser console logs (JS errors, network failures)
+            # Dump browser console for diagnostics
             try:
                 logs = self.driver.get_log('browser')
                 errors = [l for l in logs if l.get('level') in ('SEVERE', 'WARNING')]
                 print(f"=== Browser console: {len(logs)} entries, {len(errors)} errors/warnings ===")
-                for entry in errors[:30]:
+                for entry in errors[:15]:
                     print(f"  [{entry['level']}] {entry['message'][:300]}")
             except Exception as e:
                 print(f"  console log error: {e}")
 
-            # Look for club name in the page source
+            # Method 5: regex extraction from page source
+            page_source = self.driver.page_source
             if CLUB_NAME in page_source:
-                print(f"Found '{CLUB_NAME}' in page source, attempting to extract...")
+                print(f"Found '{CLUB_NAME}' in page source, attempting regex extract...")
                 return self.extract_from_page_source(page_source)
             
-            print("No fixtures found after JavaScript execution")
+            print("No fixtures found after all methods")
             return []
             
         except Exception as e:
@@ -364,6 +340,102 @@ class SeleniumScraper:
         print(f"Extracted {len(results)} results from page source")
         return fixtures, results
     
+    def _fetch_fixtures_http(self, club_id, team_id):
+        """Fetch fixtures via direct HTTP using Selenium's CloudFront cookies.
+
+        The in-page AJAX call to admin-ajax.php is blocked (403) on datacenter
+        IPs by CloudFront WAF.  However, a plain *requests* call with the
+        browser's session cookies (including aws-waf-token) can succeed.
+        """
+        # Grab cookies from the Selenium session
+        selenium_cookies = self.driver.get_cookies()
+        session = requests.Session()
+        for c in selenium_cookies:
+            session.cookies.set(c['name'], c['value'], domain=c.get('domain', ''))
+
+        ajax_url = f"https://gaacork.ie/wp-admin/admin-ajax.php"
+        params = {
+            'action': 'fixtures',
+            'club_id': str(club_id),
+            'competition_id': '',
+            'team_id': str(team_id),
+            'is_corkpps': '0',
+            'displayResults': '',
+        }
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
+                          '(KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36',
+            'Referer': f'https://gaacork.ie/clubprofile/{club_id}/?team_id={team_id}',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': '*/*',
+        }
+
+        resp = session.get(ajax_url, params=params, headers=headers,
+                           timeout=30, verify=False)
+        print(f"  HTTP fallback: status={resp.status_code}, length={len(resp.text)}")
+        if resp.status_code != 200:
+            print(f"  HTTP fallback: non-200 response")
+            return [], []
+
+        return self._parse_ajax_html(resp.text)
+
+    def _parse_ajax_html(self, html):
+        """Parse the fixture HTML returned by admin-ajax.php.
+
+        The response contains <ul class="table-body"> elements whose data-*
+        attributes hold match details (same attributes that Selenium reads
+        via process_fixture_elements).
+        """
+        soup = BeautifulSoup(html, 'html.parser')
+        fixtures = []
+        results = []
+
+        for ul in soup.select('ul.table-body'):
+            try:
+                home_team = ul.get('data-hometeam', '')
+                away_team = ul.get('data-awayteam', '')
+
+                if CLUB_NAME not in home_team and CLUB_NAME not in away_team:
+                    continue
+
+                competition = ul.get('data-compname', '')
+                exclude_indicators = RUGBY_INDICATORS + ['lgfa', 'ladies']
+                if any(ind in competition.lower() for ind in exclude_indicators):
+                    continue
+
+                home_score = ul.get('data-homescore', '')
+                away_score = ul.get('data-awayscore', '')
+                referee = (ul.get('data-referee', '') or '').strip()
+
+                if home_score and away_score:
+                    results.append({
+                        'home': home_team,
+                        'away': away_team,
+                        'date': ul.get('data-date', ''),
+                        'home_score': home_score,
+                        'away_score': away_score,
+                        'competition': competition,
+                        'venue': ul.get('data-venue', ''),
+                        'status': ul.get('data-status', ''),
+                        'referee': referee,
+                    })
+                else:
+                    fixtures.append({
+                        'home': home_team,
+                        'away': away_team,
+                        'date': ul.get('data-date', ''),
+                        'time': ul.get('data-time', ''),
+                        'venue': ul.get('data-venue', ''),
+                        'competition': competition,
+                        'referee': referee,
+                    })
+            except Exception as e:
+                print(f"  _parse_ajax_html: error on element: {e}")
+                continue
+
+        print(f"  Parsed from AJAX HTML: {len(fixtures)} fixtures, {len(results)} results")
+        return fixtures, results
+
     def close(self):
         """Close the driver"""
         if self.driver:
