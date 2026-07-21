@@ -134,6 +134,9 @@ class EnhancedFixtureAndResultsMonitor:
             if not referee:
                 referee = 'TBC (Pending)'
 
+            if team == "Unknown":
+                print(f"  UNMAPPED fixture: '{competition}' -> Unknown (vs {opponent})")
+
             writer.writerow([formatted_date, time_val, venue, ground, referee,
                              team, competition, CLUB_NAME, opponent, event_type])
             fixture_count += 1

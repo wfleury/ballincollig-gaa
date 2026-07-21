@@ -108,7 +108,10 @@ class ResultsScraper:
             }
             
             processed_results.append(processed_result)
-            print(f"Processed result: {formatted_date} - {team} {our_score} v {opponent_score} {opponent} ({result_outcome})")
+            if team == "Unknown":
+                print(f"Processed result: {formatted_date} - {team} {our_score} v {opponent_score} {opponent} ({result_outcome}) [UNMAPPED comp: '{competition}']")
+            else:
+                print(f"Processed result: {formatted_date} - {team} {our_score} v {opponent_score} {opponent} ({result_outcome})")
         
         return processed_results
     
