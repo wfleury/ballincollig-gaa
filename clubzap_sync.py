@@ -61,11 +61,29 @@ def _csv_row(fields):
 
 
 def write_csv(filepath, rows):
-    """Write fixtures to CSV (ClubZap-compatible quoting)."""
+    """Write fixtures to CSV (ClubZap-compatible quoting).
+
+    Skips rows whose Team field contains double-quotes, since ClubZap's
+    CSV importer cannot handle them in any form (doubled, unquoted, or
+    stripped).  These fixtures must be added manually via the ClubZap UI.
+    """
+    written = 0
+    skipped = []
     with open(filepath, 'w', encoding='utf-8', newline='') as f:
         f.write(_csv_row(HEADER) + '\n')
         for row in rows:
+            team = row.get('Team', '')
+            if '"' in team:
+                skipped.append(row)
+                continue
             f.write(_csv_row([row.get(col, '') for col in HEADER]) + '\n')
+            written += 1
+    if skipped:
+        print(f"  WARNING: Skipped {len(skipped)} fixture(s) with quotes in team name (ClubZap CSV limitation):")
+        for r in skipped:
+            print(f"    - {r.get('Team', '?')} vs {r.get('Opponent', '?')} on {r.get('Date', '?')}")
+        print(f"    These must be added manually via the ClubZap dashboard.")
+    return written
 
 
 def diff_fixtures():
