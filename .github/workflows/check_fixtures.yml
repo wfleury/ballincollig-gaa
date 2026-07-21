@@ -14,6 +14,9 @@ on:
 jobs:
   check-fixtures-and-results:
     runs-on: ubuntu-latest
+    env:
+      PROXY_URL: ${{ secrets.PROXY_URL }}
+      PROXY_KEY: ${{ secrets.PROXY_KEY }}
     
     steps:
       - name: Checkout code
@@ -54,8 +57,6 @@ jobs:
         env:
           DISPLAY: ':99'
           NTFY_QUIET: '1'
-          PROXY_URL: ${{ secrets.PROXY_URL }}
-          PROXY_KEY: ${{ secrets.PROXY_KEY }}
 
       - name: Bootstrap fixtures baseline if missing
         run: |
