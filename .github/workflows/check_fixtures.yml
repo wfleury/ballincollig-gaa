@@ -10,6 +10,10 @@ on:
         description: 'Reset results baseline to this date (DD/MM/YYYY). Results after this date will be re-synced. Leave blank for normal run.'
         required: false
         default: ''
+      reset_fixture_baseline:
+        description: 'Delete fixture baseline and re-upload ALL fixtures to ClubZap. Use after fixing team names or if fixtures are missing.'
+        type: boolean
+        default: false
 
 jobs:
   check-fixtures-and-results:
@@ -65,6 +69,12 @@ jobs:
             python clubzap_sync.py uploaded
           fi
 
+      - name: Reset fixture baseline (force full re-upload)
+        if: ${{ github.event.inputs.reset_fixture_baseline == 'true' }}
+        run: |
+          echo "Resetting fixture baseline — all fixtures will be treated as new"
+          rm -f clubzap_uploaded_baseline.csv
+
       - name: Run ClubZap fixture sync diff
         run: python clubzap_sync.py diff
 
@@ -113,6 +123,7 @@ jobs:
           CLUBZAP_WITHHOLD_SCORES: true
           CLUBZAP_DISABLE_FACEBOOK: true
           CLUBZAP_DISABLE_TWITTER: true
+          CLUBZAP_FORCE_UPLOAD: ${{ github.event.inputs.reset_fixture_baseline == 'true' && 'true' || '' }}
 
       - name: Upload fixture & result files
         if: always()

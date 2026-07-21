@@ -42,13 +42,29 @@ def read_csv_fixtures(filepath):
     return fixtures
 
 
+def _csv_row(fields):
+    """Format a list of field values as a CSV row string.
+
+    Only quotes fields that contain a comma.  This avoids the standard
+    csv module's double-quote escaping (``""``), which ClubZap's CSV
+    importer cannot parse — breaking team names like GAA U21 "A" Football.
+    """
+    parts = []
+    for v in fields:
+        v = str(v)
+        if ',' in v:
+            parts.append(f'"{v}"')
+        else:
+            parts.append(v)
+    return ','.join(parts)
+
+
 def write_csv(filepath, rows):
-    """Write fixtures to CSV."""
+    """Write fixtures to CSV (ClubZap-compatible quoting)."""
     with open(filepath, 'w', encoding='utf-8', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=HEADER)
-        writer.writeheader()
+        f.write(_csv_row(HEADER) + '\n')
         for row in rows:
-            writer.writerow(row)
+            f.write(_csv_row([row.get(col, '') for col in HEADER]) + '\n')
 
 
 def diff_fixtures():

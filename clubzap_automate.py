@@ -1377,13 +1377,15 @@ async def main():
 
     # First-run protection: skip bulk upload if no baseline exists
     # This prevents uploading ALL fixtures when the baseline hasn't been established
-    if os.path.exists(NEW_CSV) and not os.path.exists(BASELINE_CSV):
+    # Set CLUBZAP_FORCE_UPLOAD=true to bypass (e.g. when resetting the baseline)
+    force_upload = os.environ.get('CLUBZAP_FORCE_UPLOAD', '').lower() == 'true'
+    if os.path.exists(NEW_CSV) and not os.path.exists(BASELINE_CSV) and not force_upload:
         with open(NEW_CSV, 'r') as f:
             count = sum(1 for _ in csv.DictReader(f))
         if count > 20:
             log(f"SAFETY: First run detected (no baseline) with {count} new fixtures")
             log("  Skipping bulk upload to prevent duplicates.")
-            log("  Run 'py clubzap_sync.py uploaded' to establish baseline first.")
+            log("  Set CLUBZAP_FORCE_UPLOAD=true or run 'py clubzap_sync.py uploaded' to establish baseline first.")
             sys.exit(0)
 
     actions = None

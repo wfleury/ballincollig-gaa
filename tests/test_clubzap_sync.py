@@ -138,6 +138,27 @@ class TestWriteCsv:
             header = next(reader)
         assert header == HEADER
 
+    def test_quoted_team_name_round_trip(self, tmp_path):
+        """Team names with quotes (e.g. GAA U21 "A" Football) must survive
+        write_csv -> read_csv_fixtures without being mangled by CSV escaping."""
+        path = str(tmp_path / "out.csv")
+        row = _make_row(Team='GAA U21 "A" Football')
+        write_csv(path, [row])
+
+        result = read_csv_fixtures(path)
+        assert len(result) == 1
+        key = list(result.keys())[0]
+        assert result[key]["Team"] == 'GAA U21 "A" Football'
+
+    def test_quoted_team_name_no_double_escaping(self, tmp_path):
+        """The raw CSV must NOT contain doubled quotes ("")."""
+        path = str(tmp_path / "out.csv")
+        write_csv(path, [_make_row(Team='GAA U21 "A" Football')])
+
+        raw = open(path, "r", encoding="utf-8").read()
+        assert '""' not in raw
+        assert 'GAA U21 "A" Football' in raw
+
 
 # ---------------------------------------------------------------------------
 # diff_fixtures (integration-style test with temp files)
