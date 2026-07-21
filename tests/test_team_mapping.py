@@ -18,6 +18,7 @@ class TestMapTeamName:
     @pytest.mark.parametrize("comp,expected", [
         ("Fe12 Football League Div 1", "U12 GAA"),
         ("Fe12 Hurling League Div 2", "U12 GAA"),
+        ("Rebel Og Coiste Fe 12 3 Hurling League Phase 2", "U12 GAA"),
     ])
     def test_fe12(self, comp, expected):
         assert map_team_name(comp) == expected
@@ -25,6 +26,12 @@ class TestMapTeamName:
     @pytest.mark.parametrize("comp,expected", [
         ("Fe13 Football League", "U13 GAA"),
         ("Fe13 Hurling Championship", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 4A Hurling League Phase 2", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 1A Football League Phase 2", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 4C Football League Phase 2", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 4B Football League Phase 2", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 1a Hurling League Phase 2", "U13 GAA"),
+        ("Rebel Og Coiste Fe 13 4C Hurling League Phase 2", "U13 GAA"),
     ])
     def test_fe13(self, comp, expected):
         assert map_team_name(comp) == expected
@@ -32,6 +39,7 @@ class TestMapTeamName:
     @pytest.mark.parametrize("comp,expected", [
         ("Fe14 Football League", "U14 GAA"),
         ("Fe14 Hurling League", "U14 GAA"),
+        ("Rebel Og Coiste Fe 14 4 A Section 2 Hurling Championship", "U14 GAA"),
     ])
     def test_fe14(self, comp, expected):
         assert map_team_name(comp) == expected
@@ -46,6 +54,8 @@ class TestMapTeamName:
     @pytest.mark.parametrize("comp,expected", [
         ("Fe16 Football League Div 1", "U16 GAA"),
         ("Fe16 Hurling League Div 2", "U16 GAA"),
+        ("Rebel Og Coiste Fe 16 4 B Hurling Championship", "U16 GAA"),
+        ("Rebel Og Coiste Fe 16 4 B Football Championship", "U16 GAA"),
     ])
     def test_fe16(self, comp, expected):
         assert map_team_name(comp) == expected
@@ -61,6 +71,9 @@ class TestMapTeamName:
     def test_fe18_default_is_football(self):
         # If neither football nor hurling keyword, defaults to football
         assert map_team_name("Fe18 Some League") == "Minor Football GAA"
+
+    def test_fe18_rebel_og_coiste_hurling(self):
+        assert map_team_name("Rebel Og Coiste Fe 18 4 Hurling Championship") == "Minor Hurling GAA"
 
     # -- County Senior Leagues --
 
@@ -185,6 +198,12 @@ class TestMapTeamName:
 
     def test_u_21_hyphenated_football(self):
         assert map_team_name("U-21 Football League") == 'GAA U21 "A" Football'
+
+    def test_under_21_football(self):
+        assert map_team_name("Macroom Motors Under 21 A Football Championship") == 'GAA U21 "A" Football'
+
+    def test_under_21b_football(self):
+        assert map_team_name("Macroom Motors Under 21B Football Championship ") == 'GAA U21 "A" Football'
 
     # -- Other / Unknown --
 

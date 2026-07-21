@@ -30,19 +30,19 @@ def map_team_name(comp_name):
     is_hurling = any(x in comp_lower for x in ["hurling", " hl"])
 
     # --- Underage (Fe14 / Fe16 use single "GAA" team name for both codes) ---
-    if "fe12" in comp_lower:
+    if "fe12" in comp_lower or "fe 12" in comp_lower:
         return "U12 GAA"
-    if "fe13" in comp_lower:
+    if "fe13" in comp_lower or "fe 13" in comp_lower:
         return "U13 GAA"
-    if "fe14" in comp_lower:
+    if "fe14" in comp_lower or "fe 14" in comp_lower:
         return "U14 GAA"
-    if "fe15" in comp_lower:
+    if "fe15" in comp_lower or "fe 15" in comp_lower:
         return "U15 GAA"
-    if "fe16" in comp_lower:
+    if "fe16" in comp_lower or "fe 16" in comp_lower:
         return "U16 GAA"
 
     # --- Minor (Fe18 splits by code) ---
-    if "fe18" in comp_lower:
+    if "fe18" in comp_lower or "fe 18" in comp_lower:
         if is_hurling:
             return "Minor Hurling GAA"
         return "Minor Football GAA"
@@ -123,7 +123,7 @@ def map_team_name(comp_name):
         return "Premier Inter Hurling"
 
     # --- U21 ---
-    if "u21" in comp_lower or "u-21" in comp_lower:
+    if "u21" in comp_lower or "u-21" in comp_lower or "under 21" in comp_lower:
         if is_hurling:
             return 'GAA U21 "A" Hurling'
         return 'GAA U21 "A" Football'
