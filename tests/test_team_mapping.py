@@ -191,19 +191,19 @@ class TestMapTeamName:
     # -- U21 --
 
     def test_u21_football(self):
-        assert map_team_name("U21 Football Championship") == 'GAA U21 "A" Football'
+        assert map_team_name("U21 Football Championship") == "GAA U21 A Football"
 
     def test_u21_hurling(self):
-        assert map_team_name("U21 Hurling Championship") == 'GAA U21 "A" Hurling'
+        assert map_team_name("U21 Hurling Championship") == "GAA U21 A Hurling"
 
     def test_u_21_hyphenated_football(self):
-        assert map_team_name("U-21 Football League") == 'GAA U21 "A" Football'
+        assert map_team_name("U-21 Football League") == "GAA U21 A Football"
 
     def test_under_21_football(self):
-        assert map_team_name("Macroom Motors Under 21 A Football Championship") == 'GAA U21 "A" Football'
+        assert map_team_name("Macroom Motors Under 21 A Football Championship") == "GAA U21 A Football"
 
     def test_under_21b_football(self):
-        assert map_team_name("Macroom Motors Under 21B Football Championship ") == 'GAA U21 "A" Football'
+        assert map_team_name("Macroom Motors Under 21B Football Championship ") == "GAA U21 A Football"
 
     # -- Other / Unknown --
 

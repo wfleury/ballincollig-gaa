@@ -125,8 +125,8 @@ def map_team_name(comp_name):
     # --- U21 ---
     if "u21" in comp_lower or "u-21" in comp_lower or "under 21" in comp_lower:
         if is_hurling:
-            return 'GAA U21 "A" Hurling'
-        return 'GAA U21 "A" Football'
+            return "GAA U21 A Hurling"
+        return "GAA U21 A Football"
 
     # --- Other ---
     if "womens" in comp_lower:

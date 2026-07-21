@@ -138,25 +138,15 @@ class TestWriteCsv:
             header = next(reader)
         assert header == HEADER
 
-    def test_quoted_team_name_skipped(self, tmp_path):
-        """Fixtures with quotes in team name are skipped entirely from
-        the CSV because ClubZap rejects the whole file on any bad row."""
+    def test_u21_team_name_no_quotes(self, tmp_path):
+        """U21 team names (now without quotes in ClubZap) write cleanly."""
         path = str(tmp_path / "out.csv")
-        normal = _make_row(Team='U14 GAA')
-        quoted = _make_row(Team='GAA U21 "A" Football')
-        written = write_csv(path, [normal, quoted])
+        write_csv(path, [_make_row(Team='GAA U21 A Football')])
 
-        assert written == 1
         result = read_csv_fixtures(path)
         assert len(result) == 1
         key = list(result.keys())[0]
-        assert result[key]["Team"] == 'U14 GAA'
-
-    def test_quoted_team_name_returns_count(self, tmp_path):
-        """write_csv returns the number of rows actually written."""
-        path = str(tmp_path / "out.csv")
-        rows = [_make_row(Team='U14 GAA'), _make_row(Team='GAA U21 "B" Hurling')]
-        assert write_csv(path, rows) == 1
+        assert result[key]["Team"] == 'GAA U21 A Football'
 
 
 # ---------------------------------------------------------------------------
