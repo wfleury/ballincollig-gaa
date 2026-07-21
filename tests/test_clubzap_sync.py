@@ -138,9 +138,9 @@ class TestWriteCsv:
             header = next(reader)
         assert header == HEADER
 
-    def test_quoted_team_name_round_trip(self, tmp_path):
-        """Team names with quotes (e.g. GAA U21 "A" Football) must survive
-        write_csv -> read_csv_fixtures without being mangled by CSV escaping."""
+    def test_quoted_team_name_strips_quotes(self, tmp_path):
+        """Team names with quotes (e.g. GAA U21 "A" Football) have quotes
+        stripped in the CSV because ClubZap can't parse them in any form."""
         path = str(tmp_path / "out.csv")
         row = _make_row(Team='GAA U21 "A" Football')
         write_csv(path, [row])
@@ -148,16 +148,17 @@ class TestWriteCsv:
         result = read_csv_fixtures(path)
         assert len(result) == 1
         key = list(result.keys())[0]
-        assert result[key]["Team"] == 'GAA U21 "A" Football'
+        assert result[key]["Team"] == 'GAA U21 A Football'
 
-    def test_quoted_team_name_no_double_escaping(self, tmp_path):
-        """The raw CSV must NOT contain doubled quotes ("")."""
+    def test_quoted_team_name_no_quotes_in_csv(self, tmp_path):
+        """The raw CSV must not contain any double quotes for the team field."""
         path = str(tmp_path / "out.csv")
         write_csv(path, [_make_row(Team='GAA U21 "A" Football')])
 
         raw = open(path, "r", encoding="utf-8").read()
+        assert 'GAA U21 A Football' in raw
+        # No doubled or unquoted quotes
         assert '""' not in raw
-        assert 'GAA U21 "A" Football' in raw
 
 
 # ---------------------------------------------------------------------------

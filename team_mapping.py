@@ -138,13 +138,17 @@ def map_team_name(comp_name):
 
 
 def determine_event_type(comp_name):
-    """Determine event type (League / Championship / Cup / Other) from a competition name."""
+    """Determine event type (League / Championship / Cup) from a competition name."""
     comp_lower = comp_name.lower()
 
-    if "championship" in comp_lower or "final" in comp_lower:
+    # Full words and GAA abbreviations (SFC, IHC, PIHC, etc.)
+    if "championship" in comp_lower or "final" in comp_lower or \
+       any(x in comp_lower for x in [" sfc", " shc", " ihc", " ifc",
+                                      " jfc", " jhc", " pihc", " psfc",
+                                      " pifc", " pshc", " jbfc", " jbhc"]):
         return "Championship"
     if any(x in comp_lower for x in ["cup", "shield", "trophy"]):
         return "Cup"
     if any(x in comp_lower for x in ["league", "division", " fl", " hl"]):
         return "League"
-    return "Other"
+    return "League"

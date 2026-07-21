@@ -45,13 +45,14 @@ def read_csv_fixtures(filepath):
 def _csv_row(fields):
     """Format a list of field values as a CSV row string.
 
-    Only quotes fields that contain a comma.  This avoids the standard
-    csv module's double-quote escaping (``""``), which ClubZap's CSV
-    importer cannot parse — breaking team names like GAA U21 "A" Football.
+    Strips embedded double-quotes (e.g. GAA U21 "A" Football → GAA U21 A Football)
+    because neither standard CSV escaping (doubled ""), nor unquoted " in a field,
+    are parsed correctly by ClubZap's CSV importer.
+    Fields containing commas are quoted normally.
     """
     parts = []
     for v in fields:
-        v = str(v)
+        v = str(v).replace('"', '')
         if ',' in v:
             parts.append(f'"{v}"')
         else:

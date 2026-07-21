@@ -248,5 +248,14 @@ class TestDetermineEventType:
     def test_hl_suffix(self):
         assert determine_event_type("Red FM HL") == "League"
 
-    def test_other(self):
-        assert determine_event_type("Charity Match") == "Other"
+    def test_sfc_abbreviation(self):
+        assert determine_event_type("McCarthy Insurance Premier SFC") == "Championship"
+
+    def test_ihc_abbreviation(self):
+        assert determine_event_type("Red FM Premier IHC") == "Championship"
+
+    def test_psfc_abbreviation(self):
+        assert determine_event_type("Bon Secours PSFC") == "Championship"
+
+    def test_unknown_defaults_to_league(self):
+        assert determine_event_type("Charity Match") == "League"
