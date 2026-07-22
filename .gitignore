@@ -44,3 +44,6 @@ output/
 competitions_*.txt
 monitor.log
 competition_baselines/
+
+# Node.js dependencies
+worker/node_modules/

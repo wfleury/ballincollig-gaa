@@ -82,6 +82,46 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u13-football-3",
         "age_group": "u13",
     },
+    # --- Phase 2 leagues ---
+    # 1st team
+    "Fe13 1A Football Phase 2": {
+        "competition_id": 216101,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-football",
+        "age_group": "u13",
+    },
+    "Fe13 1A Hurling Phase 2": {
+        "competition_id": 216681,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-hurling",
+        "age_group": "u13",
+    },
+    # 2nd team
+    "Fe13 4B Football Phase 2 (2nd team)": {
+        "competition_id": 216113,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-football-2",
+        "age_group": "u13",
+    },
+    "Fe13 4A Hurling Phase 2 (2nd team)": {
+        "competition_id": 216689,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-hurling-2",
+        "age_group": "u13",
+    },
+    # 3rd team
+    "Fe13 4C Football Phase 2 (3rd team)": {
+        "competition_id": 216114,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-football-3",
+        "age_group": "u13",
+    },
+    "Fe13 4C Hurling Phase 2 (3rd team)": {
+        "competition_id": 216691,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u13-hurling-3",
+        "age_group": "u13",
+    },
 
     # ===== U14 (Fe14) =====
     # --- 1st team ---
@@ -128,6 +168,12 @@ COMPETITIONS = {
         "competition_id": 214897,
         "base_url": REBELOG_BASE_URL,
         "ntfy_topic": "ballincollig-u14-football-2",
+        "age_group": "u14",
+    },
+    "Fe14 Div 4A S2 Hurling Championship (2nd team)": {
+        "competition_id": 217030,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-hurling-2",
         "age_group": "u14",
     },
     # --- 3rd team ---
@@ -205,6 +251,18 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u16-hurling-2",
         "age_group": "u16",
     },
+    "Fe16 Div 4B Football Championship (2nd team)": {
+        "competition_id": 216953,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-2",
+        "age_group": "u16",
+    },
+    "Fe16 Div 4B Hurling Championship (2nd team)": {
+        "competition_id": 217027,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-hurling-2",
+        "age_group": "u16",
+    },
 
     # ===== Minor (Fe18) =====
     # --- 1st team ---
@@ -220,9 +278,29 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-minor-hurling",
         "age_group": "minor",
     },
+    # --- 1st team championship ---
+    "Fe18 Premier 1 S1 Football Championship": {
+        "competition_id": 214971,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-minor-football",
+        "age_group": "minor",
+    },
+    "Fe18 Premier 1 S1 Hurling Championship": {
+        "competition_id": 214976,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-minor-hurling",
+        "age_group": "minor",
+    },
     # --- 2nd team ---
     "Fe18 Div 4A Hurling (2nd team)": {
         "competition_id": 213611,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-minor-hurling-2",
+        "age_group": "minor",
+    },
+    # --- 2nd team championship ---
+    "Fe18 Div 4 Hurling Championship (2nd team)": {
+        "competition_id": 217021,
         "base_url": REBELOG_BASE_URL,
         "ntfy_topic": "ballincollig-minor-hurling-2",
         "age_group": "minor",

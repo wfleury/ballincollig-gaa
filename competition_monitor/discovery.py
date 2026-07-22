@@ -32,17 +32,23 @@ def _active_discovery_patterns():
 
 
 def _matches_any_age_group(name):
-    """Return True if the competition name matches any active age group."""
+    """Return True if the competition name matches any active age group.
+
+    Normalises 'Fe 14' -> 'Fe14' so the pattern 'fe14' matches both.
+    """
     lower = name.lower()
-    return any(pat in lower for pat in _active_discovery_patterns())
+    # Rebel Og Coiste uses 'Fe 14' (with space) while our patterns use 'fe14'
+    normalised = re.sub(r'\bfe\s+(\d)', r'fe\1', lower)
+    return any(pat in normalised for pat in _active_discovery_patterns())
 
 
 def _age_group_for_name(name):
     """Return the AGE_GROUPS key for a competition name, or None."""
     lower = name.lower()
+    normalised = re.sub(r'\bfe\s+(\d)', r'fe\1', lower)
     for key, ag in AGE_GROUPS.items():
         pat = ag.get("discovery_pattern", "").lower()
-        if pat and pat in lower:
+        if pat and pat in normalised:
             return key
     return None
 

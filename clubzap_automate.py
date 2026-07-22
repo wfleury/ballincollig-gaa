@@ -344,23 +344,39 @@ class ClubZapAutomation:
                 if any(w in text.lower() for w in ('success', 'imported', 'uploaded')):
                     success_found = True
 
-        # Count fixtures on current page after upload
-        rows_after = await self.page.query_selector_all('table tbody tr')
-        log(f"  Fixtures after upload: {len(rows_after)} (was {len(rows_before)} on first page)")
-
-        if len(rows_after) > len(rows_before):
-            actual_new = len(rows_after) - len(rows_before)
-            if actual_new < len(fixtures):
-                log(f"  WARNING: Only {actual_new} of {len(fixtures)} fixtures appeared on page 1 - some may have been rejected")
+        # Count total fixtures across all pages after upload
+        total_after = 0
+        page_num = 1
+        while True:
+            if page_num > 1:
+                await self.page.goto(f"{FIXTURES_URL}?page={page_num}", wait_until='domcontentloaded')
+                await self.page.wait_for_timeout(2000)
+            rows = await self.page.query_selector_all('table tbody tr')
+            count = len(rows)
+            if count == 0:
+                break
+            total_after += count
+            next_link = await self.page.query_selector(f'a[href*="page={page_num + 1}"]')
+            if next_link:
+                page_num += 1
             else:
-                log(f"  Upload appears successful ({actual_new} new on first page)")
+                break
+
+        log(f"  Fixtures after upload: {total_after} total across {page_num} page(s) (was {len(rows_before)} on first page)")
+
+        if total_after > len(rows_before):
+            actual_new = total_after - len(rows_before)
+            if actual_new < len(fixtures):
+                log(f"  WARNING: Only {actual_new} of {len(fixtures)} fixtures appeared - some may have been rejected")
+            else:
+                log(f"  Upload appears successful ({actual_new} new fixtures)")
             return actual_new
 
         if success_found:
             log(f"  Flash message indicated success for {len(fixtures)} fixtures")
             return len(fixtures)
 
-        log(f"  WARNING: Upload may have failed - fixture count unchanged ({len(rows_before)} -> {len(rows_after)})")
+        log(f"  WARNING: Upload may have failed - fixture count unchanged ({len(rows_before)} -> {total_after})")
         return 0
 
     async def edit_fixture(self, fixture_id, changes):
@@ -1287,8 +1303,62 @@ class ClubZapAutomation:
             log("Failed results:")
             for result in failed_results:
                 log(f"  - {result['date']} {result['team']} vs {result['opponent']}")
+            log("NOTE: Failed results are usually because the fixture was never")
+            log("  uploaded to ClubZap (game happened before sync was set up).")
+            log("  These results will be marked as processed to avoid retrying.")
+            log("  To enter them manually: ClubZap > Quick Add > Fixture, then add result.")
         
         return synced_count
+
+    async def deduplicate_fixtures(self, dry_run=False):
+        """Find and delete duplicate fixtures in ClubZap.
+
+        Duplicates are fixtures with the same date, team, and opponent.
+        Keeps the lowest fixture ID (oldest) and deletes the rest.
+        """
+        await self.build_fixture_map()
+
+        # Group by (date, team, opponent)
+        groups = {}
+        for fixture_id, info in self.fixture_map.items():
+            if info.get('is_result'):
+                continue
+            key = (info['date'], info['team'].lower().strip(), info['opponent'].lower().strip())
+            groups.setdefault(key, []).append(fixture_id)
+
+        # Find groups with >1 entry
+        duplicates = {k: sorted(ids) for k, ids in groups.items() if len(ids) > 1}
+
+        if not duplicates:
+            log("No duplicate fixtures found")
+            return 0
+
+        total_dupes = sum(len(ids) - 1 for ids in duplicates.values())
+        log(f"Found {total_dupes} duplicate fixtures across {len(duplicates)} fixture groups")
+
+        deleted = 0
+        for (date, team, opponent), fixture_ids in duplicates.items():
+            keep_id = fixture_ids[0]
+            delete_ids = fixture_ids[1:]
+            log(f"  {date} {team} vs {opponent}: keeping {keep_id}, deleting {delete_ids}")
+
+            if dry_run:
+                deleted += len(delete_ids)
+                continue
+
+            for fid in delete_ids:
+                success = await self.delete_fixture_by_id(fid)
+                if success:
+                    log(f"    Deleted {fid}")
+                    deleted += 1
+                else:
+                    log(f"    FAILED to delete {fid}")
+
+        if dry_run:
+            log(f"DRY RUN: would delete {deleted} duplicate fixtures")
+        else:
+            log(f"Deleted {deleted} duplicate fixtures")
+        return deleted
 
     async def sync(self, actions=None):
         """Run full sync: upload new fixtures, edit changed fixtures, delete removed fixtures, sync results."""
@@ -1320,6 +1390,9 @@ class ClubZapAutomation:
                 test_mode = 'test' in actions
                 results['results_synced'] = await self.sync_results(test_mode=test_mode)
 
+            if 'dedup' in actions:
+                results['deduped'] = await self.deduplicate_fixtures()
+
             log("=" * 50)
             log("  ClubZap Sync Complete")
             log("=" * 50)
@@ -1333,23 +1406,30 @@ class ClubZapAutomation:
                 log(f"  Results synced: {results['results_synced']} results")
             log("=" * 50)
 
-            if any(v > 0 for v in results.values()):
+            # Update fixture baseline if fixtures were changed
+            fixture_changes = results.get('uploaded', 0) + results.get('edited', 0) + results.get('deleted', 0)
+            if fixture_changes > 0:
                 if getattr(self, '_edit_failures', False):
-                    log("WARNING: Some edits failed - skipping baseline update")
+                    log("WARNING: Some edits failed - skipping fixture baseline update")
                     log("  Next run will retry the failed edits")
                 else:
                     try:
                         from clubzap_sync import mark_uploaded
                         log("Updating fixtures baseline...")
                         mark_uploaded()
-                        
-                        # Update results baseline if results were synced
-                        if results.get('results_synced', 0) > 0:
-                            from results_sync import mark_synced
-                            log("Updating results baseline...")
-                            mark_synced()
                     except Exception as e:
-                        log(f"WARNING: Could not update baseline: {e}")
+                        log(f"WARNING: Could not update fixture baseline: {e}")
+
+            # Always update results baseline after attempting sync.
+            # Failed results (e.g. no matching fixture in ClubZap) can't be
+            # auto-synced and would otherwise retry every run indefinitely.
+            if 'results_synced' in results:
+                try:
+                    from results_sync import mark_synced
+                    log("Updating results baseline...")
+                    mark_synced()
+                except Exception as e:
+                    log(f"WARNING: Could not update results baseline: {e}")
 
             return results
 
@@ -1369,9 +1449,9 @@ async def main():
         log("  Set CLUBZAP_EMAIL and CLUBZAP_PASSWORD to enable")
         sys.exit(0)
 
-    # Check if there are any diff files to process
+    # Check if there are any diff files to process (dedup doesn't need diff files)
     has_work = any(os.path.exists(f) for f in [NEW_CSV, CHANGED_CSV, REMOVED_CSV, NEW_RESULTS_JSON])
-    if not has_work:
+    if not has_work and not (len(sys.argv) > 1 and sys.argv[1].lower() == 'dedup'):
         log("No diff files found - nothing to sync to ClubZap")
         sys.exit(0)
 
@@ -1391,13 +1471,13 @@ async def main():
     actions = None
     if len(sys.argv) > 1:
         action = sys.argv[1].lower()
-        if action in ('upload', 'edit', 'delete', 'results', 'test'):
+        if action in ('upload', 'edit', 'delete', 'results', 'test', 'dedup'):
             actions = [action]
         elif action == 'all':
             actions = None
         else:
             print(f"Unknown action: {action}")
-            print("Usage: py clubzap_automate.py [upload|edit|delete|results|test|all]")
+            print("Usage: py clubzap_automate.py [upload|edit|delete|results|test|dedup|all]")
             sys.exit(1)
 
     headless = os.environ.get('CLUBZAP_HEADLESS', 'true').lower() != 'false'
