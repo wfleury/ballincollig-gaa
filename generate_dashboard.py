@@ -121,6 +121,7 @@ tr:hover { background: var(--primary-light); }
 .badge-loss { background: #ffcdd2; color: #c62828; }
 .badge-draw { background: #fff9c4; color: #f57f17; }
 .badge-postponed { background: #e0e0e0; color: #616161; }
+.badge-tentative { background: #fff3e0; color: #e65100; }
 .badge-upcoming { background: #bbdefb; color: #1565c0; }
 a { color: var(--primary); }
 .fixture-grid { display: grid; gap: 8px; }
@@ -267,11 +268,12 @@ a { color: var(--primary); }
 .cal-cell.has-match:hover { opacity: 0.8; }
 .cal-cell.selected { border-color: var(--primary); border-width: 2px;
   background: var(--primary-light); }
-.cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 3px; }
-.cal-dot { width: 7px; height: 7px; border-radius: 50%; }
-.cal-dot.football { background: #1976d2; }
-.cal-dot.hurling { background: #e65100; }
-.cal-dot.other { background: #7b1fa2; }
+.cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 3px;
+  align-items: center; }
+.cal-icon { width: 14px; height: 14px; flex-shrink: 0; }
+.cal-icon.football { color: #1976d2; }
+.cal-icon.hurling { color: #e65100; }
+.cal-icon.other { color: #7b1fa2; }
 .cal-month { display: none; }
 .cal-month.active { display: block; }
 .cal-detail { display: none; margin-top: 8px; border-radius: 8px;
@@ -296,11 +298,11 @@ a { color: var(--primary); }
 .cal-match-code.football { background: #1976d2; }
 .cal-match-code.hurling { background: #e65100; }
 .cal-match-code.other { background: #7b1fa2; }
-.cal-match-pp { color: #d32f2f; font-weight: 600; font-size: 0.8em; }
+.cal-match-pp { color: #e65100; font-weight: 600; font-size: 0.8em; }
 @media (max-width: 600px) {
   .cal-cell { min-height: 40px; padding: 4px 2px; }
   .cal-cell .day-num { font-size: 0.8em; }
-  .cal-dot { width: 6px; height: 6px; }
+  .cal-icon { width: 12px; height: 12px; }
   .cal-match { font-size: 0.85em; padding: 8px 10px; }
 }
 .next-match {
@@ -517,7 +519,7 @@ _CALENDAR_SCRIPT = """\
     var html = '';
     for (var i = 0; i < matches.length; i++) {
       var m = matches[i];
-      var timeStr = m.postponed ? '<span class="cal-match-pp">Postponed</span>' :
+      var timeStr = m.postponed ? '<span class="cal-match-pp">Time TBC</span>' :
         '<span class="cal-match-time">' + m.time + '</span>';
       html += '<div class="cal-match">';
       html += timeStr;
@@ -579,6 +581,40 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>"""
+
+
+def _sport_icon(code):
+    """Return an inline SVG icon for a sport code (hurling/football/other)."""
+    if code == "hurling":
+        # Hurley and sliotar
+        return (
+            '<svg class="cal-icon hurling" viewBox="0 0 24 24" fill="none" '
+            'xmlns="http://www.w3.org/2000/svg">'
+            '<path d="M4 20L17 7" stroke="currentColor" stroke-width="2.5" '
+            'stroke-linecap="round"/>'
+            '<path d="M15 3c1.5 0 3 1 4 2s2 2.5 2 4" stroke="currentColor" '
+            'stroke-width="2" stroke-linecap="round"/>'
+            '<circle cx="6" cy="18" r="2.5" fill="currentColor" opacity="0.6"/>'
+            '</svg>'
+        )
+    if code == "football":
+        # GAA football (round ball with seam lines)
+        return (
+            '<svg class="cal-icon football" viewBox="0 0 24 24" fill="none" '
+            'xmlns="http://www.w3.org/2000/svg">'
+            '<circle cx="12" cy="12" r="9" stroke="currentColor" '
+            'stroke-width="2"/>'
+            '<path d="M12 3v18M3 12h18" stroke="currentColor" '
+            'stroke-width="1.2" opacity="0.5"/>'
+            '</svg>'
+        )
+    return (
+        '<svg class="cal-icon other" viewBox="0 0 24 24" fill="none" '
+        'xmlns="http://www.w3.org/2000/svg">'
+        '<circle cx="12" cy="12" r="9" stroke="currentColor" '
+        'stroke-width="2"/>'
+        '</svg>'
+    )
 
 
 def _collect_calendar_fixtures(comps, baselines):
@@ -695,7 +731,7 @@ def _render_calendar(comps, baselines):
                     cell += '<div class="cal-dots">'
                     for _, _, comp_name, _, _ in day_fixtures:
                         code = _code_for(comp_name)
-                        cell += f'<span class="cal-dot {code}"></span>'
+                        cell += _sport_icon(code)
                     cell += '</div>'
                 cell += '</div>'
                 grid += cell
@@ -742,8 +778,6 @@ def _find_next_matches(comps, baselines):
             continue
         for f in baseline.get("fixtures", {}).values():
             if not _is_ours(f):
-                continue
-            if f.get("postponed"):
                 continue
             dt = _parse_date(f.get("date", ""))
             if dt >= now or dt.date() == now.date():
@@ -876,11 +910,13 @@ def _render_fixtures(fixtures):
         return '<p class="empty">No upcoming fixtures.</p>'
     rows = []
     for f in our:
-        postponed = f.get("postponed")
-        time_str = ('<span class="badge badge-postponed">Postponed</span>'
-                    if postponed else escape(f.get("time", "")))
+        tentative = f.get("postponed")
+        if tentative:
+            time_str = '<span class="badge badge-tentative">Time TBC</span>'
+        else:
+            time_str = escape(f.get("time", ""))
         teams = f'{f.get("home", "")} {f.get("away", "")}'
-        outcome = "postponed" if postponed else "upcoming"
+        outcome = "tentative" if tentative else "upcoming"
         rows.append(
             f'<div class="fixture-row" data-filter-row="fixture" '
             f'data-teams="{escape(teams)}" data-outcome="{outcome}">'

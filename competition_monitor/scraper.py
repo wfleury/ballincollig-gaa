@@ -223,8 +223,9 @@ class CompetitionScraper:
                 if match.get("home_score") or match.get("conceded"):
                     data["results"].append(match)
             else:
-                # Fixtures: only include if not postponed and not conceded
-                if not match.get("home_score") and not match.get("postponed") and not match.get("conceded"):
+                # Fixtures: include if no score and not conceded
+                # (postponed/0:00 fixtures are kept as tentative)
+                if not match.get("home_score") and not match.get("conceded"):
                     data["fixtures"].append(match)
 
     def _parse_match_element(self, el):
