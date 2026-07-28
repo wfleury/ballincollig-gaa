@@ -10,9 +10,11 @@ Run after the competition monitor:
     python generate_dashboard.py
 """
 
+import calendar
 import json
 import os
 import shutil
+from collections import defaultdict
 from datetime import datetime
 from html import escape
 
@@ -241,6 +243,38 @@ a { color: var(--primary); }
   .comp.open .comp-body { display: block; }
 }
 .row-hidden { display: none !important; }
+/* Calendar */
+.cal-wrap { margin-bottom: 20px; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px; }
+.cal-nav button { background: var(--primary); color: white; border: none;
+  border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 600;
+  font-size: 0.85em; }
+.cal-nav button:hover { opacity: 0.85; }
+.cal-nav .cal-title { font-weight: 700; font-size: 1.05em; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-hdr { text-align: center; font-weight: 700; font-size: 0.75em;
+  color: var(--muted); padding: 4px 0; }
+.cal-cell { min-height: 60px; background: var(--card); border-radius: 4px;
+  padding: 4px; font-size: 0.75em; border: 1px solid var(--border);
+  overflow: hidden; position: relative; }
+.cal-cell.empty { background: transparent; border-color: transparent; }
+.cal-cell .day-num { font-weight: 700; font-size: 0.85em; color: var(--muted); }
+.cal-cell.today { border-color: var(--primary); border-width: 2px; }
+.cal-cell.today .day-num { color: var(--primary); }
+.cal-cell.has-match { background: var(--highlight); }
+.cal-evt { display: block; margin-top: 2px; padding: 1px 3px;
+  border-radius: 3px; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; line-height: 1.3;
+  background: var(--primary-light); color: var(--primary);
+  font-size: 0.8em; font-weight: 600; cursor: default; }
+.cal-evt:hover { opacity: 0.8; }
+.cal-month { display: none; }
+.cal-month.active { display: block; }
+@media (max-width: 600px) {
+  .cal-cell { min-height: 44px; font-size: 0.65em; }
+  .cal-evt { font-size: 0.7em; padding: 0 2px; }
+}
 .next-match {
   background: linear-gradient(135deg, var(--primary), #2e7d32);
   color: white; border-radius: 10px; padding: 18px 20px;
@@ -415,6 +449,32 @@ _FILTER_SCRIPT = """\
 </script>"""
 
 
+_CALENDAR_SCRIPT = """\
+<script>
+(function() {
+  var wrap = document.querySelector('.cal-wrap');
+  if (!wrap) return;
+  var months = wrap.querySelectorAll('.cal-month');
+  var title = wrap.querySelector('.cal-title');
+  var prev = wrap.querySelector('.cal-prev');
+  var next = wrap.querySelector('.cal-next');
+  var cur = 0;
+  function show(idx) {
+    if (idx < 0 || idx >= months.length) return;
+    months[cur].classList.remove('active');
+    cur = idx;
+    months[cur].classList.add('active');
+    title.textContent = months[cur].getAttribute('data-cal-title');
+    prev.disabled = cur === 0;
+    next.disabled = cur === months.length - 1;
+  }
+  prev.addEventListener('click', function() { show(cur - 1); });
+  next.addEventListener('click', function() { show(cur + 1); });
+  show(0);
+})();
+</script>"""
+
+
 _SW_REGISTER = """\
 <script>
 if ('serviceWorker' in navigator) {
@@ -423,6 +483,124 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>"""
+
+
+def _collect_calendar_fixtures(comps, baselines):
+    """Collect all upcoming Ballincollig fixtures across competitions.
+
+    Returns a dict mapping date strings (YYYY-MM-DD) to lists of
+    (time, opponent, comp_name, venue, is_postponed) tuples.
+    """
+    by_date = defaultdict(list)
+    now = datetime.now()
+    for comp_name, comp_config in comps:
+        baseline = baselines.get(comp_name)
+        if not baseline:
+            continue
+        for f in baseline.get("fixtures", {}).values():
+            if not _is_ours(f):
+                continue
+            dt = _parse_date(f.get("date", ""))
+            if dt == datetime.max:
+                continue
+            # Include today and future fixtures
+            if dt.date() < now.date():
+                continue
+            home = f.get("home", "")
+            away = f.get("away", "")
+            is_home = CLUB_NAME.lower() in home.lower()
+            opponent = away if is_home else home
+            venue = f.get("venue", "").strip()
+            time_str = f.get("time", "")
+            postponed = bool(f.get("postponed"))
+            date_key = dt.strftime("%Y-%m-%d")
+            by_date[date_key].append((
+                time_str, opponent, comp_name, venue, postponed
+            ))
+    # Sort each day's fixtures by time
+    for date_key in by_date:
+        by_date[date_key].sort(key=lambda x: x[0])
+    return dict(by_date)
+
+
+def _render_calendar(comps, baselines):
+    """Render a month-view calendar with upcoming fixtures."""
+    fixtures_by_date = _collect_calendar_fixtures(comps, baselines)
+    if not fixtures_by_date:
+        return ""
+
+    today = datetime.now()
+    # Determine which months to render (current + next 2)
+    months = []
+    y, m = today.year, today.month
+    for _ in range(3):
+        months.append((y, m))
+        m += 1
+        if m > 12:
+            m = 1
+            y += 1
+
+    month_names = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+
+    grids_html = ""
+    for idx, (year, month) in enumerate(months):
+        active = ' active' if idx == 0 else ''
+        cal = calendar.monthcalendar(year, month)
+        title = f"{month_names[month - 1]} {year}"
+        grid = '<div class="cal-grid">'
+        for day_name in ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]:
+            grid += f'<div class="cal-hdr">{day_name}</div>'
+        for week in cal:
+            for day in week:
+                if day == 0:
+                    grid += '<div class="cal-cell empty"></div>'
+                    continue
+                date_key = f"{year}-{month:02d}-{day:02d}"
+                is_today = (year == today.year and month == today.month
+                            and day == today.day)
+                day_fixtures = fixtures_by_date.get(date_key, [])
+                cls = "cal-cell"
+                if is_today:
+                    cls += " today"
+                if day_fixtures:
+                    cls += " has-match"
+                cell = f'<div class="{cls}"><span class="day-num">{day}</span>'
+                for time_str, opponent, comp_name, venue, postponed in day_fixtures:
+                    opp_short = escape(opponent)[:15]
+                    if postponed:
+                        label = f"PP: vs {opp_short}"
+                    else:
+                        label = f"{escape(time_str)} vs {opp_short}"
+                    # Short comp name for tooltip
+                    tooltip = escape(f"{comp_name}: {time_str} vs {opponent}")
+                    if venue:
+                        tooltip += escape(f" @ {venue}")
+                    if postponed:
+                        tooltip += " (Postponed)"
+                    cell += f'<span class="cal-evt" title="{tooltip}">{label}</span>'
+                cell += '</div>'
+                grid += cell
+        grid += '</div>'
+        grids_html += (
+            f'<div class="cal-month{active}" data-cal-idx="{idx}" '
+            f'data-cal-title="{escape(title)}">'
+            f'{grid}</div>'
+        )
+
+    return (
+        '<div id="calendar" class="cal-wrap">'
+        '<div class="cal-nav">'
+        '<button type="button" class="cal-prev">&larr;</button>'
+        f'<span class="cal-title">{escape(month_names[months[0][1] - 1])} '
+        f'{months[0][0]}</span>'
+        '<button type="button" class="cal-next">&rarr;</button>'
+        '</div>'
+        f'{grids_html}'
+        '</div>'
+    )
 
 
 def _find_next_matches(comps, baselines):
@@ -835,6 +1013,7 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
     if league_comps and champ_comps:
         nav_html = (
             '<nav class="section-nav">'
+            '<a href="#calendar">Calendar</a>'
             '<a href="#league">League</a>'
             '<a href="#championship">Championship</a>'
             '</nav>'
@@ -857,6 +1036,9 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 """
 
     next_match_html = _render_next_match(
+        league_comps + champ_comps, baselines)
+
+    calendar_html = _render_calendar(
         league_comps + champ_comps, baselines)
 
     content_html = ""
@@ -934,6 +1116,7 @@ def _generate_age_group_page(ag_key, comps, baselines, now):
 <p class="subtitle">{label} Dashboard &mdash; updated {now}</p>
 {nav_html}
 {next_match_html}
+{calendar_html}
 {filter_bar}
 {content_html}
 <button class="back-to-top" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">↑</button>
@@ -950,6 +1133,7 @@ window.addEventListener('scroll', function() {{
 {_THEME_TOGGLE_SCRIPT}
 {_COLLAPSE_SCRIPT}
 {_FILTER_SCRIPT}
+{_CALENDAR_SCRIPT}
 {_SW_REGISTER.replace("{sw_path}", "../sw.js")}
 <script data-goatcounter="https://ballincolliggaa.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
