@@ -505,8 +505,8 @@ _CALENDAR_SCRIPT = """\
   }
 
   function codeLabel(c) {
-    if (c === 'football') return '\u26bd Football';
-    if (c === 'hurling') return '\ud83c\udfd1 Hurling';
+    if (c === 'football') return '⚽ Football';
+    if (c === 'hurling') return '🏑 Hurling';
     return c;
   }
 
