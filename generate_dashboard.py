@@ -255,25 +255,53 @@ a { color: var(--primary); }
 .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .cal-hdr { text-align: center; font-weight: 700; font-size: 0.75em;
   color: var(--muted); padding: 4px 0; }
-.cal-cell { min-height: 60px; background: var(--card); border-radius: 4px;
-  padding: 4px; font-size: 0.75em; border: 1px solid var(--border);
-  overflow: hidden; position: relative; }
+.cal-cell { min-height: 48px; background: var(--card); border-radius: 4px;
+  padding: 6px 4px; text-align: center; border: 1px solid var(--border);
+  cursor: default; transition: background 0.15s; }
 .cal-cell.empty { background: transparent; border-color: transparent; }
-.cal-cell .day-num { font-weight: 700; font-size: 0.85em; color: var(--muted); }
+.cal-cell .day-num { font-weight: 700; font-size: 0.9em; color: var(--muted);
+  display: block; }
 .cal-cell.today { border-color: var(--primary); border-width: 2px; }
 .cal-cell.today .day-num { color: var(--primary); }
-.cal-cell.has-match { background: var(--highlight); }
-.cal-evt { display: block; margin-top: 2px; padding: 1px 3px;
-  border-radius: 3px; white-space: nowrap; overflow: hidden;
-  text-overflow: ellipsis; line-height: 1.3;
-  background: var(--primary-light); color: var(--primary);
-  font-size: 0.8em; font-weight: 600; cursor: default; }
-.cal-evt:hover { opacity: 0.8; }
+.cal-cell.has-match { cursor: pointer; background: var(--highlight); }
+.cal-cell.has-match:hover { opacity: 0.8; }
+.cal-cell.selected { border-color: var(--primary); border-width: 2px;
+  background: var(--primary-light); }
+.cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 3px; }
+.cal-dot { width: 7px; height: 7px; border-radius: 50%; }
+.cal-dot.football { background: #1976d2; }
+.cal-dot.hurling { background: #e65100; }
+.cal-dot.other { background: #7b1fa2; }
 .cal-month { display: none; }
 .cal-month.active { display: block; }
+.cal-detail { display: none; margin-top: 8px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+.cal-detail.open { display: block; }
+.cal-detail-hdr { padding: 10px 14px; font-weight: 700; font-size: 0.95em;
+  border-bottom: 1px solid var(--border); display: flex;
+  justify-content: space-between; align-items: center; }
+.cal-detail-hdr button { background: none; border: none; cursor: pointer;
+  font-size: 1.1em; color: var(--muted); padding: 0 4px; }
+.cal-detail-hdr button:hover { color: var(--text); }
+.cal-detail-body { padding: 0; }
+.cal-match { padding: 10px 14px; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 10px;
+  align-items: center; font-size: 0.9em; }
+.cal-match:last-child { border-bottom: none; }
+.cal-match-time { font-weight: 700; font-size: 1em; white-space: nowrap; }
+.cal-match-teams { font-weight: 600; }
+.cal-match-meta { grid-column: 1 / -1; font-size: 0.8em; color: var(--muted); }
+.cal-match-code { display: inline-block; padding: 1px 6px; border-radius: 4px;
+  font-size: 0.75em; font-weight: 700; color: white; margin-right: 4px; }
+.cal-match-code.football { background: #1976d2; }
+.cal-match-code.hurling { background: #e65100; }
+.cal-match-code.other { background: #7b1fa2; }
+.cal-match-pp { color: #d32f2f; font-weight: 600; font-size: 0.8em; }
 @media (max-width: 600px) {
-  .cal-cell { min-height: 44px; font-size: 0.65em; }
-  .cal-evt { font-size: 0.7em; padding: 0 2px; }
+  .cal-cell { min-height: 40px; padding: 4px 2px; }
+  .cal-cell .day-num { font-size: 0.8em; }
+  .cal-dot { width: 6px; height: 6px; }
+  .cal-match { font-size: 0.85em; padding: 8px 10px; }
 }
 .next-match {
   background: linear-gradient(135deg, var(--primary), #2e7d32);
@@ -458,8 +486,62 @@ _CALENDAR_SCRIPT = """\
   var title = wrap.querySelector('.cal-title');
   var prev = wrap.querySelector('.cal-prev');
   var next = wrap.querySelector('.cal-next');
+  var detail = wrap.querySelector('.cal-detail');
+  var detailDate = wrap.querySelector('.cal-detail-date');
+  var detailBody = wrap.querySelector('.cal-detail-body');
+  var detailClose = wrap.querySelector('.cal-detail-close');
+  var fixtures = JSON.parse(wrap.getAttribute('data-fixtures') || '{}');
   var cur = 0;
-  function show(idx) {
+  var selectedCell = null;
+
+  var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var monthNames = ['January','February','March','April','May','June',
+    'July','August','September','October','November','December'];
+
+  function formatDate(dk) {
+    var d = new Date(dk + 'T12:00:00');
+    return dayNames[d.getDay()] + ' ' + d.getDate() + ' ' +
+      monthNames[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function codeLabel(c) {
+    if (c === 'football') return '\u26bd Football';
+    if (c === 'hurling') return '\ud83c\udfd1 Hurling';
+    return c;
+  }
+
+  function showDetail(dateKey) {
+    var matches = fixtures[dateKey];
+    if (!matches || !matches.length) return;
+    detailDate.textContent = formatDate(dateKey);
+    var html = '';
+    for (var i = 0; i < matches.length; i++) {
+      var m = matches[i];
+      var timeStr = m.postponed ? '<span class="cal-match-pp">Postponed</span>' :
+        '<span class="cal-match-time">' + m.time + '</span>';
+      html += '<div class="cal-match">';
+      html += timeStr;
+      html += '<div class="cal-match-teams">';
+      html += '<span class="cal-match-code ' + m.code + '">' +
+        codeLabel(m.code) + '</span> ';
+      html += 'vs ' + m.opponent;
+      html += '</div>';
+      html += '<div class="cal-match-meta">';
+      html += m.comp;
+      if (m.venue) html += ' &bull; ' + m.venue;
+      html += '</div></div>';
+    }
+    detailBody.innerHTML = html;
+    detail.classList.add('open');
+  }
+
+  function clearSelection() {
+    if (selectedCell) selectedCell.classList.remove('selected');
+    selectedCell = null;
+    detail.classList.remove('open');
+  }
+
+  function showMonth(idx) {
     if (idx < 0 || idx >= months.length) return;
     months[cur].classList.remove('active');
     cur = idx;
@@ -467,10 +549,24 @@ _CALENDAR_SCRIPT = """\
     title.textContent = months[cur].getAttribute('data-cal-title');
     prev.disabled = cur === 0;
     next.disabled = cur === months.length - 1;
+    clearSelection();
   }
-  prev.addEventListener('click', function() { show(cur - 1); });
-  next.addEventListener('click', function() { show(cur + 1); });
-  show(0);
+
+  wrap.addEventListener('click', function(e) {
+    var cell = e.target.closest('.cal-cell.has-match');
+    if (!cell) return;
+    var dk = cell.getAttribute('data-date');
+    if (!dk) return;
+    if (selectedCell) selectedCell.classList.remove('selected');
+    selectedCell = cell;
+    cell.classList.add('selected');
+    showDetail(dk);
+  });
+
+  prev.addEventListener('click', function() { showMonth(cur - 1); });
+  next.addEventListener('click', function() { showMonth(cur + 1); });
+  detailClose.addEventListener('click', clearSelection);
+  showMonth(0);
 })();
 </script>"""
 
@@ -545,6 +641,30 @@ def _render_calendar(comps, baselines):
         "July", "August", "September", "October", "November", "December"
     ]
 
+    def _code_for(comp_name):
+        """Derive sport code from competition name."""
+        cl = comp_name.lower()
+        if "football" in cl:
+            return "football"
+        if "hurling" in cl:
+            return "hurling"
+        return "other"
+
+    # Build JSON data for the detail panel (keyed by date)
+    detail_data = {}
+    for date_key, fixtures in fixtures_by_date.items():
+        entries = []
+        for time_str, opponent, comp_name, venue, postponed in fixtures:
+            entries.append({
+                "time": time_str,
+                "opponent": opponent,
+                "comp": comp_name,
+                "venue": venue,
+                "code": _code_for(comp_name),
+                "postponed": postponed,
+            })
+        detail_data[date_key] = entries
+
     grids_html = ""
     for idx, (year, month) in enumerate(months):
         active = ' active' if idx == 0 else ''
@@ -565,22 +685,18 @@ def _render_calendar(comps, baselines):
                 cls = "cal-cell"
                 if is_today:
                     cls += " today"
+                data_attr = ""
                 if day_fixtures:
                     cls += " has-match"
-                cell = f'<div class="{cls}"><span class="day-num">{day}</span>'
-                for time_str, opponent, comp_name, venue, postponed in day_fixtures:
-                    opp_short = escape(opponent)[:15]
-                    if postponed:
-                        label = f"PP: vs {opp_short}"
-                    else:
-                        label = f"{escape(time_str)} vs {opp_short}"
-                    # Short comp name for tooltip
-                    tooltip = escape(f"{comp_name}: {time_str} vs {opponent}")
-                    if venue:
-                        tooltip += escape(f" @ {venue}")
-                    if postponed:
-                        tooltip += " (Postponed)"
-                    cell += f'<span class="cal-evt" title="{tooltip}">{label}</span>'
+                    data_attr = f' data-date="{date_key}"'
+                cell = f'<div class="{cls}"{data_attr}>'
+                cell += f'<span class="day-num">{day}</span>'
+                if day_fixtures:
+                    cell += '<div class="cal-dots">'
+                    for _, _, comp_name, _, _ in day_fixtures:
+                        code = _code_for(comp_name)
+                        cell += f'<span class="cal-dot {code}"></span>'
+                    cell += '</div>'
                 cell += '</div>'
                 grid += cell
         grid += '</div>'
@@ -590,8 +706,10 @@ def _render_calendar(comps, baselines):
             f'{grid}</div>'
         )
 
+    detail_json = escape(json.dumps(detail_data, ensure_ascii=False))
+
     return (
-        '<div id="calendar" class="cal-wrap">'
+        f'<div id="calendar" class="cal-wrap" data-fixtures="{detail_json}">'
         '<div class="cal-nav">'
         '<button type="button" class="cal-prev">&larr;</button>'
         f'<span class="cal-title">{escape(month_names[months[0][1] - 1])} '
@@ -599,6 +717,13 @@ def _render_calendar(comps, baselines):
         '<button type="button" class="cal-next">&rarr;</button>'
         '</div>'
         f'{grids_html}'
+        '<div class="cal-detail">'
+        '<div class="cal-detail-hdr">'
+        '<span class="cal-detail-date"></span>'
+        '<button type="button" class="cal-detail-close" aria-label="Close">&times;</button>'
+        '</div>'
+        '<div class="cal-detail-body"></div>'
+        '</div>'
         '</div>'
     )
 
