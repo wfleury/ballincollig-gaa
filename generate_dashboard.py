@@ -268,14 +268,11 @@ a { color: var(--primary); }
 .cal-cell.has-match:hover { opacity: 0.8; }
 .cal-cell.selected { border-color: var(--primary); border-width: 2px;
   background: var(--primary-light); }
-.cal-dots { display: flex; gap: 2px; justify-content: center; margin-top: 2px;
+.cal-dots { display: flex; gap: 5px; justify-content: center; margin-top: 2px;
   align-items: center; flex-wrap: wrap; }
-.cal-pip { display: flex; align-items: center; gap: 1px; }
+.cal-pip { display: inline-flex; align-items: center; gap: 1px; }
 .cal-pip img { width: 14px; height: 14px; flex-shrink: 0; }
-.cal-pip .cal-type { font-size: 0.55em; font-weight: 800; line-height: 1;
-  border-radius: 2px; padding: 0 2px; color: white; }
-.cal-type-league { background: #1565c0; }
-.cal-type-champ { background: #c62828; }
+.cal-pip .cal-type { font-size: 0.7em; line-height: 1; }
 .cal-month { display: none; }
 .cal-month.active { display: block; }
 .cal-detail { display: none; margin-top: 8px; border-radius: 8px;
@@ -305,7 +302,7 @@ a { color: var(--primary); }
   .cal-cell { min-height: 40px; padding: 4px 2px; }
   .cal-cell .day-num { font-size: 0.8em; }
   .cal-pip img { width: 12px; height: 12px; }
-  .cal-pip .cal-type { font-size: 0.5em; }
+  .cal-pip .cal-type { font-size: 0.6em; }
   .cal-match { font-size: 0.85em; padding: 8px 10px; }
 }
 .next-match {
@@ -509,9 +506,15 @@ _CALENDAR_SCRIPT = """\
       monthNames[d.getMonth()] + ' ' + d.getFullYear();
   }
 
+  var imgBase = '../img/';
+  function codeIcon(c) {
+    if (c === 'football') return '<img src="' + imgBase + 'gaelic-football.png" alt="Football" style="width:16px;height:16px;vertical-align:middle"> ';
+    if (c === 'hurling') return '<img src="' + imgBase + 'hurling.png" alt="Hurling" style="width:16px;height:16px;vertical-align:middle"> ';
+    return '';
+  }
   function codeLabel(c) {
-    if (c === 'football') return '⚽ Football';
-    if (c === 'hurling') return '🏑 Hurling';
+    if (c === 'football') return 'Football';
+    if (c === 'hurling') return 'Hurling';
     return c;
   }
 
@@ -528,12 +531,12 @@ _CALENDAR_SCRIPT = """\
       html += timeStr;
       html += '<div class="cal-match-teams">';
       html += '<span class="cal-match-code ' + m.code + '">' +
-        codeLabel(m.code) + '</span> ';
+        codeIcon(m.code) + codeLabel(m.code) + '</span> ';
       html += 'vs ' + m.opponent;
       html += '</div>';
       var typeBadge = m.champ ?
-        '<span class="cal-match-code" style="background:#c62828">Championship</span>' :
-        '<span class="cal-match-code" style="background:#1565c0">League</span>';
+        '<span class="cal-match-code" style="background:#c62828">🏆 Championship</span>' :
+        '<span class="cal-match-code" style="background:#1565c0">🏅 League</span>';
       html += '<div class="cal-match-meta">';
       html += typeBadge + ' ' + m.comp;
       if (m.venue) html += ' &bull; ' + m.venue;
@@ -597,11 +600,10 @@ def _sport_icon_img(code, is_champ, img_prefix="../img"):
         img = f'<img src="{img_prefix}/gaelic-football.png" alt="Football">'
     else:
         img = f'<img src="{img_prefix}/gaelic-football.png" alt="Sport">'
-    type_cls = "cal-type-champ" if is_champ else "cal-type-league"
-    type_label = "C" if is_champ else "L"
+    type_icon = "\U0001F3C6" if is_champ else "\U0001F3C5"
     return (
         f'<span class="cal-pip">{img}'
-        f'<span class="cal-type {type_cls}">{type_label}</span></span>'
+        f'<span class="cal-type">{type_icon}</span></span>'
     )
 
 
