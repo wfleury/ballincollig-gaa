@@ -268,12 +268,14 @@ a { color: var(--primary); }
 .cal-cell.has-match:hover { opacity: 0.8; }
 .cal-cell.selected { border-color: var(--primary); border-width: 2px;
   background: var(--primary-light); }
-.cal-dots { display: flex; gap: 3px; justify-content: center; margin-top: 3px;
-  align-items: center; }
-.cal-icon { width: 14px; height: 14px; flex-shrink: 0; }
-.cal-icon.football { color: #1976d2; }
-.cal-icon.hurling { color: #e65100; }
-.cal-icon.other { color: #7b1fa2; }
+.cal-dots { display: flex; gap: 2px; justify-content: center; margin-top: 2px;
+  align-items: center; flex-wrap: wrap; }
+.cal-pip { display: flex; align-items: center; gap: 1px; }
+.cal-pip img { width: 14px; height: 14px; flex-shrink: 0; }
+.cal-pip .cal-type { font-size: 0.55em; font-weight: 800; line-height: 1;
+  border-radius: 2px; padding: 0 2px; color: white; }
+.cal-type-league { background: #1565c0; }
+.cal-type-champ { background: #c62828; }
 .cal-month { display: none; }
 .cal-month.active { display: block; }
 .cal-detail { display: none; margin-top: 8px; border-radius: 8px;
@@ -302,7 +304,8 @@ a { color: var(--primary); }
 @media (max-width: 600px) {
   .cal-cell { min-height: 40px; padding: 4px 2px; }
   .cal-cell .day-num { font-size: 0.8em; }
-  .cal-icon { width: 12px; height: 12px; }
+  .cal-pip img { width: 12px; height: 12px; }
+  .cal-pip .cal-type { font-size: 0.5em; }
   .cal-match { font-size: 0.85em; padding: 8px 10px; }
 }
 .next-match {
@@ -528,8 +531,11 @@ _CALENDAR_SCRIPT = """\
         codeLabel(m.code) + '</span> ';
       html += 'vs ' + m.opponent;
       html += '</div>';
+      var typeBadge = m.champ ?
+        '<span class="cal-match-code" style="background:#c62828">Championship</span>' :
+        '<span class="cal-match-code" style="background:#1565c0">League</span>';
       html += '<div class="cal-match-meta">';
-      html += m.comp;
+      html += typeBadge + ' ' + m.comp;
       if (m.venue) html += ' &bull; ' + m.venue;
       html += '</div></div>';
     }
@@ -583,38 +589,25 @@ if ('serviceWorker' in navigator) {
 </script>"""
 
 
-def _sport_icon(code):
-    """Return an inline SVG icon for a sport code (hurling/football/other)."""
+def _sport_icon_img(code, is_champ, img_prefix="../img"):
+    """Return an HTML snippet with the sport PNG icon + league/champ badge."""
     if code == "hurling":
-        # Hurley and sliotar
-        return (
-            '<svg class="cal-icon hurling" viewBox="0 0 24 24" fill="none" '
-            'xmlns="http://www.w3.org/2000/svg">'
-            '<path d="M4 20L17 7" stroke="currentColor" stroke-width="2.5" '
-            'stroke-linecap="round"/>'
-            '<path d="M15 3c1.5 0 3 1 4 2s2 2.5 2 4" stroke="currentColor" '
-            'stroke-width="2" stroke-linecap="round"/>'
-            '<circle cx="6" cy="18" r="2.5" fill="currentColor" opacity="0.6"/>'
-            '</svg>'
-        )
-    if code == "football":
-        # GAA football (round ball with seam lines)
-        return (
-            '<svg class="cal-icon football" viewBox="0 0 24 24" fill="none" '
-            'xmlns="http://www.w3.org/2000/svg">'
-            '<circle cx="12" cy="12" r="9" stroke="currentColor" '
-            'stroke-width="2"/>'
-            '<path d="M12 3v18M3 12h18" stroke="currentColor" '
-            'stroke-width="1.2" opacity="0.5"/>'
-            '</svg>'
-        )
+        img = f'<img src="{img_prefix}/hurling.png" alt="Hurling">'
+    elif code == "football":
+        img = f'<img src="{img_prefix}/gaelic-football.png" alt="Football">'
+    else:
+        img = f'<img src="{img_prefix}/gaelic-football.png" alt="Sport">'
+    type_cls = "cal-type-champ" if is_champ else "cal-type-league"
+    type_label = "C" if is_champ else "L"
     return (
-        '<svg class="cal-icon other" viewBox="0 0 24 24" fill="none" '
-        'xmlns="http://www.w3.org/2000/svg">'
-        '<circle cx="12" cy="12" r="9" stroke="currentColor" '
-        'stroke-width="2"/>'
-        '</svg>'
+        f'<span class="cal-pip">{img}'
+        f'<span class="cal-type {type_cls}">{type_label}</span></span>'
     )
+
+
+def _is_championship(comp_name):
+    """Return True if a competition name is a championship."""
+    return "championship" in comp_name.lower()
 
 
 def _collect_calendar_fixtures(comps, baselines):
@@ -697,6 +690,7 @@ def _render_calendar(comps, baselines):
                 "comp": comp_name,
                 "venue": venue,
                 "code": _code_for(comp_name),
+                "champ": _is_championship(comp_name),
                 "postponed": postponed,
             })
         detail_data[date_key] = entries
@@ -731,7 +725,8 @@ def _render_calendar(comps, baselines):
                     cell += '<div class="cal-dots">'
                     for _, _, comp_name, _, _ in day_fixtures:
                         code = _code_for(comp_name)
-                        cell += _sport_icon(code)
+                        champ = _is_championship(comp_name)
+                        cell += _sport_icon_img(code, champ)
                     cell += '</div>'
                 cell += '</div>'
                 grid += cell
