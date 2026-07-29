@@ -156,6 +156,12 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u14-hurling",
         "age_group": "u14",
     },
+    "Fe14 Premier 1 Football Championship Challenge Cup Semi/Finals": {
+        "competition_id": 217537,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-football",
+        "age_group": "u14",
+    },
     
     # --- 2nd team ---
     "Fe14 Div 1 Football (2nd team)": {
