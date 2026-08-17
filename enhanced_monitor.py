@@ -20,6 +20,7 @@ from config import (
     CHANGE_COLS, CAMOGIE_LEAGUES,
 )
 from camogie_scraper import scrape_camogie_fixtures
+from rebelog_scraper import scrape_rebelog_fixtures, deduplicate_fixtures
 
 class EnhancedFixtureAndResultsMonitor:
     def __init__(self):
@@ -65,6 +66,17 @@ class EnhancedFixtureAndResultsMonitor:
             fixtures.extend(camogie_fixtures)
         except Exception as e:
             self.log_message(f"WARNING: Camogie scrape failed: {e}")
+
+        # Scrape rebelog.ie competitions for underage knockout fixtures
+        # that don't appear on the gaacork.ie club profile AJAX endpoint
+        try:
+            rebelog_fixtures = scrape_rebelog_fixtures()
+            new_rebelog = deduplicate_fixtures(fixtures, rebelog_fixtures)
+            self.log_message(f"Rebelog: {len(new_rebelog)} new fixtures "
+                             f"(from {len(rebelog_fixtures)} total)")
+            fixtures.extend(new_rebelog)
+        except Exception as e:
+            self.log_message(f"WARNING: Rebelog scrape failed: {e}")
 
         if not fixtures and not results:
             self.log_message("ERROR: No fixtures or results from any source")
