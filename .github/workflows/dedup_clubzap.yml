@@ -1,0 +1,41 @@
+name: ClubZap Dedup Fixtures
+
+on:
+  workflow_dispatch:
+    inputs:
+      delete:
+        description: 'Actually delete duplicates (uncheck for dry run)'
+        type: boolean
+        default: false
+
+jobs:
+  dedup-fixtures:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run dedup (dry run)
+        if: ${{ github.event.inputs.delete != 'true' }}
+        run: python clubzap_dedup.py
+        env:
+          CLUBZAP_EMAIL: ${{ secrets.CLUBZAP_EMAIL }}
+          CLUBZAP_PASSWORD: ${{ secrets.CLUBZAP_PASSWORD }}
+
+      - name: Run dedup (delete)
+        if: ${{ github.event.inputs.delete == 'true' }}
+        run: python clubzap_dedup.py --delete
+        env:
+          CLUBZAP_EMAIL: ${{ secrets.CLUBZAP_EMAIL }}
+          CLUBZAP_PASSWORD: ${{ secrets.CLUBZAP_PASSWORD }}
