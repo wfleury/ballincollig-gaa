@@ -1,4 +1,4 @@
-# GAA Scraper - Project Guide
+de# GAA Scraper - Project Guide
 
 ## Commands
 
@@ -20,7 +20,7 @@ Scrapes gaacork.ie club profile daily + corkcamogie.com league pages, detects fi
 
 **Flow:** `enhanced_monitor.py` -> `selenium_scraper.py` + `camogie_scraper.py` -> `team_mapping.py` -> `clubzap_sync.py` + `results_sync.py` -> `clubzap_automate.py`
 
-**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, `CAMOGIE_LEAGUES` (corkcamogie.com URLs + team mappings), ClubZap IDs, ntfy topics, CSV schema, results publishing options.
+**Config:** `config.py` (root) - `CLUB_ID=1986`, gaacork.ie URLs, `CAMOGIE_LEAGUES` (corkcamogie.com URLs + team mappings), ClubZap IDs, ntfy topics, CSV schema, results publishing options, Cloudflare Worker proxy settings (`PROXY_URL`, `PROXY_KEY`).
 
 **ClubZap Results Publishing Options:**
 - `CLUBZAP_WITHHOLD_SCORES=true` - Results show as Win/Loss/Draw only (no actual scores)
@@ -32,14 +32,31 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 
 **Flow:** `competition_monitor/monitor.py` -> `scraper.py` -> `results_tracker.py` -> `notifier.py` + `discovery.py`
 
-**Config:** `competition_monitor/config.py` (separate from root) - 17 competitions on rebelog.ie, 5 age groups (u13-minor), ntfy topics. Env vars: `COMP_AGE_GROUPS`, `COMP_NAMES`.
+**Config:** `competition_monitor/config.py` (separate from root) - competition definitions on rebelog.ie, 5 age groups (u13-minor), ntfy topics. Env vars: `COMP_AGE_GROUPS`, `COMP_NAMES`.
+
+## Cloudflare Worker Proxy
+
+CloudFront WAF on `gaacork.ie` blocks requests to `/wp-admin/admin-ajax.php` from GitHub Actions datacenter IPs (403). This only affects the fixture updater (`selenium_scraper.py`); the competition monitor is unaffected because `rebelog.ie` embeds data in the initial page load.
+
+**Solution:** A Cloudflare Worker in `worker/` proxies `admin-ajax.php` requests from Cloudflare's edge network (different IP range from GitHub Actions). Configure it with `PROXY_URL` and `PROXY_KEY` in `config.py`; pass the values as GitHub secrets in `check_fixtures.yml`.
+
+**Fallback chain in `SeleniumScraper.scrape_club_profile()`:**
+1. Wait for DOM `ul[data-date]` elements
+2. JavaScript fixture finder on existing DOM
+3. **Cloudflare Worker proxy** (`_fetch_via_proxy`)
+4. In-page `fetch()` to `admin-ajax.php` using browser cookies
+5. Direct HTTP fallback using Selenium's session cookies
+6. Browser console dump for diagnostics
+7. Regex extraction from page source
+
+The AJAX parser `_parse_ajax_html` reads `data-*` attributes from `ul.table-body` elements and returns the same fixture/result structures as the Selenium DOM path.
 
 ## File Map
 
 ### System 1 files (root level)
 | File | Purpose |
 |---|---|
-| `config.py` | Root config: CLUB_NAME, CLUB_ID, BASE_URL (gaacork.ie), ClubZap IDs, CSV KEY_COLS/CHANGE_COLS, results publishing options |
+| `config.py` | Root config: CLUB_NAME, CLUB_ID, BASE_URL (gaacork.ie), ClubZap IDs, CSV KEY_COLS/CHANGE_COLS, results publishing options, Cloudflare Worker proxy settings |
 | `enhanced_monitor.py` | Main orchestrator: scrape -> hash compare -> diff -> notify. Class `EnhancedFixtureAndResultsMonitor` |
 | `selenium_scraper.py` | Selenium scraper for gaacork.ie/clubprofile/ pages. Class `SeleniumScraper`. Returns fixtures + results |
 | `scraper.py` | BeautifulSoup scraper (legacy fallback). Class `GAAClubScraper` |
@@ -49,11 +66,12 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 | `clubzap_automate.py` | Playwright browser automation for ClubZap CRUD. CLI: `upload\|edit\|delete\|results\|all`. Handles result publishing options |
 | `team_mapping.py` | Maps GAA Cork competition names -> ClubZap team names (e.g., "Fe14..." -> "U14 GAA") |
 | `camogie_scraper.py` | HTTP scraper for corkcamogie.com Foireann widgets. No Selenium needed. Function `scrape_camogie_fixtures()` |
+| `rebelog_scraper.py` | HTTP scraper for rebelog.ie competition pages. Fetches underage knockout fixtures (SFs, finals, play-offs) missing from gaacork.ie AJAX. Functions `scrape_rebelog_fixtures()`, `deduplicate_fixtures()` |
 
 ### System 2 files (`competition_monitor/`)
 | File | Purpose |
 |---|---|
-| `config.py` | Competition definitions (17 comps), age groups, rebelog.ie URLs, ntfy topics |
+| `config.py` | Competition definitions, age groups, rebelog.ie URLs, ntfy topics |
 | `monitor.py` | Orchestrator: scrape -> diff -> notify -> save baseline. Entry: `run()` |
 | `scraper.py` | Selenium scraper for SportLomo league pages. Class `CompetitionScraper` |
 | `results_tracker.py` | JSON baselines in `competition_baselines/`. Functions: `compute_diff()`, `has_changes()`, `save_baseline()` |
@@ -76,12 +94,13 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 | `test_clubzap_sync.py` | ~13 tests: fixture diff engine |
 | `test_team_mapping.py` | ~40 tests: competition name -> team name mapping |
 | `test_camogie_scraper.py` | ~22 tests: Foireann HTML parsing, date parsing, HTTP mocking |
+| `test_rebelog_scraper.py` | ~12 tests: SportLomo HTML parsing, deduplication logic |
 
 ### CI/CD (`.github/workflows/`)
 | Workflow | Schedule | What it runs |
 |---|---|---|
 | `check_fixtures.yml` | Daily 06:00 UTC | `enhanced_monitor.py` -> `clubzap_sync.py` -> `clubzap_automate.py` |
-| `check_results.yml` | 05:00, 12:00, 21:00 UTC | `python -m competition_monitor` -> `generate_dashboard.py` -> deploy to GitHub Pages. Currently filtered: `COMP_AGE_GROUPS=u14` |
+| `check_results.yml` | 05:00, 12:00, 21:00 UTC | `python -m competition_monitor` -> `generate_dashboard.py` -> deploy to GitHub Pages. Currently filtered: `COMP_AGE_GROUPS=u14,u16` |
 | `test_clubzap.yml` | Manual only | Test ClubZap CRUD with fake fixture |
 
 ## Key Data Structures
@@ -104,3 +123,4 @@ Scrapes rebelog.ie competition pages 3x daily, tracks results + league tables vi
 - **Postponed:** time "0:00" or "00:00".
 - **Safety:** ClubZap won't bulk-upload >20 fixtures without existing baseline.
 - **Baselines gitignored**, persisted via GitHub Actions cache.
+- **Fe spacing normalization:** Rebel Óg Coiste uses `Fe 14` (with a space) while our patterns use `fe14`. `competition_monitor/discovery.py` normalises with `re.sub(r'\bfe\s+(\d)', r'fe\1', ...)`; `team_mapping.py` matches both `"fe14"` and `"fe 14"` explicitly. Any new parsers should handle both forms.
