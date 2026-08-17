@@ -5,6 +5,16 @@ Used by both scraper.py (fallback) and enhanced_monitor.py (primary).
 Keeping one canonical version avoids divergent mappings.
 """
 
+import unicodedata
+
+
+def _strip_accents(s):
+    """Remove diacritics/accents from a string (e.g. 'Fé14' -> 'Fe14')."""
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', s)
+        if unicodedata.category(c) != 'Mn'
+    )
+
 
 def map_team_name(comp_name):
     """Map a GAA Cork competition name to the Ballincollig ClubZap team name.
@@ -23,7 +33,7 @@ def map_team_name(comp_name):
     the camogie_scraper (team name set via config), so this function is only
     a fallback for camogie competition names.
     """
-    comp_lower = comp_name.lower()
+    comp_lower = _strip_accents(comp_name).lower()
 
     # Determine code (football or hurling)
     is_football = any(x in comp_lower for x in ["football", " fl"])

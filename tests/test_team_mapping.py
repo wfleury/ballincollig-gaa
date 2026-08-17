@@ -40,6 +40,7 @@ class TestMapTeamName:
         ("Fe14 Football League", "U14 GAA"),
         ("Fe14 Hurling League", "U14 GAA"),
         ("Rebel Og Coiste Fe 14 4 A Section 2 Hurling Championship", "U14 GAA"),
+        ("ROC Fé14 Hurling League 4A Playoff", "U14 GAA"),
     ])
     def test_fe14(self, comp, expected):
         assert map_team_name(comp) == expected
@@ -56,6 +57,7 @@ class TestMapTeamName:
         ("Fe16 Hurling League Div 2", "U16 GAA"),
         ("Rebel Og Coiste Fe 16 4 B Hurling Championship", "U16 GAA"),
         ("Rebel Og Coiste Fe 16 4 B Football Championship", "U16 GAA"),
+        ("ROC Fé16 Premier 1 Hurling Championship", "U16 GAA"),
     ])
     def test_fe16(self, comp, expected):
         assert map_team_name(comp) == expected
