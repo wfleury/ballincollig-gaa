@@ -159,4 +159,10 @@ CAMOGIE_LEAGUES = [
         "club_name": "Ballincollig",
         "competition": "Premier Minor Camogie League 2026",
     },
+    {
+        "url": "https://corkcamogie.com/senior-championship-2026/",
+        "team": "BCC 2026 Senior Squad",
+        "club_name": "Ballincollig",
+        "competition": "Senior Camogie Championship 2026",
+    },
 ]
