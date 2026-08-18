@@ -19,7 +19,7 @@ from config import (
     NTFY_FIXTURES_URL, team_ntfy_topic, team_fixtures_url,
     CHANGE_COLS, CAMOGIE_LEAGUES,
 )
-from camogie_scraper import scrape_camogie_fixtures
+from camogie_scraper import scrape_camogie_fixtures, scrape_camogie_results
 from rebelog_scraper import scrape_rebelog_fixtures, deduplicate_fixtures
 
 class EnhancedFixtureAndResultsMonitor:
@@ -77,6 +77,14 @@ class EnhancedFixtureAndResultsMonitor:
             fixtures.extend(new_rebelog)
         except Exception as e:
             self.log_message(f"WARNING: Rebelog scrape failed: {e}")
+
+        # Scrape camogie results (corkcamogie.com doesn't appear on gaacork.ie)
+        try:
+            camogie_results = scrape_camogie_results()
+            self.log_message(f"Camogie results: {len(camogie_results)} found")
+            results.extend(camogie_results)
+        except Exception as e:
+            self.log_message(f"WARNING: Camogie results scrape failed: {e}")
 
         if not fixtures and not results:
             self.log_message("ERROR: No fixtures or results from any source")

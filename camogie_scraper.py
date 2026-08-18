@@ -65,6 +65,7 @@ def parse_fixture_cards(html, club_name):
     Returns a list of fixture dicts for matches involving *club_name*.
     Each dict has the same keys as the GAA Cork selenium scraper output:
         home, away, date, time, venue, competition, referee
+    Plus internal helpers: _has_score, _home_score, _away_score.
     """
     fixtures = []
     cards = re.split(r"<article\s+class=\"foireann-card\">", html)
@@ -88,12 +89,11 @@ def parse_fixture_cards(html, club_name):
             # Default to home team name (strip trailing team number)
             venue = re.sub(r"\s+\d+$", "", home)
 
-        # Skip duplicate results cards (same fixture appears once as upcoming,
-        # once with scores when played).  We detect results by score badges.
+        # Detect results by score badges
         scores = re.findall(r'foireann-score-badge[^>]*>([^<]*)<', card)
-        has_score = any(s.strip() for s in scores)
+        has_score = len(scores) >= 2 and all(s.strip() for s in scores[:2])
 
-        fixtures.append({
+        fx = {
             "home": home,
             "away": away,
             "date": date_str,
@@ -102,7 +102,13 @@ def parse_fixture_cards(html, club_name):
             "competition": division,
             "referee": "",
             "_has_score": has_score,
-        })
+        }
+
+        if has_score:
+            fx["_home_score"] = scores[0].strip()
+            fx["_away_score"] = scores[1].strip()
+
+        fixtures.append(fx)
 
     return fixtures
 
@@ -161,6 +167,60 @@ def scrape_camogie_fixtures(leagues=None):
 
     print(f"Camogie: {len(all_fixtures)} total fixtures across {len(leagues)} leagues")
     return all_fixtures
+
+
+def scrape_camogie_results(leagues=None):
+    """Scrape all configured camogie league pages and return result dicts.
+
+    Returns results in the same raw format as the Selenium scraper:
+        {home, away, date, home_score, away_score, competition, venue, referee, status}
+
+    These can be passed directly to ResultsScraper.process_results().
+    """
+    if leagues is None:
+        leagues = CAMOGIE_LEAGUES
+
+    all_results = []
+    seen = set()
+
+    for league in leagues:
+        url = league["url"]
+        club_name = league["club_name"]
+        competition = league.get("competition", "")
+
+        try:
+            resp = requests.get(url, headers=_HEADERS, timeout=20, verify=False)
+            resp.raise_for_status()
+        except requests.RequestException as e:
+            print(f"WARNING: Could not fetch {url}: {e}")
+            continue
+
+        cards = parse_fixture_cards(resp.text, club_name)
+
+        for fx in cards:
+            if not fx.get("_has_score"):
+                continue
+
+            key = (fx["date"], fx["home"].lower(), fx["away"].lower())
+            if key in seen:
+                continue
+            seen.add(key)
+
+            result = {
+                "home": fx["home"],
+                "away": fx["away"],
+                "date": fx["date"],
+                "home_score": fx["_home_score"],
+                "away_score": fx["_away_score"],
+                "competition": competition or fx["competition"],
+                "venue": fx["venue"],
+                "referee": "",
+                "status": "",
+            }
+            all_results.append(result)
+
+    print(f"Camogie results: {len(all_results)} results across {len(leagues)} leagues")
+    return all_results
 
 
 # ── Standalone test ─────────────────────────────────────────────────────

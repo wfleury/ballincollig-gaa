@@ -4,7 +4,7 @@ from corkcamogie.com.
 """
 
 import pytest
-from camogie_scraper import parse_fixture_cards, _parse_datetime, scrape_camogie_fixtures
+from camogie_scraper import parse_fixture_cards, _parse_datetime, scrape_camogie_fixtures, scrape_camogie_results
 
 
 # ---------------------------------------------------------------------------
@@ -344,3 +344,58 @@ class TestScrapeCamogieFixtures:
 
     def test_empty_leagues_returns_empty(self):
         assert scrape_camogie_fixtures(leagues=[]) == []
+
+
+# ---------------------------------------------------------------------------
+# scrape_camogie_results
+# ---------------------------------------------------------------------------
+
+class TestScrapeCamogieResults:
+    """Tests for scraping camogie results."""
+
+    def test_returns_results_with_scores(self, monkeypatch):
+        html = RESULT_CARD
+        fake_leagues = [{
+            "url": "http://test/league",
+            "team": "BCC 2026 Senior Squad",
+            "club_name": "Ballincollig",
+            "competition": "Senior Camogie Championship 2026",
+        }]
+
+        class FakeResp:
+            status_code = 200
+            text = html
+            def raise_for_status(self): pass
+
+        monkeypatch.setattr("camogie_scraper.requests.get", lambda *a, **kw: FakeResp())
+
+        results = scrape_camogie_results(leagues=fake_leagues)
+        assert len(results) == 1
+        r = results[0]
+        assert r["home"] == "Ballincollig"
+        assert r["away"] == "Charleville"
+        assert r["home_score"] == "7-15"
+        assert r["away_score"] == "0-3"
+        assert r["competition"] == "Senior Camogie Championship 2026"
+
+    def test_excludes_fixtures_without_scores(self, monkeypatch):
+        html = FIXTURE_CARD
+        fake_leagues = [{
+            "url": "http://test/league",
+            "team": "BCC 2026 Senior Squad",
+            "club_name": "Ballincollig",
+            "competition": "Test League",
+        }]
+
+        class FakeResp:
+            status_code = 200
+            text = html
+            def raise_for_status(self): pass
+
+        monkeypatch.setattr("camogie_scraper.requests.get", lambda *a, **kw: FakeResp())
+
+        results = scrape_camogie_results(leagues=fake_leagues)
+        assert len(results) == 0
+
+    def test_empty_leagues_returns_empty(self):
+        assert scrape_camogie_results(leagues=[]) == []
