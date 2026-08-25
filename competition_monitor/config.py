@@ -288,6 +288,12 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u16-hurling-2",
         "age_group": "u16",
     },
+    "Fe16 Div 1 Football Championship Play-Off (2nd team)": {
+        "competition_id": 218754,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football-2",
+        "age_group": "u16",
+    },
 
     # ===== Minor (Fe18) =====
     # --- 1st team ---
