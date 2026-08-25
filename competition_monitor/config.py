@@ -263,6 +263,12 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u16-football",
         "age_group": "u16",
     },
+    "Fe16 Premier 1 Football Championship Semi Finals/Final": {
+        "competition_id": 218963,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u16-football",
+        "age_group": "u16",
+    },
     # --- 2nd team championship ---
     "Fe16 Div 1 S1 Football Championship (2nd team)": {
         "competition_id": 215007,
