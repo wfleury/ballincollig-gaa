@@ -189,6 +189,12 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u14-hurling-2",
         "age_group": "u14",
     },
+    "Fe14 Div 4A Hurling Championship Final (2nd team)": {
+        "competition_id": 217031,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-hurling-2",
+        "age_group": "u14",
+    },
     # --- 3rd team ---
     "Fe14 Div 4D Football (3rd team)": {
         "competition_id": 213624,
