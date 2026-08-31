@@ -222,6 +222,19 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u15-hurling",
         "age_group": "u15",
     },
+    # --- Finals ---
+    "Fe15 Hurling League Group 1 Final": {
+        "competition_id": 219038,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u15-hurling",
+        "age_group": "u15",
+    },
+    "Fe15 Football League Group 1 Final": {
+        "competition_id": 219040,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u15-football",
+        "age_group": "u15",
+    },
 
     # ===== U16 (Fe16) =====
     # --- 1st team ---
@@ -338,6 +351,12 @@ COMPETITIONS = {
         "competition_id": 214976,
         "base_url": REBELOG_BASE_URL,
         "ntfy_topic": "ballincollig-minor-hurling",
+        "age_group": "minor",
+    },
+    "Fe18 Premier 1 Football Championship Semi Finals/Final": {
+        "competition_id": 218996,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-minor-football",
         "age_group": "minor",
     },
     # --- 2nd team ---
