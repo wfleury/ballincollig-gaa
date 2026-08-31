@@ -56,24 +56,31 @@ def _active_discovery_patterns():
     }
 
 
+def _normalise_age_label(name):
+    """Normalise age-group labels: 'Fé 14' / 'Fe 14' / 'Fé14' -> 'fe14'.
+
+    Accent removal must happen *before* space removal so that
+    'fé 14' becomes 'fe 14' first, then the regex collapses the space.
+    """
+    lower = name.lower()
+    # Step 1: strip accented é -> e (must be first so regex word-boundary works)
+    lower = lower.replace('\xe9', 'e')
+    # Step 2: collapse 'fe 14' -> 'fe14'
+    return re.sub(r'\bfe\s+(\d)', r'fe\1', lower)
+
+
 def _matches_any_age_group(name):
     """Return True if the competition name matches any active age group.
 
     Normalises 'Fe 14' -> 'Fe14' and 'Fé14' -> 'Fe14' so patterns match.
     """
-    lower = name.lower()
-    # Rebel Og Coiste uses 'Fe 14' (with space) while our patterns use 'fe14'
-    normalised = re.sub(r'\bfe\s+(\d)', r'fe\1', lower)
-    # Also handle accented é -> e
-    normalised = normalised.replace('\xe9', 'e')
+    normalised = _normalise_age_label(name)
     return any(pat in normalised for pat in _active_discovery_patterns())
 
 
 def _age_group_for_name(name):
     """Return the AGE_GROUPS key for a competition name, or None."""
-    lower = name.lower()
-    normalised = re.sub(r'\bfe\s+(\d)', r'fe\1', lower)
-    normalised = normalised.replace('\xe9', 'e')
+    normalised = _normalise_age_label(name)
     for key, ag in AGE_GROUPS.items():
         pat = ag.get("discovery_pattern", "").lower()
         if pat and pat in normalised:
