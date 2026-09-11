@@ -168,6 +168,19 @@ COMPETITIONS = {
         "ntfy_topic": "ballincollig-u14-hurling",
         "age_group": "u14",
     },
+    "Fe14 Premier 1 Football League Shield Final": {
+        "competition_id": 219630,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-football",
+        "age_group": "u14",
+    },
+    # --- 1st team league final ---
+    "Fe14 Premier 2 Hurling League Final": {
+        "competition_id": 213985,
+        "base_url": REBELOG_BASE_URL,
+        "ntfy_topic": "ballincollig-u14-hurling",
+        "age_group": "u14",
+    },
     
     # --- 2nd team ---
     "Fe14 Div 1 Football (2nd team)": {
