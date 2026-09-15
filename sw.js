@@ -1,5 +1,5 @@
 // Service worker for Ballincollig GAA dashboard
-const CACHE = 'gaa-dash-1789465454';
+const CACHE = 'gaa-dash-1789490704';
 const CORE = ['./img/crest.gif', './manifest.webmanifest'];
 
 self.addEventListener('install', (e) => {
